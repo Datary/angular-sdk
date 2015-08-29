@@ -1,0 +1,35 @@
+{
+    "name": "dy-sdk-angular",
+    "description": "AngularJS module encapsulating Datary's API requests",
+    "keywords": [
+        "datary",
+        "api",
+        "sdk",
+        "angular"
+    ],
+    "repository": {
+        "type": "git"
+    },
+    "main": "dist/module.js",
+    "ignore": [
+        "src/",
+        "spec",
+        ".bowerrc",
+        ".gitignore",
+        ".jshintignore",
+        ".jshintrc",
+        "bower.json",
+        "gruntfile.js",
+        "package.json",
+        "README.md"
+    ],
+    "authors": [
+        "Fernando Diaz Laclaustra"
+    ],
+    "version": "0.1.0",
+    "scripts": {
+        "test": "./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
+    },
+    "private": true,
+    "license": "Commercial"
+}
