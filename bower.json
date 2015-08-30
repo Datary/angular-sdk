@@ -13,15 +13,15 @@
     "main": "dist/module.js",
     "ignore": [
         "src/",
+        "test/",
         "spec",
         ".bowerrc",
+        "bower.json",
         ".gitignore",
         ".jshintignore",
         ".jshintrc",
-        "bower.json",
         "gruntfile.js",
-        "package.json",
-        "README.md"
+        "package.json"
     ],
     "authors": [
         "Fernando Diaz Laclaustra"

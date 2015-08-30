@@ -1,0 +1,23 @@
+{
+  "name": "dy-sdk-angular",
+  "description": "AngularJS module encapsulating Datary's API requests",
+  "keywords": [
+    "datary",
+    "api",
+    "sdk",
+    "angular"
+  ],
+  "main": "dist/module.js",
+  "authors": [
+    "Fernando Diaz Laclaustra"
+  ],
+  "devDependencies": {
+    "aws": "0.0.3-2",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-uglify": "^1.4.0"
+  },
+  "private": true,
+  "license": "Commercial"
+}
