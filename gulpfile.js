@@ -18,12 +18,16 @@ var gulp            = require('gulp')
 ,   jshint          = require('gulp-jshint')
 ,   concat          = require('gulp-concat')
 ,   uglify          = require('gulp-uglify')
-,   aws             = require('aws')
+,   fs              = require('fs')
+,   AWS             = require('aws-sdk')
 ;
 
 
 
 //############ CONFIG
+//http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/node-configuring.html#Credentials_from_Disk
+AWS.config.loadFromPath('./.awsrc');
+AWS.config.update({region: 'us-west-2'});
 var $SRC_FILES = ["src/*.js"];
 //ficheros ordenados 
 var $ORD_SRC_FILES = [
@@ -94,5 +98,50 @@ gulp
             } catch(err) {
                 throw new Error("Error on @Vanilla JS");
             }
+        }
+    );
+
+
+
+/******************************************************************************
+* @name publish
+* @type task
+* @description
+*/
+gulp
+    .task(
+        'publish', 
+        [],
+        function(){
+            console.log("@@@ Running Publish task @@@");
+            
+            //aWS configuration
+            var s3 = new AWS.S3();
+            var $PARAMS = {
+                Bucket: "datary-media-dev-us2-a",
+                ACL: "public-read",
+                Key: "libs/dy-sdk-angular.js",
+                Body: null,
+            };
+            
+            // Read in the file, convert it to base64, store to S3
+            fs.readFile('./dist/dy-sdk-angular.js', function (err, data) {
+                    if (err) { throw err; }
+                    //creo un buffer
+                    var $B64_DATA = new Buffer(data, 'binary');
+                    //configuro los params con el buffer
+                    $PARAMS.Body = $B64_DATA;
+                    //envio la peticion
+                    s3.putObject($PARAMS, function(err, data) {
+                            if (err) {
+                                console.log(err, err.stack); // an error occurred
+                            } else {
+                                console.log("exito");
+                                console.log(data);           // successful response
+                            }
+                        }
+                    );
+                }
+            );
         }
     );
