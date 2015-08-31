@@ -14,6 +14,7 @@ api.$inject = ['$q', '$http', 'DyConnection', 'DyOracle', 'DyUser',
 
 function api($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, DyCommit, DyTree, DyLump, DyHead, DyTag){
      return {
+        foo: "bar",
         connection: function(){
             return (new DyConnection());
         },

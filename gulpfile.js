@@ -15,6 +15,7 @@
  * See http://
  ******************************************************************************/
 var gulp            = require('gulp')
+,   argv            = require('yargs').argv
 ,   jshint          = require('gulp-jshint')
 ,   concat          = require('gulp-concat')
 ,   uglify          = require('gulp-uglify')
@@ -114,13 +115,22 @@ gulp
         [],
         function(){
             console.log("@@@ Running Publish task @@@");
+            var $VERSION;
             
-            //aWS configuration
+            //version de la release
+            if (!argv["version"]) {
+                console.log("Missing argument: --version. Release aborted.");
+                throw new Error("Missing argument");
+            } else {
+                $VERSION = argv["version"];
+            }
+            
+            //AWS configuration
             var s3 = new AWS.S3();
             var $PARAMS = {
                 Bucket: "datary-media-dev-us2-a",
                 ACL: "public-read",
-                Key: "libs/dy-sdk-angular.js",
+                Key: "libs/dy-sdk-angular/" + $VERSION + "/dy-sdk-angular.js",
                 Body: null,
             };
             

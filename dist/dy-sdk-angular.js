@@ -102,6 +102,7 @@ api.$inject = ['$q', '$http', 'DyConnection', 'DyOracle', 'DyUser',
 
 function api($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, DyCommit, DyTree, DyLump, DyHead, DyTag){
      return {
+        foo: "bar",
         connection: function(){
             return (new DyConnection());
         },
@@ -216,7 +217,7 @@ angular
     .module('dySdk')
     .factory('DyConnection', connection);
 
-api.$inject = ['$q', '$http'];
+connection.$inject = ['$q', '$http'];
 
 function connection($q, $http){
     return function(){
@@ -588,9 +589,9 @@ function user($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('dyRepo', repo );
+    .factory('DyRepo', repo );
 
-user.$inject = ['$q', '$http'];
+repo.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
 function repo($q, $http){
@@ -898,7 +899,7 @@ function repo($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('$$$api', workingDir);
+    .factory('DyWorkingDir', workingDir);
 
 workingDir.$inject = ['$q', '$http'];
 

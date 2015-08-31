@@ -5,9 +5,9 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('dyRepo', repo );
+    .factory('DyRepo', repo );
 
-user.$inject = ['$q', '$http'];
+repo.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
 function repo($q, $http){
