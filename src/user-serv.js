@@ -10,7 +10,6 @@ angular
 user.$inject = ['$q', '$http'];
 
 function user($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function(){

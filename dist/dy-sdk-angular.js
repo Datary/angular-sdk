@@ -141,19 +141,11 @@ function api($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, Dy
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyOracle',
-        [
-            '$q',
-            '$http',
-            oracleFactory
-        ]
-    );
+    .factory('DyOracle', oracle );
 
+oracle.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function oracleFactory($q, $http){
-    
+function oracle($q, $http){
     return function(){
         this.listUsers = function(){
             return listUsers();
@@ -218,36 +210,28 @@ function oracleFactory($q, $http){
 /*******************************************************************************
  * @description
  * 
- * 
+ * https://github.com/johnpapa/angular-styleguide#style-y024
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyConnection',
-        [
-            '$q',
-            '$http',
-            Connection
-        ]
-    );
+    .factory('DyConnection', connection);
 
+api.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function Connection($q, $http){
-    this.signIn = function(credentials){
-        return signIn(credentials);
-    };
-    this.connect = function(){
-        return connect();
-    };
-    this.signOut = function(){
-        return signOut();
-    };
-    this.signUp = function(user){
-        return signUp(user);
-    };
-    this.signRequest = function(request){
-        return signRequest(request);
+function connection($q, $http){
+    return function(){
+        this.signIn = function(credentials){
+            return signIn(credentials);
+        };
+        this.signOut = function(){
+            return signOut();
+        };
+        this.signUp = function(user){
+            return signUp(user);
+        };
+        this.signRequest = function(request){
+            return signRequest(request);
+        };
     };
     
     
@@ -377,7 +361,6 @@ angular
 user.$inject = ['$q', '$http'];
 
 function user($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function(){
@@ -605,19 +588,12 @@ function user($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('dyRepo',
-        [
-            '$q',
-            '$http',
-            repo
-        ]
-    );
+    .factory('dyRepo', repo );
 
-
+user.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
 function repo($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function(){
@@ -922,19 +898,11 @@ function repo($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('$$$api',
-        [
-            '$q',
-            '$http',
-            workingDir
-        ]
-    );
+    .factory('$$$api', workingDir);
 
+workingDir.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
 function workingDir($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function (){
@@ -1018,19 +986,11 @@ function workingDir($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyCommit',
-        [
-            '$q',
-            '$http',
-            commit
-        ]
-    );
+    .factory('DyCommit', commit);
 
+commit.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
 function commit($q, $http){
-    
     return function(id){
         this._id = id;
         this.retrieveBranch = function(){
@@ -1115,19 +1075,11 @@ function commit($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTree',
-        [
-            '$q',
-            '$http',
-            treeFactory
-        ]
-    );
+    .factory('DyTree', tree);
 
+tree.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function treeFactory($q, $http){
-    
+function tree($q, $http){
     return function(id){
         this._id = id;
         this.describe = function(){
@@ -1170,18 +1122,11 @@ function treeFactory($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyLump',
-        [
-            '$q',
-            '$http',
-            lumpFactory
-        ]
-    );
+    .factory('DyLump', lump);
 
+lump.$inject = ['$q', '$http'];
 
-
-function lumpFactory($q, $http){
-    
+function lump($q, $http){
     return function(id){
         this._id = id;
         this.retrieveContentPreview = function(){
@@ -1280,21 +1225,17 @@ function lumpFactory($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTag',
-        [
-            '$q',
-            '$http',
-            Tag
-        ]
-    );
+    .factory('DyTag', tag);
 
-
+tag.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
-function Tag($q, $http){
-    this._id = id;
-    this.retrieveBranch = function(){
-        return retrieveBranchFromTag(id);
+function tag($q, $http){
+    return function(id){
+        this._id = id;
+        this.retrieveBranch = function(){
+            return retrieveBranchFromTag(id);
+        };
     };
     
     
@@ -1331,21 +1272,16 @@ function Tag($q, $http){
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyHead',
-        [
-            '$q',
-            '$http',
-            Head
-        ]
-    );
+    .factory('DyHead', head);
 
+head.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function Head($q, $http){
-    this._id = id;
-    this.retrieveBranch = function(){
-        return retrieveBranchFromHead(id);
+function head($q, $http){
+    return function(id){
+        this._id = id;
+        this.retrieveBranch = function(){
+            return retrieveBranchFromHead(id);
+        };
     };
     
     

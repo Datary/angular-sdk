@@ -5,19 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('$$$api',
-        [
-            '$q',
-            '$http',
-            workingDir
-        ]
-    );
+    .factory('$$$api', workingDir);
 
+workingDir.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
 function workingDir($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function (){

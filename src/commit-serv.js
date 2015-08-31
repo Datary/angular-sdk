@@ -5,19 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyCommit',
-        [
-            '$q',
-            '$http',
-            commit
-        ]
-    );
+    .factory('DyCommit', commit);
 
+commit.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
 function commit($q, $http){
-    
     return function(id){
         this._id = id;
         this.retrieveBranch = function(){

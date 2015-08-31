@@ -5,19 +5,12 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('dyRepo',
-        [
-            '$q',
-            '$http',
-            repo
-        ]
-    );
+    .factory('dyRepo', repo );
 
-
+user.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
 function repo($q, $http){
-    
     return function(id){
         this._id = id;
         this.describe = function(){

@@ -5,21 +5,17 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTag',
-        [
-            '$q',
-            '$http',
-            Tag
-        ]
-    );
+    .factory('DyTag', tag);
 
-
+tag.$inject = ['$q', '$http'];
 
 //https://github.com/johnpapa/angular-styleguide#style-y024
-function Tag($q, $http){
-    this._id = id;
-    this.retrieveBranch = function(){
-        return retrieveBranchFromTag(id);
+function tag($q, $http){
+    return function(id){
+        this._id = id;
+        this.retrieveBranch = function(){
+            return retrieveBranchFromTag(id);
+        };
     };
     
     

@@ -5,19 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTree',
-        [
-            '$q',
-            '$http',
-            treeFactory
-        ]
-    );
+    .factory('DyTree', tree);
 
+tree.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function treeFactory($q, $http){
-    
+function tree($q, $http){
     return function(id){
         this._id = id;
         this.describe = function(){

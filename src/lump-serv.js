@@ -5,18 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyLump',
-        [
-            '$q',
-            '$http',
-            lumpFactory
-        ]
-    );
+    .factory('DyLump', lump);
 
+lump.$inject = ['$q', '$http'];
 
-
-function lumpFactory($q, $http){
-    
+function lump($q, $http){
     return function(id){
         this._id = id;
         this.retrieveContentPreview = function(){

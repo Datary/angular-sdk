@@ -5,21 +5,16 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyHead',
-        [
-            '$q',
-            '$http',
-            Head
-        ]
-    );
+    .factory('DyHead', head);
 
+head.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function Head($q, $http){
-    this._id = id;
-    this.retrieveBranch = function(){
-        return retrieveBranchFromHead(id);
+function head($q, $http){
+    return function(id){
+        this._id = id;
+        this.retrieveBranch = function(){
+            return retrieveBranchFromHead(id);
+        };
     };
     
     

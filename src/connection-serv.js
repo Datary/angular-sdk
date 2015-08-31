@@ -1,36 +1,28 @@
 /*******************************************************************************
  * @description
  * 
- * 
+ * https://github.com/johnpapa/angular-styleguide#style-y024
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyConnection',
-        [
-            '$q',
-            '$http',
-            Connection
-        ]
-    );
+    .factory('DyConnection', connection);
 
+api.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function Connection($q, $http){
-    this.signIn = function(credentials){
-        return signIn(credentials);
-    };
-    this.connect = function(){
-        return connect();
-    };
-    this.signOut = function(){
-        return signOut();
-    };
-    this.signUp = function(user){
-        return signUp(user);
-    };
-    this.signRequest = function(request){
-        return signRequest(request);
+function connection($q, $http){
+    return function(){
+        this.signIn = function(credentials){
+            return signIn(credentials);
+        };
+        this.signOut = function(){
+            return signOut();
+        };
+        this.signUp = function(user){
+            return signUp(user);
+        };
+        this.signRequest = function(request){
+            return signRequest(request);
+        };
     };
     
     

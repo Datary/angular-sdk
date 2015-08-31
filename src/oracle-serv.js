@@ -5,19 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyOracle',
-        [
-            '$q',
-            '$http',
-            oracleFactory
-        ]
-    );
+    .factory('DyOracle', oracle );
 
+oracle.$inject = ['$q', '$http'];
 
-
-//https://github.com/johnpapa/angular-styleguide#style-y024
-function oracleFactory($q, $http){
-    
+function oracle($q, $http){
     return function(){
         this.listUsers = function(){
             return listUsers();
