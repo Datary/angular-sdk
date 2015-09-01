@@ -12,5 +12,7 @@
  * objetos a que representan no han sido `populados`. 
  * 
  *****************************************************************************/
-angular
-    .module('dySdk', []);
+(function(){
+    angular
+        .module('dySdk', []);
+})();
