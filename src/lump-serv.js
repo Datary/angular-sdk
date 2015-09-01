@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyLump', lump);
+    .factory('DyLumpService', lump);
 
 lump.$inject = ['$q', '$http'];
 

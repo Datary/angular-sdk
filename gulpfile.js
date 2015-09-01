@@ -32,10 +32,10 @@ AWS.config.update({region: 'us-west-2'});
 var $SRC_FILES = ["src/*.js"];
 //ficheros ordenados 
 var $ORD_SRC_FILES = [
-    "src/main.js",
-    "src/token-interceptor.js",
-    "src/api.js",
-    "src/oracle-serv.js",
+    "src/module.js",
+    "src/token-interceptor-fact.js",
+    "src/datary-fact.js",
+    "src/hub-serv.js",
     "src/connection-serv.js",
     "src/user-serv.js",
     "src/repo-serv.js",
@@ -119,16 +119,17 @@ gulp
             
             //version de la release
             if (!argv["version"]) {
-                console.log("Missing argument: --version. Release aborted.");
-                throw new Error("Missing argument");
+                $VERSION = require("./package.json").version;
+                console.log("Using package version: %s", $VERSION);
             } else {
                 $VERSION = argv["version"];
+                console.log("Using specified version: %s", $VERSION);
             }
             
             //AWS configuration
             var s3 = new AWS.S3();
             var $PARAMS = {
-                Bucket: "datary-media-dev-us2-a",
+                Bucket: "datary-media-rtm-us2-a",
                 ACL: "public-read",
                 Key: "libs/dy-sdk-angular/" + $VERSION + "/dy-sdk-angular.js",
                 Body: null,
@@ -146,7 +147,6 @@ gulp
                             if (err) {
                                 console.log(err, err.stack); // an error occurred
                             } else {
-                                console.log("exito");
                                 console.log(data);           // successful response
                             }
                         }

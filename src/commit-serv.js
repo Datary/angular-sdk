@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyCommit', commit);
+    .factory('DyCommitService', commit);
 
 commit.$inject = ['$q', '$http'];
 

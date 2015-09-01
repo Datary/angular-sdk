@@ -5,11 +5,11 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyOracle', oracle );
+    .factory('DyHubService', hub );
 
-oracle.$inject = ['$q', '$http'];
+hub.$inject = ['$q', '$http'];
 
-function oracle($q, $http){
+function hub($q, $http){
     return function(){
         this.listUsers = function(){
             return listUsers();

@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyHead', head);
+    .factory('DyHeadService', head);
 
 head.$inject = ['$q', '$http'];
 

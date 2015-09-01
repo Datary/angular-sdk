@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyUser', user);
+    .factory('DyUserService', user);
 
 user.$inject = ['$q', '$http'];
 

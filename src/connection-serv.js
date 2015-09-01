@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyConnection', connection);
+    .factory('DyConnectionService', connection);
 
 connection.$inject = ['$q', '$http'];
 

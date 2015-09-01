@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyWorkingDir', workingDir);
+    .factory('DyWorkingDirService', workingDir);
 
 workingDir.$inject = ['$q', '$http'];
 

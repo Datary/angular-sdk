@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyRepo', repo );
+    .factory('DyRepoService', repo );
 
 repo.$inject = ['$q', '$http'];
 

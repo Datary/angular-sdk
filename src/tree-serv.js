@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTree', tree);
+    .factory('DyTreeService', tree);
 
 tree.$inject = ['$q', '$http'];
 

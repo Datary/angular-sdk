@@ -5,7 +5,7 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('DyTag', tag);
+    .factory('DyTagService', tag);
 
 tag.$inject = ['$q', '$http'];
 

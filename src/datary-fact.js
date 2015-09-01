@@ -6,15 +6,15 @@
  ******************************************************************************/
 angular
     .module('dySdk')
-    .factory('$$$api', api);
+    .factory('Datary', datary);
 
-api.$inject = ['$q', '$http', 'DyConnection', 'DyOracle', 'DyUser',
-                'DyRepo', 'DyWorkingDir', 'DyCommit', 'DyTree', 'DyLump',
-                'DyHead', 'DyTag'];
+datary.$inject = ['$q', '$http', 'DyConnectionService', 'DyOracleService', 
+                'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
+                'DyCommitService', 'DyTreeService', 'DyLumpService', 
+                'DyHeadService', 'DyTagService'];
 
 function api($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, DyCommit, DyTree, DyLump, DyHead, DyTag){
      return {
-        foo: "bar",
         connection: function(){
             return (new DyConnection());
         },

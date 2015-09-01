@@ -1,5 +1,6 @@
 {
   "name": "dy-sdk-angular",
+  "version": "0.0.8",
   "description": "AngularJS module encapsulating Datary's API requests",
   "keywords": [
     "datary",
