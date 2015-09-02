@@ -168,19 +168,19 @@
         return function(category, path, pattern, limit, offset){
             //----- Validacion y defaults
             var $CATEGORY = (category)?
-                category.toString
+                category.toString()
                 : "users";
             var $PATH = (path)?
-                path.toString
+                path.toString()
                 : "username";
             var $PATTERN = (pattern)?
-                pattern.toString
+                pattern.toString()
                 : "*";
             var $LIMIT = (limit)?
-                limit.toString
+                limit.toString()
                 : "10";
             var $OFFSET = (offset)?
-                offset.toString
+                offset.toString()
                 : "0";
             
             //----- Request build
@@ -189,8 +189,6 @@
                     "&" + "pattern=" + $PATTERN +
                     "&" + "limit=" + $LIMIT +
                     "&" + "offset=" + $OFFSET;
-            
-            console.log(11111, category);
             
             //----- Request
             return (
