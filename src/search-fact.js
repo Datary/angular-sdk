@@ -42,7 +42,6 @@
                     "&" + "pattern=" + $PATTERN +
                     "&" + "limit=" + $LIMIT +
                     "&" + "offset=" + $OFFSET;
-                    
             
             //----- Request
             return (
