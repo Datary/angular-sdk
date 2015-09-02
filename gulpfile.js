@@ -35,7 +35,7 @@ var $ORD_SRC_FILES = [
     "src/module.js",
     "src/token-interceptor-fact.js",
     "src/datary-fact.js",
-    "src/hub-serv.js",
+    "src/search-fact.js",
     "src/connection-serv.js",
     "src/user-serv.js",
     "src/repo-serv.js",
