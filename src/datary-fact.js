@@ -14,7 +14,9 @@
                     'DyCommitService', 'DyTreeService', 'DyLumpService', 
                     'DyHeadService', 'DyTagService'];
     
-    function factory($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, DyCommit, DyTree, DyLump, DyHead, DyTag){
+    function factory($q, $http, DyConnectionService, DyOracleService, DyUserService, 
+            DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
+            DyLumpService, DyHeadService, DyTagService){
          return {
             connection: function(){
                 return (new DyConnectionService());

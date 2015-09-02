@@ -103,42 +103,44 @@
         .module('dySdk')
         .factory('Datary', factory);
     
-    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DyOracleService', 
+    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchFactory', 
                     'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
                     'DyCommitService', 'DyTreeService', 'DyLumpService', 
                     'DyHeadService', 'DyTagService'];
     
-    function factory($q, $http, DyConnection, DyOracle, DyUser, DyRepo, DyWorkingDir, DyCommit, DyTree, DyLump, DyHead, DyTag){
+    function factory($q, $http, DyConnectionService, DyOracleService, DyUserService, 
+            DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
+            DyLumpService, DyHeadService, DyTagService){
          return {
             connection: function(){
-                return (new DyConnection());
+                return (new DyConnectionService());
             },
-            oracle: function(){
-                return (new DyOracle());
+            search: function(){
+                return DySearchFactory;
             },
             user: function(id){
-                return (new DyUser(id));
+                return (new DyUserService(id));
             },
             repo:function(id){
-                return (new DyRepo(id));
+                return (new DyRepoService(id));
             },
             workingDir: function(id){
-                return (new DyWorkingDir(id));
+                return (new DyWorkingDirService(id));
             },
             commit: function(id){
-                return (new DyCommit(id));
+                return (new DyCommitService(id));
             },
             tree: function(id){
-                return (new DyTree(id));
+                return (new DyTreeService(id));
             },
             lump: function(id){
-                return (new DyLump(id));
+                return (new DyLumpService(id));
             },
             head: function(id){
-                return (new DyHead(id));
+                return (new DyHeadService(id));
             },
             tag: function(id){
-                return (new DyTag(id));
+                return (new DyTagService(id));
             },
         };
     }
@@ -152,33 +154,48 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyHubService', factory );
+        .factory('DySearchFactory', factory );
     
     factory.$inject = ['$q', '$http'];
     
+    /**************************************************************
+     * @description 
+     * 
+     * @param 
+     * 
+     * @return 
+     */
     function factory($q, $http){
-        return function(){
-            this.listUsers = function(){
-                return listUsers();
-            };
-            this.listRepos = function(){
-                return listRepos();
-            };
-        };
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function listUsers(){
+        return function(category, path, pattern, limit, offset){
+            //----- Validacion y defaults
+            var $CATEGORY = (category)?
+                category.toString
+                : "users";
+            var $PATH = (path)?
+                path.toString
+                : "username";
+            var $PATTERN = (pattern)?
+                pattern.toString
+                : "*";
+            var $LIMIT = (limit)?
+                limit.toString
+                : "10";
+            var $OFFSET = (offset)?
+                offset.toString
+                : "0";
+            
+            //----- Request build
+            $URI =  "/" + $CATEGORY +
+                    "?" + "path=" + $PATH +
+                    "&" + "pattern=" + $PATTERN +
+                    "&" + "limit=" + $LIMIT +
+                    "&" + "offset=" + $OFFSET;
+                    
+            
+            //----- Request
             return (
                 $http
-                    .get("//api.datary.io/oracle/listUsers")
+                    .get("//api.datary.io/search" + $URI)
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -190,36 +207,9 @@
                         }
                     )
             );//END return
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function listRepos(){
-            return (
-                $http
-                    .get("//api.datary.io/oracle/listRepos")
-                    .then(
-                        function(r){
-                            //console.log(r);
-                            return (r.data);
-                        },
-                        function(e){
-                            //console.log("eoeoeo 89", e);
-                            return $q.reject(e);
-                        }
-                    )
-            );//END return
-        }
+        };
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
