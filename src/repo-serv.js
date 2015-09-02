@@ -8,10 +8,10 @@
         .module('dySdk')
         .factory('DyRepoService', factory );
     
-    factory.$inject = ['$q', '$http'];
+    factory.$inject = ['$q', '$http', 'DyCommitService'];
     
     //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http){
+    function factory($q, $http, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -120,7 +120,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return (retrieveTreeFromCommit(r.apex));
+                            return ( new DyCommitService(r.apex).retrieveTree() );
                         }//END resolve
                     )
                     .then(
