@@ -123,7 +123,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex).retrieveTree() );
+                            return ( new DyCommitService(r.apex, repo).retrieveTree() );
                         }//END resolve
                     )
                     .then(

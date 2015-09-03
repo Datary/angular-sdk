@@ -625,6 +625,9 @@
             this.retrieveTags = function(){
                 return retrieveTagsFromRepo(id);
             };
+            this.retrieveObject = function(object, modifier){
+                return retrieveObjectFromRepo(object, modifier, id);
+            };
             this.commitIndex = function(details){
                 return commitIndexOnRepo(details, id);
             };
@@ -821,6 +824,40 @@
                     )
             );
         }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveObjectFromRepo(object, modifier, repo){
+            
+            var $URI =  "//api.datary.io/" + repo +
+                        "/" + object;
+            $URI = (modifier)?
+                        $URI.concat("?" + modifier + "=true")
+                        : $URI;
+            
+            return (
+                $http
+                    .get($URI)
+                    .then(
+                        function(r){
+                            //console.log(r);
+                            return (r.data);
+                        },
+                        function(e){
+                            //console.log("eoeoeo 89", e);
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
         
         
         /**************************************************************

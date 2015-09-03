@@ -11,13 +11,15 @@
     factory.$inject = ['$q', '$http'];
     
     function factory($q, $http){
-        return function(id){
+        return function(id, namespace){
             this._id = id;
+            this.namespace = namespace;
+            
             this.retrieveBranch = function(){
-                return retrieveBranchFromCommit(id);
+                return retrieveBranchFromCommit(id, namespace);
             };
             this.retrieveTree = function(){
-                return retrieveTreeFromCommit(id);
+                return retrieveTreeFromCommit(id, namespace);
             };
         };
         
@@ -26,10 +28,18 @@
         /**************************************************************
          * @description 
          */
-        function retrieveBranchFromCommit(commit){
+        function retrieveBranchFromCommit(commit, namespace){
+            var $URI = "//api.datary.io/";
+            $URI = (namespace)?
+                        $URI.concat(namespace + "/")
+                        :$URI;
+            $URI = (namespace)?
+                        $URI.concat(commit + "?branch=true")
+                        :$URI.concat("/branch");
+            
             return (
                 $http
-                    .get("//api.datary.io/" + commit + "/branch")
+                    .get($URI)
                     .then(
                         function(r){
                             //console.log(r);
@@ -52,10 +62,18 @@
          * 
          * @return {} devuelvo la `info` del tree 
          */
-        function retrieveTreeFromCommit(commit){
+        function retrieveTreeFromCommit(commit, namespace){
+            var $URI = "//api.datary.io/";
+            $URI = (namespace)?
+                        $URI.concat(namespace + "/")
+                        :$URI;
+            $URI = (namespace)?
+                        $URI.concat(commit + "?tree=true")
+                        :$URI.concat("/tree");
+            
             return (
                 $http
-                    .get("//api.datary.io/" + commit + "/tree")
+                    .get($URI)
                     .then(
                         function(r){
                             //console.log(r);
