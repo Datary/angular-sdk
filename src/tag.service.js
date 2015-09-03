@@ -6,12 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyTagService', factory);
+        .factory('DyTagService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http'];
     
-    //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http){
+    function service($q, $http){
         return function(id){
             this._id = id;
             this.retrieveBranch = function(){

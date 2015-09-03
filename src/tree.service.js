@@ -6,15 +6,15 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyHeadService', factory);
+        .factory('DyTreeService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http'];
     
-    function factory($q, $http){
+    function service($q, $http){
         return function(id){
             this._id = id;
-            this.retrieveBranch = function(){
-                return retrieveBranchFromHead(id);
+            this.describe = function(){
+                return describeTree(id);
             };
         };
         
@@ -22,19 +22,20 @@
         
         /**************************************************************
          * @description 
-         * Se realiza la peticion de los commits que integran la `branch`
-         * de un cierto `head` y se almacena.
+         * La llamada devuelve un objeto con la info de un tree, es
+         * decir, con campos _id y entries, que es un array de entradas.
+         * 
+         * @param {ObjectId} tree: _id del tree que se consulta
          * 
          * @return {}:
          */
-        function retrieveBranchFromHead(head){
+        function describeTree(tree){
             return (
                 $http
-                    .get('//api.datary.io/' + head + '/branch')
+                    .get('//api.datary.io/' + tree)
                     .then(
                         function(r){
-                            console.log(r);
-                            //devuelvo el array de `commits`
+                            //console.log("eoeoeo 90", r);
                             return (r.data);
                         },
                         function(e){
@@ -42,7 +43,7 @@
                             return $q.reject(e);
                         }
                     )
-            );
+            );//END return
         }
     }
 })();

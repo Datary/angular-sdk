@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyConnectionService', factory);
+        .factory('DyConnectionService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http'];
     
-    function factory($q, $http){
+    function service($q, $http){
         return function(){
             this.signIn = function(credentials){
                 return signIn(credentials);

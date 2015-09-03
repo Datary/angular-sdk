@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyCommitService', factory);
+        .factory('DyCommitService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http'];
     
-    function factory($q, $http){
+    function service($q, $http){
         return function(id, namespace){
             this._id = id;
             this.namespace = namespace;

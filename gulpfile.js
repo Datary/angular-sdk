@@ -32,19 +32,19 @@ AWS.config.update({region: 'us-west-2'});
 var $SRC_FILES = ["src/*.js"];
 //ficheros ordenados 
 var $ORD_SRC_FILES = [
-    "src/module.js",
-    "src/token-interceptor-fact.js",
-    "src/datary-fact.js",
-    "src/search-fact.js",
-    "src/connection-serv.js",
-    "src/user-serv.js",
-    "src/repo-serv.js",
-    "src/working-dir-serv.js",
-    "src/commit-serv.js",
-    "src/tree-serv.js",
-    "src/lump-serv.js",
-    "src/tag-serv.js",
-    "src/head-serv.js",
+    "src/dy-sdk.module.js",
+    "src/token-interceptor.factory.js",
+    "src/datary.factory.js",
+    "src/search.factory.js",
+    "src/connection.service.js",
+    "src/user.service.js",
+    "src/repo.service.js",
+    "src/working-dir.service.js",
+    "src/commit.service.js",
+    "src/tree.service.js",
+    "src/lump.service.js",
+    "src/tag.service.js",
+    "src/head.service.js",
 ];
 var $DIST_FOLDER = "./dist/";
 

@@ -6,12 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyRepoService', factory );
+        .factory('DyRepoService', service );
     
-    factory.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
+    service.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
     
-    //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http, DyWorkingDirService, DyCommitService){
+    function service($q, $http, DyWorkingDirService, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
