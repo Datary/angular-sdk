@@ -598,10 +598,10 @@
         .module('dySdk')
         .factory('DyRepoService', factory );
     
-    factory.$inject = ['$q', '$http', 'DyCommitService'];
+    factory.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
     
     //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http, DyCommitService){
+    function factory($q, $http, DyWorkingDirService, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -683,7 +683,7 @@
                         function(r){
                             //console.log("eoeoeo a", r);
                             //obtengo info del working_dir
-                            return (describeWorkingDir(r.workingDir));
+                            return ( new DyWorkingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -710,7 +710,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex).retrieveTree());
+                            return ( new DyCommitService(r.apex).retrieveTree() );
                         }//END resolve
                     )
                     .then(

@@ -8,10 +8,10 @@
         .module('dySdk')
         .factory('DyRepoService', factory );
     
-    factory.$inject = ['$q', '$http', 'DyCommitService'];
+    factory.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
     
     //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http, DyCommitService){
+    function factory($q, $http, DyWorkingDirService, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -34,6 +34,9 @@
             };
             this.retrieveTags = function(){
                 return retrieveTagsFromRepo(id);
+            };
+            this.retrieveObject = function(object, modifier){
+                return retrieveObjectFromRepo(object, modifier, id);
             };
             this.commitIndex = function(details){
                 return commitIndexOnRepo(details, id);
@@ -93,7 +96,7 @@
                         function(r){
                             //console.log("eoeoeo a", r);
                             //obtengo info del working_dir
-                            return (describeWorkingDir(r.workingDir));
+                            return ( new DyWorkingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -231,6 +234,40 @@
                     )
             );
         }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveObjectFromRepo(object, modifier, repo){
+            
+            var $URI =  "//api.datary.io/" + repo +
+                        "/" + object;
+            $URI = (modifier)?
+                        $URI.concat("?" + modifier + "=true")
+                        : $URI;
+            
+            return (
+                $http
+                    .get($URI)
+                    .then(
+                        function(r){
+                            //console.log(r);
+                            return (r.data);
+                        },
+                        function(e){
+                            //console.log("eoeoeo 89", e);
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
         
         
         /**************************************************************
