@@ -33,8 +33,8 @@
             workingDir: function(id){
                 return (new DyWorkingDirService(id));
             },
-            commit: function(id){
-                return (new DyCommitService(id));
+            commit: function(id, namespace){
+                return (new DyCommitService(id, namespace));
             },
             tree: function(id){
                 return (new DyTreeService(id));
