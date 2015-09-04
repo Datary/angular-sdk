@@ -44,11 +44,23 @@
                     .post("//api.datary.io/connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 189", r);
-                            return (r.headers('X-Set-Token')); //!!headers(..), no headers[..]
+                            var $TOKEN = null;
+                            //busco token en headers
+                            if (r.headers('X-Set-Token')) {
+                                $TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
+                                return $TOKEN;
+                            
+                            //busco token en el body
+                            } else if (r.data && r.data.authToken) {
+                                $TOKEN = r.data.authToken;
+                                return $TOKEN;
+                            
+                            } else {
+                                console.log("Could not parse token from HTTP reponse.");
+                                return $q.reject(e);
+                            }
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
