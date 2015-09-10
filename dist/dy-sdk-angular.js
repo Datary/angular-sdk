@@ -14,9 +14,9 @@
  *****************************************************************************/
 (function(){
     angular
-        .module('dySdk', []);
+        .module('dySdk', [])
+        .constant('dyBaseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
 })();
-
 /*******************************************************************************
  * @description
  * https://docs.angularjs.org/api/ng/service/$http
@@ -91,60 +91,6 @@
         };//END return
     }
 })();
-
-/*******************************************************************************
- * @description
- * 
- * https://github.com/johnpapa/angular-styleguide#style-y091
- * https://github.com/johnpapa/angular-styleguide#naming
- ******************************************************************************/
-(function(){
-    angular
-        .module('dySdk')
-        .factory('Datary', factory);
-    
-    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchFactory', 
-                    'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
-                    'DyCommitService', 'DyTreeService', 'DyLumpService', 
-                    'DyHeadService', 'DyTagService'];
-    
-    function factory($q, $http, DyConnectionService, DySearchFactory, DyUserService, 
-            DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
-            DyLumpService, DyHeadService, DyTagService){
-         return {
-            connection: function(){
-                return (new DyConnectionService());
-            },
-            search: function(category, path, pattern, limit, offset){
-                return DySearchFactory(category, path, pattern, limit, offset);
-            },
-            user: function(id){
-                return (new DyUserService(id));
-            },
-            repo:function(id){
-                return (new DyRepoService(id));
-            },
-            workingDir: function(id){
-                return (new DyWorkingDirService(id));
-            },
-            commit: function(id, namespace){
-                return (new DyCommitService(id, namespace));
-            },
-            tree: function(id){
-                return (new DyTreeService(id));
-            },
-            lump: function(id){
-                return (new DyLumpService(id));
-            },
-            head: function(id){
-                return (new DyHeadService(id));
-            },
-            tag: function(id){
-                return (new DyTagService(id));
-            },
-        };
-    }
-})();
 /*******************************************************************************
  * @description
  * 
@@ -155,7 +101,7 @@
         .module('dySdk')
         .factory('DySearchFactory', factory );
     
-    factory.$inject = ['$q', '$http'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
     /**************************************************************
      * @description 
@@ -164,7 +110,7 @@
      * 
      * @return 
      */
-    function factory($q, $http){
+    function factory($q, $http, dyBaseApiUrl){
         return function(category, path, pattern, limit, offset){
             //----- Validacion y defaults
             var $CATEGORY = (category)?
@@ -184,7 +130,9 @@
                 : "0";
             
             //----- Request build
-            $URI =  "/" + $CATEGORY +
+            $URI =  dyBaseApiUrl +
+                    "search" +
+                    "/" + $CATEGORY +
                     "?" + "path=" + $PATH +
                     "&" + "pattern=" + $PATTERN +
                     "&" + "limit=" + $LIMIT +
@@ -193,7 +141,7 @@
             //----- Request
             return (
                 $http
-                    .get("//api.datary.io/search" + $URI)
+                    .get($URI)
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -216,11 +164,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyConnectionService', factory);
+        .factory('DyConnectionService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(){
             this.signIn = function(credentials){
                 return signIn(credentials);
@@ -251,14 +199,26 @@
         function signIn(credentials){
             return (
                 $http
-                    .post("//api.datary.io/connection/signIn?provider=datary", credentials)
+                    .post(dyBaseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 189", r);
-                            return (r.headers('X-Set-Token')); //!!headers(..), no headers[..]
+                            var $TOKEN = null;
+                            //busco token en headers
+                            if (r.headers('X-Set-Token')) {
+                                $TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
+                                return $TOKEN;
+                            
+                            //busco token en el body
+                            } else if (r.data && r.data.authToken) {
+                                $TOKEN = r.data.authToken;
+                                return $TOKEN;
+                            
+                            } else {
+                                console.log("Could not parse token from HTTP reponse.");
+                                return $q.reject(e);
+                            }
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -275,7 +235,7 @@
         function signOut(){
             return (
                 $http
-                    .get("//api.datary.io/connection/signOut")
+                    .get(dyBaseApiUrl + "connection/signOut")
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -303,7 +263,7 @@
         function signUp(user){
             return (
                 $http
-                    .post("//api.datary.io/connection/signUp", user)
+                    .post(dyBaseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -331,7 +291,7 @@
         function signRequest(request){
             return (
                 $http
-                    .get("//api.datary.io/connection/signRequest"
+                    .get(dyBaseApiUrl + "connection/signRequest"
                             + "&operation=" 
                             + request.operation 
                             + "&basename=" 
@@ -352,7 +312,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -361,11 +320,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyUserService', factory);
+        .factory('DyUserService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -404,7 +363,7 @@
         function describeUser(user){
             return (
                 $http
-                    .get('//api.datary.io/' + user)
+                    .get(dyBaseApiUrl + user)
                     .then(
                         function(r){
                             //console.log(r);
@@ -432,7 +391,7 @@
         function retrieveReposFromUser(user){
             return (
                 $http
-                    .get('//api.datary.io/' + user + "/repos")
+                    .get(dyBaseApiUrl + user + "/repos")
                     .then(
                         function(r){
                             //console.log(r);
@@ -458,7 +417,7 @@
         function createRepoForUser(repo, user){
             return  (
                 $http
-                    .post('//api.datary.io/'+ user + '/repos', repo )
+                    .post(dyBaseApiUrl + user + '/repos', repo )
                     .then(
                         function(r){
                             //console.log(r);
@@ -485,7 +444,7 @@
         function updateProfileOfUser(profile, user){
             return (
                 $http
-                    .put('//api.datary.io/' + user, profile)
+                    .put(dyBaseApiUrl + user, profile)
                     .then(
                         function(r){
                             //console.log(r);
@@ -512,7 +471,7 @@
         function changeUsernameOfUser(username, user){
             return (
                 $http
-                    .put('//api.datary.io/' + user + "/username", username)
+                    .put(dyBaseApiUrl + user + "/username", username)
                     .then(
                         function(r){
                             //console.log("eoeoeo 8", r);
@@ -546,7 +505,7 @@
             
             return (
                 $http
-                    .put('//api.datary.io/' + user + "/password", $_BODY)
+                    .put(dyBaseApiUrl + user + "/password", $_BODY)
                     .then(
                         function(r){
                             //console.log("eoeoeo 78", r);
@@ -572,7 +531,7 @@
         function removeUser(user){
             return (
                 $http
-                    .delete('//api.datary.io/' + user)
+                    .delete(dyBaseApiUrl + user)
                     .then(
                         function(r){
                             //console.log(r);
@@ -587,7 +546,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -596,12 +554,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyRepoService', factory );
+        .factory('DyRepoService', service );
     
-    factory.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyWorkingDirService', 'DyCommitService'];
     
-    //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http, DyWorkingDirService, DyCommitService){
+    function service($q, $http, dyBaseApiUrl, DyWorkingDirService, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -651,7 +608,7 @@
         function describeRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo)
+                    .get(dyBaseApiUrl + repo)
                     .then(
                         function(r) {
                             //console.log(r);
@@ -739,7 +696,7 @@
         function retrieveReadmeFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/readme')
+                    .get(dyBaseApiUrl + repo + '/readme')
                     .then(
                         function(r){
                             //console.log(r);
@@ -763,7 +720,7 @@
         function retrieveLicenseFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/license')
+                    .get(dyBaseApiUrl + repo + '/license')
                     .then(
                         function(r){
                             //console.log(r);
@@ -787,7 +744,7 @@
         function retrieveHeadsFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/heads')
+                    .get(dyBaseApiUrl + repo + '/heads')
                     .then(
                         function(r){
                             //console.log(r);
@@ -811,7 +768,7 @@
         function retrieveTagsFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/tags')
+                    .get(dyBaseApiUrl + repo + '/tags')
                     .then(
                         function(r){
                             //console.log(r);
@@ -835,9 +792,7 @@
          * @return 
          */
         function retrieveObjectFromRepo(object, modifier, repo){
-            
-            var $URI =  "//api.datary.io/" + repo +
-                        "/" + object;
+            var $URI =  dyBaseApiUrl + repo + "/" + object;
             $URI = (modifier)?
                         $URI.concat("?" + modifier + "=true")
                         : $URI;
@@ -870,7 +825,7 @@
         function commitIndexOnRepo(details, repo){
             return (
                 $http
-                    .post('//api.datary.io/' + repo + "/index", details)
+                    .post(dyBaseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
                             //console.log(r);
@@ -896,7 +851,7 @@
         function updateDetailsOfRepo(details, repo){
             return (
                 $http
-                    .put('//api.datary.io/' + repo, details)
+                    .put(dyBaseApiUrl + repo, details)
                     .then(
                         function(r){
                             //console.log(r);
@@ -922,7 +877,7 @@
         function removeRepo(repo){
             return (
                 $http
-                    .delete('//api.datary.io/' + repo)
+                    .delete(dyBaseApiUrl + repo)
                     .then(
                         function(r){
                             //console.log(r);
@@ -937,7 +892,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -948,9 +902,9 @@
         .module('dySdk')
         .factory('DyWorkingDirService', factory);
     
-    factory.$inject = ['$q', '$http'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function factory($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -974,7 +928,7 @@
         function describeWorkingDir(workingDir){
             return (
                 $http
-                    .get('//api.datary.io/' + workingDir)
+                    .get(dyBaseApiUrl + workingDir)
                     .then(
                         function(r){
                             //console.log("eoeoeo 23", r);
@@ -1013,7 +967,7 @@
         function stageChangeOnWorkingDir(change, workingDir){
             return (
                 $http
-                    .post('//api.datary.io/'+ workingDir + '/changes', change)
+                    .post(dyBaseApiUrl + workingDir + '/changes', change)
                     .then(
                         function(r){
                             //console.log("eoeoeo 43", r);
@@ -1037,11 +991,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyCommitService', factory);
+        .factory('DyCommitService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id, namespace){
             this._id = id;
             this.namespace = namespace;
@@ -1060,7 +1014,7 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var $URI = "//api.datary.io/";
+            var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -1094,7 +1048,8 @@
          * @return {} devuelvo la `info` del tree 
          */
         function retrieveTreeFromCommit(commit, namespace){
-            var $URI = "//api.datary.io/";
+            //construyo progresivamente la URI
+            var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -1138,7 +1093,6 @@
         // }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -1147,11 +1101,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyTreeService', factory);
+        .factory('DyTreeService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -1173,7 +1127,7 @@
         function describeTree(tree){
             return (
                 $http
-                    .get('//api.datary.io/' + tree)
+                    .get(dyBaseApiUrl + tree)
                     .then(
                         function(r){
                             //console.log("eoeoeo 90", r);
@@ -1188,7 +1142,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -1197,11 +1150,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyLumpService', factory);
+        .factory('DyLumpService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveContentPreview = function(){
@@ -1227,7 +1180,7 @@
         function retrieveContentPreviewFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + 'preview')
+                    .get(dyBaseApiUrl + lump + 'preview')
                     .then(
                         function(r){
                             //console.log("eoeoeo 33",r);
@@ -1253,7 +1206,7 @@
         function retrieveContentExtractFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + '/extract')
+                    .get(dyBaseApiUrl + lump + '/extract')
                     .then(
                         function(r){
                             //console.log("eoeoeo 13", r);
@@ -1279,7 +1232,7 @@
         function retrieveContentWholeFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + '/whole')
+                    .get(dyBaseApiUrl + lump + '/whole')
                     .then(
                         function(r){
                             //console.log("eoeoeo 31", r);
@@ -1294,7 +1247,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -1303,12 +1255,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyTagService', factory);
+        .factory('DyTagService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    //https://github.com/johnpapa/angular-styleguide#style-y024
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveBranch = function(){
@@ -1328,7 +1279,7 @@
         function retrieveBranchFromTag(tag){
             return (
                 $http
-                    .get('//api.datary.io/' + tag + '/branch')
+                    .get(dyBaseApiUrl + tag + '/branch')
                     .then(
                         function(r){
                             console.log(r);
@@ -1344,7 +1295,6 @@
         }
     }
 })();
-
 /*******************************************************************************
  * @description
  * 
@@ -1353,11 +1303,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyHeadService', factory);
+        .factory('DyHeadService', service);
     
-    factory.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveBranch = function(){
@@ -1377,7 +1327,7 @@
         function retrieveBranchFromHead(head){
             return (
                 $http
-                    .get('//api.datary.io/' + head + '/branch')
+                    .get(dyBaseApiUrl + head + '/branch')
                     .then(
                         function(r){
                             console.log(r);
