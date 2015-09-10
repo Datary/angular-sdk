@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyTagService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveBranch = function(){
@@ -30,7 +30,7 @@
         function retrieveBranchFromTag(tag){
             return (
                 $http
-                    .get('//api.datary.io/' + tag + '/branch')
+                    .get(dyBaseApiUrl + tag + '/branch')
                     .then(
                         function(r){
                             console.log(r);

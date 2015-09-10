@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyUserService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -49,7 +49,7 @@
         function describeUser(user){
             return (
                 $http
-                    .get('//api.datary.io/' + user)
+                    .get(dyBaseApiUrl + user)
                     .then(
                         function(r){
                             //console.log(r);
@@ -77,7 +77,7 @@
         function retrieveReposFromUser(user){
             return (
                 $http
-                    .get('//api.datary.io/' + user + "/repos")
+                    .get(dyBaseApiUrl + user + "/repos")
                     .then(
                         function(r){
                             //console.log(r);
@@ -103,7 +103,7 @@
         function createRepoForUser(repo, user){
             return  (
                 $http
-                    .post('//api.datary.io/'+ user + '/repos', repo )
+                    .post(dyBaseApiUrl + user + '/repos', repo )
                     .then(
                         function(r){
                             //console.log(r);
@@ -130,7 +130,7 @@
         function updateProfileOfUser(profile, user){
             return (
                 $http
-                    .put('//api.datary.io/' + user, profile)
+                    .put(dyBaseApiUrl + user, profile)
                     .then(
                         function(r){
                             //console.log(r);
@@ -157,7 +157,7 @@
         function changeUsernameOfUser(username, user){
             return (
                 $http
-                    .put('//api.datary.io/' + user + "/username", username)
+                    .put(dyBaseApiUrl + user + "/username", username)
                     .then(
                         function(r){
                             //console.log("eoeoeo 8", r);
@@ -191,7 +191,7 @@
             
             return (
                 $http
-                    .put('//api.datary.io/' + user + "/password", $_BODY)
+                    .put(dyBaseApiUrl + user + "/password", $_BODY)
                     .then(
                         function(r){
                             //console.log("eoeoeo 78", r);
@@ -217,7 +217,7 @@
         function removeUser(user){
             return (
                 $http
-                    .delete('//api.datary.io/' + user)
+                    .delete(dyBaseApiUrl + user)
                     .then(
                         function(r){
                             //console.log(r);

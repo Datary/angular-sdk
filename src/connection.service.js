@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyConnectionService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(){
             this.signIn = function(credentials){
                 return signIn(credentials);
@@ -41,7 +41,7 @@
         function signIn(credentials){
             return (
                 $http
-                    .post("//api.datary.io/connection/signIn?provider=datary", credentials)
+                    .post(dyBaseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
                             var $TOKEN = null;
@@ -77,7 +77,7 @@
         function signOut(){
             return (
                 $http
-                    .get("//api.datary.io/connection/signOut")
+                    .get(dyBaseApiUrl + "connection/signOut")
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -105,7 +105,7 @@
         function signUp(user){
             return (
                 $http
-                    .post("//api.datary.io/connection/signUp", user)
+                    .post(dyBaseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);
@@ -133,7 +133,7 @@
         function signRequest(request){
             return (
                 $http
-                    .get("//api.datary.io/connection/signRequest"
+                    .get(dyBaseApiUrl + "connection/signRequest"
                             + "&operation=" 
                             + request.operation 
                             + "&basename=" 

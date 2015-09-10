@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyRepoService', service );
     
-    service.$inject = ['$q', '$http', 'DyWorkingDirService', 'DyCommitService'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyWorkingDirService', 'DyCommitService'];
     
-    function service($q, $http, DyWorkingDirService, DyCommitService){
+    function service($q, $http, dyBaseApiUrl, DyWorkingDirService, DyCommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -60,7 +60,7 @@
         function describeRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo)
+                    .get(dyBaseApiUrl + repo)
                     .then(
                         function(r) {
                             //console.log(r);
@@ -148,7 +148,7 @@
         function retrieveReadmeFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/readme')
+                    .get(dyBaseApiUrl + repo + '/readme')
                     .then(
                         function(r){
                             //console.log(r);
@@ -172,7 +172,7 @@
         function retrieveLicenseFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/license')
+                    .get(dyBaseApiUrl + repo + '/license')
                     .then(
                         function(r){
                             //console.log(r);
@@ -196,7 +196,7 @@
         function retrieveHeadsFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/heads')
+                    .get(dyBaseApiUrl + repo + '/heads')
                     .then(
                         function(r){
                             //console.log(r);
@@ -220,7 +220,7 @@
         function retrieveTagsFromRepo(repo){
             return (
                 $http
-                    .get('//api.datary.io/' + repo + '/tags')
+                    .get(dyBaseApiUrl + repo + '/tags')
                     .then(
                         function(r){
                             //console.log(r);
@@ -244,9 +244,7 @@
          * @return 
          */
         function retrieveObjectFromRepo(object, modifier, repo){
-            
-            var $URI =  "//api.datary.io/" + repo +
-                        "/" + object;
+            var $URI =  dyBaseApiUrl + repo + "/" + object;
             $URI = (modifier)?
                         $URI.concat("?" + modifier + "=true")
                         : $URI;
@@ -279,7 +277,7 @@
         function commitIndexOnRepo(details, repo){
             return (
                 $http
-                    .post('//api.datary.io/' + repo + "/index", details)
+                    .post(dyBaseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
                             //console.log(r);
@@ -305,7 +303,7 @@
         function updateDetailsOfRepo(details, repo){
             return (
                 $http
-                    .put('//api.datary.io/' + repo, details)
+                    .put(dyBaseApiUrl + repo, details)
                     .then(
                         function(r){
                             //console.log(r);
@@ -331,7 +329,7 @@
         function removeRepo(repo){
             return (
                 $http
-                    .delete('//api.datary.io/' + repo)
+                    .delete(dyBaseApiUrl + repo)
                     .then(
                         function(r){
                             //console.log(r);

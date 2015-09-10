@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyWorkingDirService', factory);
     
-    factory.$inject = ['$q', '$http'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function factory($q, $http){
+    function factory($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -34,7 +34,7 @@
         function describeWorkingDir(workingDir){
             return (
                 $http
-                    .get('//api.datary.io/' + workingDir)
+                    .get(dyBaseApiUrl + workingDir)
                     .then(
                         function(r){
                             //console.log("eoeoeo 23", r);
@@ -73,7 +73,7 @@
         function stageChangeOnWorkingDir(change, workingDir){
             return (
                 $http
-                    .post('//api.datary.io/'+ workingDir + '/changes', change)
+                    .post(dyBaseApiUrl + workingDir + '/changes', change)
                     .then(
                         function(r){
                             //console.log("eoeoeo 43", r);

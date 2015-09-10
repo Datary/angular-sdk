@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyHeadService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveBranch = function(){
@@ -30,7 +30,7 @@
         function retrieveBranchFromHead(head){
             return (
                 $http
-                    .get('//api.datary.io/' + head + '/branch')
+                    .get(dyBaseApiUrl + head + '/branch')
                     .then(
                         function(r){
                             console.log(r);

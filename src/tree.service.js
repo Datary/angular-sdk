@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyTreeService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -32,7 +32,7 @@
         function describeTree(tree){
             return (
                 $http
-                    .get('//api.datary.io/' + tree)
+                    .get(dyBaseApiUrl + tree)
                     .then(
                         function(r){
                             //console.log("eoeoeo 90", r);

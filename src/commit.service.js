@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyCommitService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id, namespace){
             this._id = id;
             this.namespace = namespace;
@@ -29,7 +29,7 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var $URI = "//api.datary.io/";
+            var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -63,7 +63,8 @@
          * @return {} devuelvo la `info` del tree 
          */
         function retrieveTreeFromCommit(commit, namespace){
-            var $URI = "//api.datary.io/";
+            //construyo progresivamente la URI
+            var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;

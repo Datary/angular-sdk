@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyLumpService', service);
     
-    service.$inject = ['$q', '$http'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
-    function service($q, $http){
+    function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.retrieveContentPreview = function(){
@@ -36,7 +36,7 @@
         function retrieveContentPreviewFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + 'preview')
+                    .get(dyBaseApiUrl + lump + 'preview')
                     .then(
                         function(r){
                             //console.log("eoeoeo 33",r);
@@ -62,7 +62,7 @@
         function retrieveContentExtractFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + '/extract')
+                    .get(dyBaseApiUrl + lump + '/extract')
                     .then(
                         function(r){
                             //console.log("eoeoeo 13", r);
@@ -88,7 +88,7 @@
         function retrieveContentWholeFromLump(lump){
             return (
                 $http
-                    .get('//api.datary.io/' + lump + '/whole')
+                    .get(dyBaseApiUrl + lump + '/whole')
                     .then(
                         function(r){
                             //console.log("eoeoeo 31", r);

@@ -8,7 +8,7 @@
         .module('dySdk')
         .factory('DySearchFactory', factory );
     
-    factory.$inject = ['$q', '$http'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
     /**************************************************************
      * @description 
@@ -17,7 +17,7 @@
      * 
      * @return 
      */
-    function factory($q, $http){
+    function factory($q, $http, dyBaseApiUrl){
         return function(category, path, pattern, limit, offset){
             //----- Validacion y defaults
             var $CATEGORY = (category)?
@@ -37,7 +37,9 @@
                 : "0";
             
             //----- Request build
-            $URI =  "/" + $CATEGORY +
+            $URI =  dyBaseApiUrl +
+                    "search" +
+                    "/" + $CATEGORY +
                     "?" + "path=" + $PATH +
                     "&" + "pattern=" + $PATTERN +
                     "&" + "limit=" + $LIMIT +
@@ -46,7 +48,7 @@
             //----- Request
             return (
                 $http
-                    .get("//api.datary.io/search" + $URI)
+                    .get($URI)
                     .then(
                         function(r){
                             //console.log("eoeoeo 89", r);

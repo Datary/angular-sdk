@@ -17,7 +17,7 @@
     function factory($q, $http, DyConnectionService, DySearchFactory, DyUserService, 
             DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
             DyLumpService, DyHeadService, DyTagService){
-         return {
+        return {
             connection: function(){
                 return (new DyConnectionService());
             },

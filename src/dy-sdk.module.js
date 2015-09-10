@@ -14,5 +14,6 @@
  *****************************************************************************/
 (function(){
     angular
-        .module('dySdk', []);
+        .module('dySdk', [])
+        .constant('dyBaseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
 })();
