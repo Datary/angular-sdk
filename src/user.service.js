@@ -19,6 +19,21 @@
             this.retrieveRepos = function(){
                 return retrieveReposFromUser(id);
             };
+            this.retrieveUnrestritedAccessRepos = function(){
+                return retrieveUnrestritedAccessReposFromUser(id);
+            };
+            this.retrieveRestritedAccessRepos = function(){
+                return retrieveRestritedAccessReposFromUser(id);
+            };
+            this.retrieveActivity = function(){
+                return retrieveActivityFromUser(id);
+            };
+            this.retrievePublicActivity = function(){
+                return retrievePublicActivityFromUser(id);
+            };
+            this.retrieveSessions = function(){
+                return retrieveSessionsFromUser(id);
+            };
             this.createRepo = function(repo){
                 return createRepoForUser(repo, id);
             };
@@ -76,6 +91,136 @@
             return (
                 $http
                     .get(dyBaseApiUrl + user + "/repos")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos publicos y comerciales del
+         * usuario a la API.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveUnrestritedAccessReposFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/unrestrictedAccessRepos")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos privados del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveRestrictedAccessReposFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/restrictedAccessRepos")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveActivityFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/activity")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrievePublicActivityFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/publicActivity")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveSessionsFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/sessions")
                     .then(
                         function(r){
                             return (r.data);
