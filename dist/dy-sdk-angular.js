@@ -111,7 +111,7 @@
      * @return 
      */
     function factory($q, $http, dyBaseApiUrl){
-        return function(category, path, pattern, limit, offset){
+        return function(category, path, hint, limit, offset){
             //----- Validacion y defaults
             var $CATEGORY = (category)?
                 category.toString()
@@ -119,12 +119,12 @@
             var $PATH = (path)?
                 path.toString()
                 : "username";
-            var $PATTERN = (pattern)?
+            var $HINT = (hint)?
                 pattern.toString()
-                : "*";
+                : ".*";
             var $LIMIT = (limit)?
                 limit.toString()
-                : "10";
+                : "25";
             var $OFFSET = (offset)?
                 offset.toString()
                 : "0";
@@ -134,7 +134,7 @@
                     "search" +
                     "/" + $CATEGORY +
                     "?" + "path=" + $PATH +
-                    "&" + "pattern=" + $PATTERN +
+                    "&" + "hint=" + $HINT +
                     "&" + "limit=" + $LIMIT +
                     "&" + "offset=" + $OFFSET;
             

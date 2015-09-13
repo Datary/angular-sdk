@@ -63,11 +63,9 @@
                     .get(dyBaseApiUrl + repo)
                     .then(
                         function(r) {
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -100,11 +98,9 @@
                     )
                     .then(
                         function(r){
-                            //console.log("eoeoeo b", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -127,11 +123,9 @@
                     )
                     .then(
                         function(r){
-                            //console.log("eoeoeo a", r);
                             return (r); 
                         },//END resolve
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -151,11 +145,9 @@
                     .get(dyBaseApiUrl + repo + '/readme')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -175,11 +167,9 @@
                     .get(dyBaseApiUrl + repo + '/license')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -199,11 +189,9 @@
                     .get(dyBaseApiUrl + repo + '/heads')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -223,11 +211,9 @@
                     .get(dyBaseApiUrl + repo + '/tags')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -254,11 +240,9 @@
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -280,11 +264,9 @@
                     .post(dyBaseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -306,11 +288,9 @@
                     .put(dyBaseApiUrl + repo, details)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -332,11 +312,9 @@
                     .delete(dyBaseApiUrl + repo)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )

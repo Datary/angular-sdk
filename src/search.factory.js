@@ -19,10 +19,10 @@
      */
     function factory($q, $http, dyBaseApiUrl){
         return function(category, path, hint, limit, offset){
-            //----- Validacion y defaults
+            //----- Defaults
             var $CATEGORY = (category)?
                 category.toString()
-                : "users";
+                : "members";
             var $PATH = (path)?
                 path.toString()
                 : "username";
@@ -35,6 +35,8 @@
             var $OFFSET = (offset)?
                 offset.toString()
                 : "0";
+            
+            //----- Validacion
             
             //----- Request build
             $URI =  dyBaseApiUrl +
@@ -51,11 +53,9 @@
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )

@@ -37,11 +37,9 @@
                     .get(dyBaseApiUrl + workingDir)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 23", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -76,11 +74,9 @@
                     .post(dyBaseApiUrl + workingDir + '/changes', change)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 43", r);
                             return (r.status);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )

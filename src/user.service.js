@@ -52,11 +52,9 @@
                     .get(dyBaseApiUrl + user)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -80,11 +78,9 @@
                     .get(dyBaseApiUrl + user + "/repos")
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -106,12 +102,10 @@
                     .post(dyBaseApiUrl + user + '/repos', repo )
                     .then(
                         function(r){
-                            //console.log(r);
                             //devuelvo el _id de repo agregado
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -133,11 +127,9 @@
                     .put(dyBaseApiUrl + user, profile)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -160,11 +152,9 @@
                     .put(dyBaseApiUrl + user + "/username", username)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 8", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -194,11 +184,9 @@
                     .put(dyBaseApiUrl + user + "/password", $_BODY)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 78", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -220,11 +208,9 @@
                     .delete(dyBaseApiUrl + user)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (user);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )

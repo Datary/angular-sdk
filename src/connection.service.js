@@ -80,11 +80,9 @@
                     .get(dyBaseApiUrl + "connection/signOut")
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return r.status;
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -108,11 +106,9 @@
                     .post(dyBaseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -142,11 +138,9 @@
                             + request.contentType)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then

@@ -35,11 +35,9 @@
                     .get(dyBaseApiUrl + tree)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 90", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
