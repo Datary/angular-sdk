@@ -27,7 +27,7 @@
                 path.toString()
                 : "username";
             var $HINT = (hint)?
-                pattern.toString()
+                hint.toString()
                 : ".*";
             var $LIMIT = (limit)?
                 limit.toString()

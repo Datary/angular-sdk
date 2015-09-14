@@ -9,12 +9,12 @@
         .module('dySdk')
         .factory('Datary', factory);
     
-    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchFactory', 
+    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
                     'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
                     'DyCommitService', 'DyTreeService', 'DyLumpService', 
                     'DyHeadService', 'DyTagService'];
     
-    function factory($q, $http, DyConnectionService, DySearchFactory, DyUserService, 
+    function factory($q, $http, DyConnectionService, DySearchService, DyUserService, 
             DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
             DyLumpService, DyHeadService, DyTagService){
         return {
@@ -22,7 +22,7 @@
                 return (new DyConnectionService());
             },
             search: function(category, path, pattern, limit, offset){
-                return DySearchFactory(category, path, pattern, limit, offset);
+                return DySearchService(category, path, pattern, limit, offset);
             },
             user: function(id){
                 return (new DyUserService(id));
