@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DySearchFactory', factory );
+        .factory('DySearchService', factory );
     
     factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     

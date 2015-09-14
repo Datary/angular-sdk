@@ -327,11 +327,11 @@
             this.retrieveRepos = function(){
                 return retrieveReposFromUser(id);
             };
-            this.retrieveUnrestritedAccessRepos = function(){
-                return retrieveUnrestritedAccessReposFromUser(id);
+            this.retrieveDisclosedRepos = function(){
+                return retrieveDisclosedReposFromUser(id);
             };
-            this.retrieveRestritedAccessRepos = function(){
-                return retrieveRestritedAccessReposFromUser(id);
+            this.retrievePrivateRepos = function(){
+                return retrievePrivateReposFromUser(id);
             };
             this.retrieveActivity = function(){
                 return retrieveActivityFromUser(id);
@@ -421,10 +421,10 @@
          * 
          * @return 
          */
-        function retrieveUnrestritedAccessReposFromUser(user){
+        function retrieveDisclosedReposFromUser(user){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/unrestrictedAccessRepos")
+                    .get(dyBaseApiUrl + user + "/disclosedRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -447,10 +447,10 @@
          * 
          * @return 
          */
-        function retrieveRestrictedAccessReposFromUser(user){
+        function retrievePrivateReposFromUser(user){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/restrictedAccessRepos")
+                    .get(dyBaseApiUrl + user + "/privateRepos")
                     .then(
                         function(r){
                             return (r.data);
