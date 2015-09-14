@@ -112,10 +112,10 @@
      */
     function factory($q, $http, dyBaseApiUrl){
         return function(category, path, hint, limit, offset){
-            //----- Validacion y defaults
+            //----- Defaults
             var $CATEGORY = (category)?
                 category.toString()
-                : "users";
+                : "members";
             var $PATH = (path)?
                 path.toString()
                 : "username";
@@ -128,6 +128,8 @@
             var $OFFSET = (offset)?
                 offset.toString()
                 : "0";
+            
+            //----- Validacion
             
             //----- Request build
             $URI =  dyBaseApiUrl +
@@ -144,11 +146,9 @@
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -238,11 +238,9 @@
                     .get(dyBaseApiUrl + "connection/signOut")
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return r.status;
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -266,11 +264,9 @@
                     .post(dyBaseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -300,11 +296,9 @@
                             + request.contentType)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 89", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -332,6 +326,21 @@
             };
             this.retrieveRepos = function(){
                 return retrieveReposFromUser(id);
+            };
+            this.retrieveUnrestritedAccessRepos = function(){
+                return retrieveUnrestritedAccessReposFromUser(id);
+            };
+            this.retrieveRestritedAccessRepos = function(){
+                return retrieveRestritedAccessReposFromUser(id);
+            };
+            this.retrieveActivity = function(){
+                return retrieveActivityFromUser(id);
+            };
+            this.retrievePublicActivity = function(){
+                return retrievePublicActivityFromUser(id);
+            };
+            this.retrieveSessions = function(){
+                return retrieveSessionsFromUser(id);
             };
             this.createRepo = function(repo){
                 return createRepoForUser(repo, id);
@@ -366,11 +375,9 @@
                     .get(dyBaseApiUrl + user)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -394,11 +401,139 @@
                     .get(dyBaseApiUrl + user + "/repos")
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos publicos y comerciales del
+         * usuario a la API.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveUnrestritedAccessReposFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/unrestrictedAccessRepos")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos privados del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveRestrictedAccessReposFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/restrictedAccessRepos")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveActivityFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/activity")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrievePublicActivityFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/publicActivity")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );//END return
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Realiza la peticion de los repos visibles del usuario a la
+         * API, y se almacena en una variable.
+         * 
+         * @param 
+         * 
+         * @return 
+         */
+        function retrieveSessionsFromUser(user){
+            return (
+                $http
+                    .get(dyBaseApiUrl + user + "/sessions")
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
                             return $q.reject(e);
                         }
                     )
@@ -420,12 +555,10 @@
                     .post(dyBaseApiUrl + user + '/repos', repo )
                     .then(
                         function(r){
-                            //console.log(r);
                             //devuelvo el _id de repo agregado
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -447,11 +580,9 @@
                     .put(dyBaseApiUrl + user, profile)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -474,11 +605,9 @@
                     .put(dyBaseApiUrl + user + "/username", username)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 8", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -508,11 +637,9 @@
                     .put(dyBaseApiUrl + user + "/password", $_BODY)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 78", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -534,11 +661,9 @@
                     .delete(dyBaseApiUrl + user)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (user);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -611,11 +736,9 @@
                     .get(dyBaseApiUrl + repo)
                     .then(
                         function(r) {
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -648,11 +771,9 @@
                     )
                     .then(
                         function(r){
-                            //console.log("eoeoeo b", r);
                             return (r);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -675,11 +796,9 @@
                     )
                     .then(
                         function(r){
-                            //console.log("eoeoeo a", r);
                             return (r); 
                         },//END resolve
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -699,11 +818,9 @@
                     .get(dyBaseApiUrl + repo + '/readme')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -723,11 +840,9 @@
                     .get(dyBaseApiUrl + repo + '/license')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -747,11 +862,9 @@
                     .get(dyBaseApiUrl + repo + '/heads')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -771,11 +884,9 @@
                     .get(dyBaseApiUrl + repo + '/tags')
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -802,11 +913,9 @@
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -828,11 +937,9 @@
                     .post(dyBaseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -854,11 +961,9 @@
                     .put(dyBaseApiUrl + repo, details)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -880,11 +985,9 @@
                     .delete(dyBaseApiUrl + repo)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (repo);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -931,11 +1034,9 @@
                     .get(dyBaseApiUrl + workingDir)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 23", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -970,11 +1071,9 @@
                     .post(dyBaseApiUrl + workingDir + '/changes', change)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 43", r);
                             return (r.status);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -1130,11 +1229,9 @@
                     .get(dyBaseApiUrl + tree)
                     .then(
                         function(r){
-                            //console.log("eoeoeo 90", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -1287,7 +1384,6 @@
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -1335,7 +1431,6 @@
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
