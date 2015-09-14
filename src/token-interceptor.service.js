@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('dyTokenService', factory);
+        .factory('dyTokenInterceptor', factory);
     
     factory.$inject = ['$q', '$location', '$window'];
     
