@@ -35,18 +35,16 @@
                         :$URI;
             $URI = (namespace)?
                         $URI.concat(commit + "?branch=true")
-                        :$URI.concat("/branch");
+                        :$URI.concat(commit + "/branch");
             
             return (
                 $http
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -70,18 +68,16 @@
                         :$URI;
             $URI = (namespace)?
                         $URI.concat(commit + "?tree=true")
-                        :$URI.concat("/tree");
+                        :$URI.concat(commit + "/tree");
             
             return (
                 $http
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then

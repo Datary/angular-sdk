@@ -11,12 +11,11 @@
     
     factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
                     'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
-                    'DyCommitService', 'DyTreeService', 'DyLumpService', 
-                    'DyHeadService', 'DyTagService'];
+                    'DyCommitService', 'DyTreeService', 'DyLumpService'];
     
     function factory($q, $http, DyConnectionService, DySearchService, DyUserService, 
             DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
-            DyLumpService, DyHeadService, DyTagService){
+            DyLumpService){
         return {
             connection: function(){
                 return (new DyConnectionService());
@@ -41,13 +40,7 @@
             },
             lump: function(id){
                 return (new DyLumpService(id));
-            },
-            head: function(id){
-                return (new DyHeadService(id));
-            },
-            tag: function(id){
-                return (new DyTagService(id));
-            },
+            }
         };
     }
 })();

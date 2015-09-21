@@ -760,6 +760,9 @@
             this.retrieveTags = function(){
                 return retrieveTagsFromRepo(id);
             };
+            this.retrieveRefs = function(){
+                return retrieveRefsFromRepo(id);
+            };
             this.retrieveObject = function(object, modifier){
                 return retrieveObjectFromRepo(object, modifier, id);
             };
@@ -935,6 +938,28 @@
             return (
                 $http
                     .get(dyBaseApiUrl + repo + '/tags')
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * Se realiza la peticion de los `tags` de un repositorio 
+         * a la API, y se almacena en una variable
+         */
+        function retrieveRefsFromRepo(repo){
+            return (
+                $http
+                    .get(dyBaseApiUrl + repo + '/refs')
                     .then(
                         function(r){
                             return (r.data);
