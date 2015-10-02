@@ -104,12 +104,11 @@
     
     factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
                     'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
-                    'DyCommitService', 'DyTreeService', 'DyLumpService', 
-                    'DyHeadService', 'DyTagService'];
+                    'DyCommitService', 'DyTreeService', 'DyLumpService'];
     
     function factory($q, $http, DyConnectionService, DySearchService, DyUserService, 
             DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
-            DyLumpService, DyHeadService, DyTagService){
+            DyLumpService){
         return {
             connection: function(){
                 return (new DyConnectionService());
@@ -134,13 +133,7 @@
             },
             lump: function(id){
                 return (new DyLumpService(id));
-            },
-            head: function(id){
-                return (new DyHeadService(id));
-            },
-            tag: function(id){
-                return (new DyTagService(id));
-            },
+            }
         };
     }
 })();
@@ -1197,18 +1190,16 @@
                         :$URI;
             $URI = (namespace)?
                         $URI.concat(commit + "?branch=true")
-                        :$URI.concat("/branch");
+                        :$URI.concat(commit + "/branch");
             
             return (
                 $http
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -1232,18 +1223,16 @@
                         :$URI;
             $URI = (namespace)?
                         $URI.concat(commit + "?tree=true")
-                        :$URI.concat("/tree");
+                        :$URI.concat(commit + "/tree");
             
             return (
                 $http
                     .get($URI)
                     .then(
                         function(r){
-                            //console.log(r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )//END then
@@ -1419,100 +1408,6 @@
                         }
                     )
             );//END return
-        }
-    }
-})();
-/*******************************************************************************
- * @description
- * 
- * 
- ******************************************************************************/
-(function(){
-    angular
-        .module('dySdk')
-        .factory('DyTagService', service);
-    
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
-    
-    function service($q, $http, dyBaseApiUrl){
-        return function(id){
-            this._id = id;
-            this.retrieveBranch = function(){
-                return retrieveBranchFromTag(id);
-            };
-        };
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Se realiza la peticion de los commits que integran la `branch`
-         * de un cierto `tag` y se almacena.
-         * 
-         * @return {}:
-         */
-        function retrieveBranchFromTag(tag){
-            return (
-                $http
-                    .get(dyBaseApiUrl + tag + '/branch')
-                    .then(
-                        function(r){
-                            console.log(r);
-                            //devuelvo el array de `commits`
-                            return (r.data);
-                        },
-                        function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-    }
-})();
-/*******************************************************************************
- * @description
- * 
- * 
- ******************************************************************************/
-(function(){
-    angular
-        .module('dySdk')
-        .factory('DyHeadService', service);
-    
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
-    
-    function service($q, $http, dyBaseApiUrl){
-        return function(id){
-            this._id = id;
-            this.retrieveBranch = function(){
-                return retrieveBranchFromHead(id);
-            };
-        };
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Se realiza la peticion de los commits que integran la `branch`
-         * de un cierto `head` y se almacena.
-         * 
-         * @return {}:
-         */
-        function retrieveBranchFromHead(head){
-            return (
-                $http
-                    .get(dyBaseApiUrl + head + '/branch')
-                    .then(
-                        function(r){
-                            console.log(r);
-                            //devuelvo el array de `commits`
-                            return (r.data);
-                        },
-                        function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
         }
     }
 })();
