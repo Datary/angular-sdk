@@ -17,6 +17,7 @@
     "spec",
     ".bowerrc",
     "bower.json",
+    "bower_packages/",
     ".gitignore",
     ".jshintignore",
     ".jshintrc",
