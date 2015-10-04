@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyWorkingDirService', factory);
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl', 'dyConnectionService', 'Upload'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyConnectionService', 'Upload'];
     
-    function factory($q, $http, dyBaseApiUrl, dyConnectionService, Upload){
+    function factory($q, $http, dyBaseApiUrl, yConnectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
