@@ -46,6 +46,10 @@ var $ORD_SRC_FILES = [
     "src/tag.service.js",
     "src/head.service.js",
 ];
+var $ORD_DEP_FILES = [
+    "bower_packages/ng-file-upload/ng-file-upload.min.js",
+];
+var $ORD_ALL = $ORD_DEP_FILES.concat($ORD_SRC_FILES);
 var $DIST_FOLDER = "./dist/";
 
 
@@ -89,7 +93,7 @@ gulp
             //----- concateno los components del modulo y minifico
             try {
                 gulp
-                    .src($ORD_SRC_FILES)
+                    .src($ORD_ALL)
                     //.pipe(concat("dy-sdk-angular.min.js"))
                     //.pipe(uglify())
                     .pipe(concat("dy-sdk-angular.js"))

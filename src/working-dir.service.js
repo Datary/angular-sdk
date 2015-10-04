@@ -8,9 +8,9 @@
         .module('dySdk')
         .factory('DyWorkingDirService', factory);
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl', 'dyConnectionService', 'Upload'];
     
-    function factory($q, $http, dyBaseApiUrl){
+    function factory($q, $http, dyBaseApiUrl, dyConnectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -74,25 +74,27 @@
         function stageChangeOnWorkingDir(change, workingDir){
             
             //############ ADD
-            if (change.add){
+            if (change.action === "add"){
                 if (typeof change.content !== "string"){
+                    //----- Subida a S3
+                    uploadFileToS3(change.content);
+                    
+                    //----- Parse and Upload to Datary
                     if (change.content.size < 3*1024*1024 ) {
-                        var reader = new FileReader();
+                        var READER = new FileReader();
                         var $RAW_DATASET;               //dataset tras pasarle el `reader`
                         var $DATASET;                   //dataset formateado
                         
                         //----- Configuracion del Reader
-                        reader.onload = function(e){
-                            $RAW_DATASET = reader.result;
-                            //parseo
+                        READER.onload = function(e){
+                            $RAW_DATASET = READER.result;
+                            //parseo y stringify
                             try {
-                                $DATASET = JSON.parse($RAW_DATASET);
+                                $DATASET = JSON.stringify(JSON.parse($RAW_DATASET));
                             } catch (e) {
                                 alert("Imported file does not conforms to JSON format");
                                 return;
                             }
-                            //stringify
-                            $_DATASET = JSON.stringify($_DATASET);
                             //stageChange
                             return (
                                 $http
@@ -109,10 +111,9 @@
                         };
                         
                         //----- Read in the dataset file as a text string.
-                        reader.readAsText(change.content, "UTF-8");
-                        
+                        READER.readAsText(change.content, "UTF-8");
                     
-                    //----- Upload a Datary (si filesize > 1mb)
+                    //----- Direct Upload to Datary
                     } else {
                         Upload
                             .upload(
@@ -136,8 +137,8 @@
                                     console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :'+ evt.config.file.name);
                                 }
                             );
-                    }
-                }
+                    }//END (change.content.size)
+                }//END (typeof change.content)
             
             
             
@@ -155,8 +156,67 @@
                             }
                         )
                 );
-            }//END modify, rename, delete
+            }//END (change.action)
+        }//END stageChangeOnWorkingDir
+        
+        
+        
+        /***************************************************************
+         * @description
+         * Funcion que realiza la subida directa del `dataset` del 
+         * `user` a AWS S3 sin pasar por el backend, para lo que 
+         * requiere haber obtenido previamente una firma valida de 
+         * dicha peticion, pues de otro modo AWS rechazaria la solicitud.
+         * 
+         * @vid http://aws.amazon.com/articles/1434/
+         * @vid https://github.com/danialfarid/angular-file-upload [for more options (headers, withCredentials...)]
+         * 
+         * @param {File} file:
+         */
+        function uploadFileToS3(file){
+            //----- Construccion de la `solicitud de firma`
+            var REQUEST = {
+                operation: "importFile",
+                basename: file.name,
+                contentType: (file.type === null || file.type === '') ? 
+                        'application/octet-stream' : 
+                        file.type,
+            };
             
-        }
+            //----- Firma y Subidas
+            var CONNECTION = new dyConnectionService();
+            CONNECTION
+                .signRequest(REQUEST)
+                .then(
+                    //
+                    function(result){
+                        return (
+                            Upload
+                                .upload(
+                                    {
+                                        method: 'POST',
+                                        url: 'https://'+ result.bucket +'.s3.amazonaws.com/',
+                                        //headers: "",
+                                        /**datos complementarios que en un 'form' tradicional
+                                         * se corresponde con los inputs. Son datos exigidos
+                                         * por AWS*/
+                                        fields: {
+                                            key: result.key,                            //the key to store the file on S3
+                                            AWSAccessKeyId: result.AwsAccessKeyId,
+                                            acl: result.acl,
+                                            policy: result.b64Policy,                   //base64-encoded json policy
+                                            signature: result.signature,                //base64-encoded signature based on policy string
+                                            'Content-Type': result.contentType,
+                                        },
+                                        file: file,
+                                    }
+                                )
+                        );
+                    },
+                    //
+                    function(reason){return reason;}
+                );
+        }//END uploadFileToS3
+    
     }
 })();
