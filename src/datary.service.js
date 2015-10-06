@@ -20,10 +20,10 @@
         .factory('Datary', factory);
     
     factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
-                    'DyUserService', 'DyRepoService', 'DyWorkingDirService', 
+                    'DyMemberService', 'DyRepoService', 'DyWorkingDirService', 
                     'DyCommitService', 'DyTreeService', 'DyLumpService'];
     
-    function factory($q, $http, DyConnectionService, DySearchService, DyUserService, 
+    function factory($q, $http, DyConnectionService, DySearchService, DyMemberService, 
             DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
             DyLumpService){
         return {
@@ -33,8 +33,8 @@
             search: function(category, path, pattern, limit, offset){
                 return DySearchService(category, path, pattern, limit, offset);
             },
-            user: function(id){
-                return (new DyUserService(id));
+            member: function(id){
+                return (new DyMemberService(id));
             },
             repo:function(id){
                 return (new DyRepoService(id));

@@ -37,7 +37,7 @@ var $ORD_SRC_FILES = [
     "src/datary.service.js",
     "src/search.service.js",
     "src/connection.service.js",
-    "src/user.service.js",
+    "src/member.service.js",
     "src/repo.service.js",
     "src/working-dir.service.js",
     "src/commit.service.js",

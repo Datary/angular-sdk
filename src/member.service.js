@@ -6,48 +6,48 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyUserService', service);
+        .factory('DyMemberService', factory);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
     function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
-                return describeUser(id);
+                return describeMember(id);
             };
             this.retrieveRepos = function(){
-                return retrieveReposFromUser(id);
+                return retrieveReposFromMember(id);
             };
             this.retrieveDisclosedRepos = function(){
-                return retrieveDisclosedReposFromUser(id);
+                return retrieveDisclosedReposFromMember(id);
             };
             this.retrievePrivateRepos = function(){
-                return retrievePrivateReposFromUser(id);
+                return retrievePrivateReposFromMember(id);
             };
             this.retrieveActivity = function(){
-                return retrieveActivityFromUser(id);
+                return retrieveActivityFromMember(id);
             };
             this.retrievePublicActivity = function(){
-                return retrievePublicActivityFromUser(id);
+                return retrievePublicActivityFromMember(id);
             };
             this.retrieveSessions = function(){
-                return retrieveSessionsFromUser(id);
+                return retrieveSessionsFromMember(id);
             };
             this.createRepo = function(repo){
-                return createRepoForUser(repo, id);
+                return createRepoForMember(repo, id);
             };
             this.updateProfile = function(profile){
-                return updateProfileOfUser(profile, id);
+                return updateProfileOfMember(profile, id);
             };
             this.changeUsername = function(username){
-                return changeUsernameOfUser(username, id);
+                return changeUsernameOfMember(username, id);
             };
             this.changePassword = function(oldPassword, newPassword){
-                return changePasswordOfUser(oldPassword, newPassword, id);
+                return changePasswordOfMember(oldPassword, newPassword, id);
             };
             this.remove = function(){
-                return removeUser(id);
+                return removeMember(id);
             };
         };
         
@@ -61,10 +61,10 @@
          * 
          * @return 
          */
-        function describeUser(user){
+        function describeMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user)
+                    .get(dyBaseApiUrl + member)
                     .then(
                         function(r){
                             return (r.data);
@@ -87,10 +87,10 @@
          * 
          * @return 
          */
-        function retrieveReposFromUser(user){
+        function retrieveReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/repos")
+                    .get(dyBaseApiUrl + member + "/repos")
                     .then(
                         function(r){
                             return (r.data);
@@ -113,10 +113,10 @@
          * 
          * @return 
          */
-        function retrieveDisclosedReposFromUser(user){
+        function retrieveDisclosedReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/disclosedRepos")
+                    .get(dyBaseApiUrl + member + "/disclosedRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -139,10 +139,10 @@
          * 
          * @return 
          */
-        function retrievePrivateReposFromUser(user){
+        function retrievePrivateReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/privateRepos")
+                    .get(dyBaseApiUrl + member + "/privateRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -165,10 +165,10 @@
          * 
          * @return 
          */
-        function retrieveActivityFromUser(user){
+        function retrieveActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/activity")
+                    .get(dyBaseApiUrl + member + "/activity")
                     .then(
                         function(r){
                             return (r.data);
@@ -191,10 +191,10 @@
          * 
          * @return 
          */
-        function retrievePublicActivityFromUser(user){
+        function retrievePublicActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/publicActivity")
+                    .get(dyBaseApiUrl + member + "/publicActivity")
                     .then(
                         function(r){
                             return (r.data);
@@ -217,10 +217,10 @@
          * 
          * @return 
          */
-        function retrieveSessionsFromUser(user){
+        function retrieveSessionsFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + user + "/sessions")
+                    .get(dyBaseApiUrl + member + "/sessions")
                     .then(
                         function(r){
                             return (r.data);
@@ -241,10 +241,10 @@
          * 
          * @return 
          */
-        function createRepoForUser(repo, user){
+        function createRepoForMember(repo, member){
             return  (
                 $http
-                    .post(dyBaseApiUrl + user + '/repos', repo )
+                    .post(dyBaseApiUrl + member + '/repos', repo )
                     .then(
                         function(r){
                             //devuelvo el _id de repo agregado
@@ -266,10 +266,10 @@
          * 
          * @return 
          */
-        function updateProfileOfUser(profile, user){
+        function updateProfileOfMember(profile, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + user, profile)
+                    .put(dyBaseApiUrl + member, profile)
                     .then(
                         function(r){
                             return (r);
@@ -291,10 +291,10 @@
          * 
          * @return 
          */
-        function changeUsernameOfUser(username, user){
+        function changeUsernameOfMember(username, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + user + "/username", username)
+                    .put(dyBaseApiUrl + member + "/username", member)
                     .then(
                         function(r){
                             return (r);
@@ -317,16 +317,16 @@
          * 
          * @return 
          */
-        function changePasswordOfUser(oldPassword, newPassword, user){
+        function changePasswordOfMember(oldPassword, newPassword, member){
             //body de la request 
-            var $_BODY = {
+            var $BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
             };
             
             return (
                 $http
-                    .put(dyBaseApiUrl + user + "/password", $_BODY)
+                    .put(dyBaseApiUrl + member + "/password", $BODY)
                     .then(
                         function(r){
                             return (r);
@@ -347,13 +347,13 @@
          * 
          * @return {} devuelvo el _id del user eliminado 
          */
-        function removeUser(user){
+        function removeMember(member){
             return (
                 $http
-                    .delete(dyBaseApiUrl + user)
+                    .delete(dyBaseApiUrl + member)
                     .then(
                         function(r){
-                            return (user);
+                            return (member);
                         },
                         function(e){
                             return $q.reject(e);
