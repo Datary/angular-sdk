@@ -43,6 +43,9 @@
             this.commitIndex = function(details){
                 return commitIndexOnRepo(details, id);
             };
+            this.updateReadme = function(readme){
+                return updateReadmeOfRepo(readme, id);
+            };
             this.updateDetails = function(details){
                 return updateDetailsOfRepo(details, id);
             };
@@ -290,6 +293,30 @@
                     .then(
                         function(r){
                             return (repo);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param {String} readme: 
+         * 
+         * @return 
+         */
+        function updateReadmeOfRepo(readme, repo){
+            return (
+                $http
+                    .put(dyBaseApiUrl + repo + "/readme", readme)
+                    .then(
+                        function(r){
+                            return (r);
                         },
                         function(e){
                             return $q.reject(e);
