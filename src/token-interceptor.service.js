@@ -53,6 +53,9 @@
                     case 404:   //Not found
                         console.log("Unsuccessful API call. Document not found.");
                         break;
+                    case 500:   //Not found
+                        console.log("Unsuccessful API call. Internal server error.");
+                        break;
                     default:
                         console.log("Unsuccessful API call.");
                         break;
