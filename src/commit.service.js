@@ -18,8 +18,8 @@
             this.retrieveBranch = function(){
                 return retrieveBranchFromCommit(id, namespace);
             };
-            this.retrieveTree = function(){
-                return retrieveTreeFromCommit(id, namespace);
+            this.retrieveFiletree = function(){
+                return retrieveFiletreeFromCommit(id, namespace);
             };
         };
         
@@ -60,15 +60,15 @@
          * 
          * @return {} devuelvo la `info` del tree 
          */
-        function retrieveTreeFromCommit(commit, namespace){
+        function retrieveFiletreeFromCommit(commit, namespace){
             //construyo progresivamente la URI
             var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
             $URI = (namespace)?
-                        $URI.concat(commit + "?tree=true")
-                        :$URI.concat(commit + "/tree");
+                        $URI.concat(commit + "?filetree=true")
+                        :$URI.concat(commit + "/filetree");
             
             return (
                 $http
@@ -83,24 +83,5 @@
                     )//END then
             );//END return
         }
-        
-        
-        
-        // /**************************************************************
-        //  * @description 
-        //  */
-        // function retrieveFullTreeFromCommit(commit){
-        //     return (
-        //         $http
-        //             .get('//api/' + commit + '?action=retrieveTree')
-        //             .then(function(r){
-        //                     //logueo
-        //                     console.log(r);
-        //                     //devuelvo la `info` del tree 
-        //                     return (r.data);
-        //                 }
-        //             )
-        //     );
-        // }
     }
 })();

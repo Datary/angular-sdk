@@ -19,8 +19,8 @@
             this.retrieveWorkingDir = function(){
                 return retrieveWorkingDirFromRepo(id);
             };
-            this.retrieveApexTree = function(){
-                return retrieveApexTreeFromRepo(id);
+            this.retrieveApexFiletree = function(){
+                return retrieveApexFiletreeFromRepo(id);
             };
             this.retrieveReadme = function(){
                 return retrieveReadmeFromRepo(id);
@@ -119,12 +119,12 @@
          * @name 
          * @description
          */
-        function retrieveApexTreeFromRepo(repo){
+        function retrieveApexFiletreeFromRepo(repo){
             return ( 
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex, repo).retrieveTree() );
+                            return ( new DyCommitService(r.apex, repo).retrieveFiletree() );
                         }//END resolve
                     )
                     .then(
