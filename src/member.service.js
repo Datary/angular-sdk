@@ -6,9 +6,9 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyMemberService', factory);
+        .service('DyMemberService', service);
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
     function service($q, $http, dyBaseApiUrl){
         return function(id){

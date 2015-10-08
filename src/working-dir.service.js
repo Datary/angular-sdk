@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyWorkingDirService', factory);
+        .factory('DyWorkingDirService', service);
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyConnectionService', 'Upload'];
+    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyConnectionService', 'Upload'];
     
-    function factory($q, $http, dyBaseApiUrl, yConnectionService, Upload){
+    function service($q, $http, dyBaseApiUrl, yConnectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){

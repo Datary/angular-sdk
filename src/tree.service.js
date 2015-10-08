@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyTreeService', service);
+        .service('DyTreeService', service);
     
     service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
     
