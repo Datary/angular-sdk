@@ -148,7 +148,7 @@
                             )
                     );
                     
-                } else if (typeof change.content === "object" && !change.content instanceof File) {
+                } else if (typeof change.content === "object" && !(change.content instanceof File)) {
                     //no se require transformacion alguna
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
