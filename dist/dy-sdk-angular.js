@@ -746,8 +746,8 @@
             this.retrieveWorkingDir = function(){
                 return retrieveWorkingDirFromRepo(id);
             };
-            this.retrieveApexTree = function(){
-                return retrieveApexTreeFromRepo(id);
+            this.retrieveApexFiletree = function(){
+                return retrieveApexFiletreeFromRepo(id);
             };
             this.retrieveReadme = function(){
                 return retrieveReadmeFromRepo(id);
@@ -846,12 +846,12 @@
          * @name 
          * @description
          */
-        function retrieveApexTreeFromRepo(repo){
+        function retrieveApexFiletreeFromRepo(repo){
             return ( 
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex, repo).retrieveTree() );
+                            return ( new DyCommitService(r.apex, repo).retrieveFiletree() );
                         }//END resolve
                     )
                     .then(
@@ -1237,7 +1237,21 @@
             var DATA_AS_BUFFER;
             
             if (change.action === "add"){
-                if (typeof change.content === "object" && !change.content instanceof File) {
+                if (change.filemode === 40000) {
+                    return (
+                        $http
+                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .then(
+                                function(r){
+                                    return (r);
+                                },
+                                function(e){
+                                    return $q.reject(e);
+                                }
+                            )
+                    );
+                    
+                } else if (typeof change.content === "object" && !change.content instanceof File) {
                     //no se require transformacion alguna
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
@@ -1438,8 +1452,8 @@
             this.retrieveBranch = function(){
                 return retrieveBranchFromCommit(id, namespace);
             };
-            this.retrieveTree = function(){
-                return retrieveTreeFromCommit(id, namespace);
+            this.retrieveFiletree = function(){
+                return retrieveFiletreeFromCommit(id, namespace);
             };
         };
         
@@ -1480,15 +1494,15 @@
          * 
          * @return {} devuelvo la `info` del tree 
          */
-        function retrieveTreeFromCommit(commit, namespace){
+        function retrieveFiletreeFromCommit(commit, namespace){
             //construyo progresivamente la URI
             var $URI = dyBaseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
             $URI = (namespace)?
-                        $URI.concat(commit + "?tree=true")
-                        :$URI.concat(commit + "/tree");
+                        $URI.concat(commit + "?filetree=true")
+                        :$URI.concat(commit + "/filetree");
             
             return (
                 $http
@@ -1503,25 +1517,6 @@
                     )//END then
             );//END return
         }
-        
-        
-        
-        // /**************************************************************
-        //  * @description 
-        //  */
-        // function retrieveFullTreeFromCommit(commit){
-        //     return (
-        //         $http
-        //             .get('//api/' + commit + '?action=retrieveTree')
-        //             .then(function(r){
-        //                     //logueo
-        //                     console.log(r);
-        //                     //devuelvo la `info` del tree 
-        //                     return (r.data);
-        //                 }
-        //             )
-        //     );
-        // }
     }
 })();
 /*******************************************************************************

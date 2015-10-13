@@ -134,7 +134,21 @@
             var DATA_AS_BUFFER;
             
             if (change.action === "add"){
-                if (typeof change.content === "object" && !change.content instanceof File) {
+                if (change.filemode === 40000) {
+                    return (
+                        $http
+                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .then(
+                                function(r){
+                                    return (r);
+                                },
+                                function(e){
+                                    return $q.reject(e);
+                                }
+                            )
+                    );
+                    
+                } else if (typeof change.content === "object" && !change.content instanceof File) {
                     //no se require transformacion alguna
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
