@@ -369,6 +369,11 @@
         
         /***********************************************************************
          * @description 
+         * Realiza una peticion con un Array consistente en todos los JWT (en 
+         * sentido estricto, sus codificaciones segun la norma de la ITF) que 
+         * desean conservarse. Para ello genera una lista resultado de sustraer
+         * de los token del usuario aquel que desea eliminarse y que le es 
+         * pasado como argumento (identificado por su jti)
          * 
          * @param {String} session: jti representativo del JWT que desea eliminarse
          * 
@@ -389,8 +394,9 @@
                             //elimino la session correspondiente al jti
                             result.splice(INDEX, 1);
                             
-                            //devuelvo el array de sessiones tal cual debe almacenarse
-                            return result;
+                            //genero el array de sessiones tal cual debe almacenarse
+                            var ARR = result.map(function(e, i, a){return e.encoding;});
+                            return ARR;
                         },
                         //////////
                         function(reason){
