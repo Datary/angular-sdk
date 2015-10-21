@@ -39,11 +39,9 @@
                     .get(dyBaseApiUrl + lump + 'preview')
                     .then(
                         function(r){
-                            //console.log("eoeoeo 33",r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -65,11 +63,9 @@
                     .get(dyBaseApiUrl + lump + '/extract')
                     .then(
                         function(r){
-                            //console.log("eoeoeo 13", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )
@@ -88,14 +84,12 @@
         function retrieveContentWholeFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/whole')
+                    .get(dyBaseApiUrl + lump + '/core')
                     .then(
                         function(r){
-                            //console.log("eoeoeo 31", r);
                             return (r.data);
                         },
                         function(e){
-                            //console.log("eoeoeo 89", e);
                             return $q.reject(e);
                         }
                     )

@@ -125,12 +125,12 @@
                     .then(
                         function(r){
                             return ( new DyCommitService(r.apex, repo).retrieveFiletree() );
-                        }//END resolve
+                        }
                     )
                     .then(
                         function(r){
                             return (r); 
-                        },//END resolve
+                        },
                         function(e){
                             return $q.reject(e);
                         }
