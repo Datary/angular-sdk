@@ -411,6 +411,9 @@
             this.remove = function(){
                 return removeMember(id);
             };
+            this.removeSession = function(session){
+                return removeSessionFromMember(session, id);
+            };
         };
         
         
@@ -722,6 +725,55 @@
                         }
                     )
             );//END return
+        }
+        
+        
+        
+        /***********************************************************************
+         * @description 
+         * 
+         * @param {String} session: jti representativo del JWT que desea eliminarse
+         * 
+         * 
+         * @return {}:
+         */
+        function removeSessionFromMember(session, member){
+            return (
+                retrieveSessionsFromMember
+                    .then(
+                        ///////////
+                        function(result){
+                            //indice de la session que desea eliminarse
+                            var INDEX = result
+                                            .map(function(e, i, a){return e.jti;})
+                                            .indexOf(session);
+                            
+                            //elimino la session correspondiente al jti
+                            result.splice(INDEX, 1);
+                            
+                            //devuelvo el array de sessiones tal cual debe almacenarse
+                            return result;
+                        },
+                        //////////
+                        function(reason){
+                            return $q.reject(e);
+                        }
+                    ).then(
+                        //////////
+                        function(result){
+                            var SESSIONS = result;
+                            return ($http
+                                        .put(dyBaseApiUrl + member + "/sessions", SESSIONS)
+                                        .then(
+                                            function(result){
+                                                return (result);
+                                            },
+                                            function(reason){}
+                                        )
+                            );
+                        }
+                    )
+            );
         }
     }
 })();
