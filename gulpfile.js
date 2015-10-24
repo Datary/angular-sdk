@@ -129,9 +129,8 @@ gulp
         function(){
             console.log("@@@ Running Publish task @@@");
             
-            var $VERSION;
-            
             //version de la release
+            var $VERSION;
             if (!argv["version"]) {
                 $VERSION = "latest";
                 console.log("Using default version: %s", $VERSION);
@@ -143,6 +142,8 @@ gulp
                 console.log("Using specified version: %s", $VERSION);
             }
             
+            
+            //############# Version no minificada
             //AWS configuration
             var s3 = new AWS.S3();
             var $PARAMS = {
@@ -154,6 +155,35 @@ gulp
             
             // Read in the file, convert it to base64, store to S3
             fs.readFile('./dist/dy-angular-sdk.js', function (err, data) {
+                    if (err) { throw err; }
+                    //creo un buffer
+                    var $B64_DATA = new Buffer(data, 'binary');
+                    //configuro los params con el buffer
+                    $PARAMS.Body = $B64_DATA;
+                    //envio la peticion
+                    s3.putObject($PARAMS, function(err, data) {
+                            if (err) {
+                                console.log(err, err.stack); // an error occurred
+                            } else {
+                                console.log(data);           // successful response
+                            }
+                        }
+                    );
+                }
+            );
+            
+            
+            //############# Version minificada
+            //AWS configuration
+            $PARAMS = {
+                Bucket: "datary-media-rtm-us2-a",
+                ACL: "public-read",
+                Key: "libs/dy-angular-sdk/" + $VERSION + "/dy-angular-sdk.min.js",
+                Body: null,
+            };
+            
+            // Read in the file, convert it to base64, store to S3
+            fs.readFile('./dist/dy-angular-sdk.min.js', function (err, data) {
                     if (err) { throw err; }
                     //creo un buffer
                     var $B64_DATA = new Buffer(data, 'binary');

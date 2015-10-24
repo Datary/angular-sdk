@@ -762,7 +762,7 @@
                         },
                         //////////
                         function(reason){
-                            return $q.reject(e);
+                            return ($q.reject(e));
                         }
                     ).then(
                         //////////
@@ -774,7 +774,9 @@
                                             function(result){
                                                 return (result);
                                             },
-                                            function(reason){}
+                                            function(reason){
+                                                return (reason);
+                                            }
                                         )
                             );
                         }
@@ -1186,6 +1188,9 @@
             this.stageChange = function(change){
                 return stageChangeOnWorkingDir(change, id);
             };
+            this.unstageChange = function(change){
+                return unstageChangeFromWorkingDir(change, id);
+            };
         };
         
         
@@ -1207,7 +1212,7 @@
                             return (r.data);
                         },
                         function(e){
-                            return $q.reject(e);
+                            return ($q.reject(e));
                         }
                     )
             );
@@ -1232,7 +1237,7 @@
                             return (r.data);
                         },
                         function(e){
-                            return $q.reject(e);
+                            return ($q.reject(e));
                         }
                     )
             );
@@ -1257,7 +1262,7 @@
                             return (r.data);
                         },
                         function(e){
-                            return $q.reject(e);
+                            return ($q.reject(e));
                         }
                     )
             );
@@ -1487,6 +1492,45 @@
                     )
             );
         }//END uploadFileToS3
+        
+        
+        
+        /***********************************************************************
+         * @description
+         * 
+         * @param {ObjectId} change:
+         * @param {ObjectId} workingDir:
+         */
+        function unstageChangeFromWorkingDir(change, workingDir){
+            return (
+                listChangesOnWorkinDir
+                    .then(
+                        ///////////
+                        function(result){
+                        },
+                        ////////
+                        function(reason){
+                            
+                        }
+                    ).then(
+                        //////////
+                        function(result){
+                            var CHANGES = result;
+                            return ($http
+                                        .put(dyBaseApiUrl + workingDir + "/changes", CHANGES)
+                                        .then(
+                                            function(result){
+                                                return (result);
+                                            },
+                                            function(reason){
+                                                return (reason);
+                                            }
+                                        )
+                            );
+                        }
+                    )
+            );
+        }
     
     }
 })();
