@@ -123,6 +123,9 @@ gulp
             
             //version de la release
             if (!argv["version"]) {
+                $VERSION = "latest";
+                console.log("Using default version: %s", $VERSION);
+            } else if (argv['version'] === "semver") {
                 $VERSION = require("./package.json").version;
                 console.log("Using package version: %s", $VERSION);
             } else {
