@@ -90,19 +90,28 @@ gulp
         function(){
             console.log("@@@ Running Distify task @@@");
             
-            //----- concateno los components del modulo y minifico
+            //----- genero una version no minificada
             try {
                 gulp
                     .src($ORD_ALL)
-                    //.pipe(concat("dy-sdk-angular.min.js"))
-                    //.pipe(uglify())
                     .pipe(concat("dy-angular-sdk.js"))
-                    .pipe(
-                        gulp.dest($DIST_FOLDER)
-                    );
+                    .pipe(gulp.dest($DIST_FOLDER));
             } catch(err) {
                 throw new Error("Error on @Vanilla JS");
             }
+            
+            //----- concateno y minifico
+            try {
+                gulp
+                    .src($ORD_ALL)
+                    .pipe(uglify())
+                    .pipe(concat("dy-angular-sdk.min.js"))
+                    .pipe(gulp.dest($DIST_FOLDER));
+            } catch(err) {
+                throw new Error("Error on @Vanilla JS");
+            }
+            
+            console.log("@@@ Completed Distify task @@@");
         }
     );
 
@@ -119,6 +128,7 @@ gulp
         [],
         function(){
             console.log("@@@ Running Publish task @@@");
+            
             var $VERSION;
             
             //version de la release
@@ -160,5 +170,7 @@ gulp
                     );
                 }
             );
+            
+            console.log("@@@ Completed Publish task @@@");
         }
     );
