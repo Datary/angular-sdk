@@ -96,7 +96,7 @@ gulp
                     .src($ORD_ALL)
                     //.pipe(concat("dy-sdk-angular.min.js"))
                     //.pipe(uglify())
-                    .pipe(concat("dy-sdk-angular.js"))
+                    .pipe(concat("dy-angular-sdk.js"))
                     .pipe(
                         gulp.dest($DIST_FOLDER)
                     );
@@ -135,12 +135,12 @@ gulp
             var $PARAMS = {
                 Bucket: "datary-media-rtm-us2-a",
                 ACL: "public-read",
-                Key: "libs/dy-sdk-angular/" + $VERSION + "/dy-sdk-angular.js",
+                Key: "libs/dy-angular-sdk/" + $VERSION + "/dy-angular-sdk.js",
                 Body: null,
             };
             
             // Read in the file, convert it to base64, store to S3
-            fs.readFile('./dist/dy-sdk-angular.js', function (err, data) {
+            fs.readFile('./dist/dy-angular-sdk.js', function (err, data) {
                     if (err) { throw err; }
                     //creo un buffer
                     var $B64_DATA = new Buffer(data, 'binary');

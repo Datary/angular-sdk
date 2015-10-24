@@ -1,39 +1,39 @@
 {
-  "name": "dy-sdk-angular",
-  "description": "AngularJS module encapsulating Datary's API requests",
-  "keywords": [
-    "datary",
-    "api",
-    "sdk",
-    "angular"
-  ],
-  "repository": {
-    "type": "git"
-  },
-  "main": "dist/module.js",
-  "ignore": [
-    "src/",
-    "test/",
-    "spec",
-    ".bowerrc",
-    "bower.json",
-    "bower_packages/",
-    ".gitignore",
-    ".jshintignore",
-    ".jshintrc",
-    "gruntfile.js",
-    "package.json"
-  ],
-  "authors": [
-    "Fernando Diaz Laclaustra"
-  ],
-  "version": "0.0.8",
-  "scripts": {
-    "test": "./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
-  },
-  "private": true,
-  "license": "Commercial",
-  "dependencies": {
-    "ng-file-upload": "~9.0.4"
-  }
+    "name": "dy-angular-sdk",
+    "version": "0.0.8",
+    "description": "AngularJS module encapsulating Datary's API requests",
+    "keywords": [
+        "datary",
+        "api",
+        "sdk",
+        "angular"
+    ],
+    "repository": {
+        "type": "git"
+    },
+    "main": "dist/module.js",
+    "ignore": [
+        "src/",
+        "test/",
+        "spec",
+        ".bowerrc",
+        "bower.json",
+        "bower_packages/",
+        ".gitignore",
+        ".jshintignore",
+        ".jshintrc",
+        "gruntfile.js",
+        "package.json"
+    ],
+    "authors": [
+        "Fernando Diaz Laclaustra"
+    ],
+    "scripts": {
+        "test": "./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
+    },
+    "private": true,
+    "license": "Commercial",
+    "dependencies": {
+        "ng-file-upload": "~9.0.4"
+    }
 }

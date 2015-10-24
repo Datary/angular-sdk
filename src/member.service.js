@@ -400,7 +400,7 @@
                         },
                         //////////
                         function(reason){
-                            return $q.reject(e);
+                            return ($q.reject(e));
                         }
                     ).then(
                         //////////
@@ -412,7 +412,9 @@
                                             function(result){
                                                 return (result);
                                             },
-                                            function(reason){}
+                                            function(reason){
+                                                return (reason);
+                                            }
                                         )
                             );
                         }
