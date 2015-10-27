@@ -34,8 +34,8 @@ var $SRC_FILES = ["src/*.js"];
 //ficheros ordenados 
 var $ORD_SRC_FILES = [
     "src/dy-sdk.module.js",
-    "src/token-interceptor.service.js",
-    "src/datary.service.js",
+    "src/token-interceptor.factory.js",
+    "src/datary.factory.js",
     "src/search.service.js",
     "src/connection.service.js",
     "src/member.service.js",

@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyWorkingDirService', service);
+        .service('workingDirService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyConnectionService', 'Upload'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'connectionService', 'Upload'];
     
-    function service($q, $http, dyBaseApiUrl, yConnectionService, Upload){
+    function service($q, $http, baseApiUrl, connectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -43,7 +43,7 @@
         function describeWorkingDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir)
+                    .get(baseApiUrl + workingDir)
                     .then(
                         function(r){
                             return (r.data);
@@ -68,7 +68,7 @@
         function listChangesOnWorkinDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir + "/changes")
+                    .get(baseApiUrl + workingDir + "/changes")
                     .then(
                         function(r){
                             return (r.data);
@@ -93,7 +93,7 @@
         function retrieveFiletreeOfWorkingDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir + "/filetree")
+                    .get(baseApiUrl + workingDir + "/filetree")
                     .then(
                         function(r){
                             return (r.data);
@@ -140,7 +140,7 @@
                 if (change.filemode === 40000) {
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(r){
                                     return (r);
@@ -157,7 +157,7 @@
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(result){
                                     return (result);
@@ -177,7 +177,7 @@
                     change.content = DATA_AS_OBJ;
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(result){
                                     return (result);
@@ -204,7 +204,7 @@
                             }
                             change.content = DATA_AS_OBJ;
                             ($http
-                                .post(dyBaseApiUrl + workingDir + '/changes', change)
+                                .post(baseApiUrl + workingDir + '/changes', change)
                                 .then(
                                     function(result){
                                         console.log(20666666, result);
@@ -231,7 +231,7 @@
                                 .upload(
                                     {
                                         method: 'POST',
-                                        url: dyBaseApiUrl + workingDir + '/changes',
+                                        url: baseApiUrl + workingDir + '/changes',
                                         //headers: "",
                                         fields: {
                                             action: change.action,
@@ -256,7 +256,7 @@
             } else {
                 return (
                     $http
-                        .post(dyBaseApiUrl + workingDir + '/changes', change)
+                        .post(baseApiUrl + workingDir + '/changes', change)
                         .then(
                             function(r){
                                 return (r);
@@ -294,7 +294,7 @@
             };
             
             //----- Firma y Subidas
-            var CONNECTION = new dyConnectionService();
+            var CONNECTION = new connectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
@@ -354,7 +354,7 @@
                         function(result){
                             var CHANGES = result;
                             return ($http
-                                        .put(dyBaseApiUrl + workingDir + "/changes", CHANGES)
+                                        .put(baseApiUrl + workingDir + "/changes", CHANGES)
                                         .then(
                                             function(result){
                                                 return (result);

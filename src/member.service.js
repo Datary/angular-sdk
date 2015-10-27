@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('DyMemberService', service);
+        .service('memberService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -67,7 +67,7 @@
         function describeMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member)
+                    .get(baseApiUrl + member)
                     .then(
                         function(r){
                             return (r.data);
@@ -93,7 +93,7 @@
         function retrieveReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/repos")
+                    .get(baseApiUrl + member + "/repos")
                     .then(
                         function(r){
                             return (r.data);
@@ -119,7 +119,7 @@
         function retrieveDisclosedReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/disclosedRepos")
+                    .get(baseApiUrl + member + "/disclosedRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -145,7 +145,7 @@
         function retrievePrivateReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/privateRepos")
+                    .get(baseApiUrl + member + "/privateRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -171,7 +171,7 @@
         function retrieveActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/activity")
+                    .get(baseApiUrl + member + "/activity")
                     .then(
                         function(r){
                             return (r.data);
@@ -197,7 +197,7 @@
         function retrievePublicActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/publicActivity")
+                    .get(baseApiUrl + member + "/publicActivity")
                     .then(
                         function(r){
                             return (r.data);
@@ -223,7 +223,7 @@
         function retrieveSessionsFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/sessions")
+                    .get(baseApiUrl + member + "/sessions")
                     .then(
                         function(r){
                             return (r.data);
@@ -247,7 +247,7 @@
         function createRepoForMember(repo, member){
             return  (
                 $http
-                    .post(dyBaseApiUrl + member + '/repos', repo )
+                    .post(baseApiUrl + member + '/repos', repo )
                     .then(
                         function(r){
                             //devuelvo el _id de repo agregado
@@ -272,7 +272,7 @@
         function updateProfileOfMember(profile, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + member, profile)
+                    .put(baseApiUrl + member, profile)
                     .then(
                         function(r){
                             return (r);
@@ -297,7 +297,7 @@
         function changeUsernameOfMember(username, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + member + "/username", member)
+                    .put(baseApiUrl + member + "/username", member)
                     .then(
                         function(r){
                             return (r);
@@ -329,7 +329,7 @@
             
             return (
                 $http
-                    .put(dyBaseApiUrl + member + "/password", $BODY)
+                    .put(baseApiUrl + member + "/password", $BODY)
                     .then(
                         function(r){
                             return (r);
@@ -353,7 +353,7 @@
         function removeMember(member){
             return (
                 $http
-                    .delete(dyBaseApiUrl + member)
+                    .delete(baseApiUrl + member)
                     .then(
                         function(r){
                             return (member);
@@ -407,7 +407,7 @@
                         function(result){
                             var SESSIONS = result;
                             return ($http
-                                        .put(dyBaseApiUrl + member + "/sessions", SESSIONS)
+                                        .put(baseApiUrl + member + "/sessions", SESSIONS)
                                         .then(
                                             function(result){
                                                 return (result);

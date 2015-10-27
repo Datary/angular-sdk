@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyRepoService', service );
+        .service('repoService', service );
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyWorkingDirService', 'DyCommitService'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'workingDirService', 'commitService'];
     
-    function service($q, $http, dyBaseApiUrl, DyWorkingDirService, DyCommitService){
+    function service($q, $http, baseApiUrl, workingDirService, commitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -66,7 +66,7 @@
         function describeRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo)
+                    .get(baseApiUrl + repo)
                     .then(
                         function(r) {
                             return (r.data);
@@ -99,7 +99,7 @@
                         function(r){
                             //console.log("eoeoeo a", r);
                             //obtengo info del working_dir
-                            return ( new DyWorkingDirService(r.workingDir).describe() );
+                            return ( new workingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -124,7 +124,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex, repo).retrieveFiletree() );
+                            return ( new commitService(r.apex, repo).retrieveFiletree() );
                         }
                     )
                     .then(
@@ -148,7 +148,7 @@
         function retrieveReadmeFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/readme')
+                    .get(baseApiUrl + repo + '/readme')
                     .then(
                         function(r){
                             return (r.data);
@@ -170,7 +170,7 @@
         function retrieveLicenseFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/license')
+                    .get(baseApiUrl + repo + '/license')
                     .then(
                         function(r){
                             return (r.data);
@@ -192,7 +192,7 @@
         function retrieveHeadsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/heads')
+                    .get(baseApiUrl + repo + '/heads')
                     .then(
                         function(r){
                             return (r.data);
@@ -214,7 +214,7 @@
         function retrieveTagsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/tags')
+                    .get(baseApiUrl + repo + '/tags')
                     .then(
                         function(r){
                             return (r.data);
@@ -236,7 +236,7 @@
         function retrieveRefsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/refs')
+                    .get(baseApiUrl + repo + '/refs')
                     .then(
                         function(r){
                             return (r.data);
@@ -258,7 +258,7 @@
          * @return 
          */
         function retrieveObjectFromRepo(object, modifier, repo){
-            var $URI =  dyBaseApiUrl + repo + "/" + object;
+            var $URI =  baseApiUrl + repo + "/" + object;
             $URI = (modifier)?
                         $URI.concat("?" + modifier + "=true")
                         : $URI;
@@ -289,7 +289,7 @@
         function commitIndexOnRepo(details, repo){
             return (
                 $http
-                    .post(dyBaseApiUrl + repo + "/index", details)
+                    .post(baseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
                             return (repo);
@@ -313,7 +313,7 @@
         function updateReadmeOfRepo(readme, repo){
             return (
                 $http
-                    .put(dyBaseApiUrl + repo + "/readme", readme)
+                    .put(baseApiUrl + repo + "/readme", readme)
                     .then(
                         function(r){
                             return (r);
@@ -337,7 +337,7 @@
         function updateDetailsOfRepo(details, repo){
             return (
                 $http
-                    .put(dyBaseApiUrl + repo, details)
+                    .put(baseApiUrl + repo, details)
                     .then(
                         function(r){
                             return (repo);
@@ -361,7 +361,7 @@
         function removeRepo(repo){
             return (
                 $http
-                    .delete(dyBaseApiUrl + repo)
+                    .delete(baseApiUrl + repo)
                     .then(
                         function(r){
                             return (repo);

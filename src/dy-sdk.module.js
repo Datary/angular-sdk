@@ -8,5 +8,5 @@
             [
                 'ngFileUpload'
             ]
-        ).constant('dyBaseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
+        ).constant('baseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
 })();

@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('DyTreeService', service);
+        .service('treeService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -32,7 +32,7 @@
         function describeTree(tree){
             return (
                 $http
-                    .get(dyBaseApiUrl + tree)
+                    .get(baseApiUrl + tree)
                     .then(
                         function(r){
                             return (r.data);

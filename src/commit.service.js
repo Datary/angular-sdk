@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyCommitService', service);
+        .service('commitService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id, namespace){
             this._id = id;
             this.namespace = namespace;
@@ -29,7 +29,7 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var $URI = dyBaseApiUrl;
+            var $URI = baseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -62,7 +62,7 @@
          */
         function retrieveFiletreeFromCommit(commit, namespace){
             //construyo progresivamente la URI
-            var $URI = dyBaseApiUrl;
+            var $URI = baseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;

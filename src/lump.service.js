@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyLumpService', service);
+        .service('lumpService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
             this.retrievePreview = function(){
@@ -36,7 +36,7 @@
         function retrieveContentPreviewFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/preview')
+                    .get(baseApiUrl + lump + '/preview')
                     .then(
                         function(r){
                             return (r.data);
@@ -60,7 +60,7 @@
         function retrieveContentExtractFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/extract')
+                    .get(baseApiUrl + lump + '/extract')
                     .then(
                         function(r){
                             return (r.data);
@@ -84,7 +84,7 @@
         function retrieveOriginalFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/original')
+                    .get(baseApiUrl + lump + '/original')
                     .then(
                         function(r){
                             return (r.data);

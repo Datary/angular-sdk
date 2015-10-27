@@ -6,9 +6,9 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DySearchService', factory );
+        .factory('searchService', factory );
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    factory.$inject = ['$q', '$http', 'baseApiUrl'];
     
     /**************************************************************
      * @description 
@@ -17,7 +17,7 @@
      * 
      * @return 
      */
-    function factory($q, $http, dyBaseApiUrl){
+    function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
             //----- Defaults
             var $CATEGORY = (category)?
@@ -39,7 +39,7 @@
             //----- Validacion
             
             //----- Request build
-            $URI =  dyBaseApiUrl +
+            $URI =  baseApiUrl +
                     "search" +
                     "/" + $CATEGORY +
                     "?" + "path=" + $PATH +

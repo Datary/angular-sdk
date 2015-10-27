@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyConnectionService', service);
+        .service('connectionService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(){
             this.signIn = function(credentials){
                 return signIn(credentials);
@@ -41,7 +41,7 @@
         function signIn(credentials){
             return (
                 $http
-                    .post(dyBaseApiUrl + "connection/signIn?provider=datary", credentials)
+                    .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
                             var $TOKEN = null;
@@ -77,7 +77,7 @@
         function signOut(){
             return (
                 $http
-                    .get(dyBaseApiUrl + "connection/signOut")
+                    .get(baseApiUrl + "connection/signOut")
                     .then(
                         function(r){
                             return r.status;
@@ -103,7 +103,7 @@
         function signUp(user){
             return (
                 $http
-                    .post(dyBaseApiUrl + "connection/signUp", user)
+                    .post(baseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
                             return (r.data);
@@ -129,7 +129,7 @@
         function signRequest(request){
             return (
                 $http
-                    .get(dyBaseApiUrl + "connection/signRequest"
+                    .get(baseApiUrl + "connection/signRequest"
                             + "&operation=" 
                             + request.operation 
                             + "&basename=" 
