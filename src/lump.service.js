@@ -13,14 +13,14 @@
     function service($q, $http, dyBaseApiUrl){
         return function(id){
             this._id = id;
-            this.retrieveContentPreview = function(){
-                return retrieveContentPreviewFromLump(id);
+            this.retrievePreview = function(){
+                return retrievePreviewFromLump(id);
             };
-            this.retrieveContentExtract = function(){
-                return retrieveContentExtractFromLump(id);
+            this.retrieveExtract = function(){
+                return retrieveExtractFromLump(id);
             };
-            this.retrieveContentWhole = function(){
-                return retrieveContentWholeFromLump(id);
+            this.retrieveOriginal = function(){
+                return retrieveOriginalFromLump(id);
             };
         };
         
@@ -36,7 +36,7 @@
         function retrieveContentPreviewFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + 'preview')
+                    .get(dyBaseApiUrl + lump + '/preview')
                     .then(
                         function(r){
                             return (r.data);
@@ -81,10 +81,10 @@
          * 
          * @return {}:
          */
-        function retrieveContentWholeFromLump(lump){
+        function retrieveOriginalFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/core')
+                    .get(dyBaseApiUrl + lump + '/original')
                     .then(
                         function(r){
                             return (r.data);
