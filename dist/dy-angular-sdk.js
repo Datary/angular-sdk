@@ -110,37 +110,37 @@
         .module('dySdk')
         .factory('Datary', factory);
     
-    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
-                    'DyMemberService', 'DyRepoService', 'DyWorkingDirService', 
-                    'DyCommitService', 'DyTreeService', 'DyLumpService'];
+    factory.$inject = ['$q', '$http', 'ConnectionService', 'searchFactory', 
+                    'MemberService', 'RepoService', 'WorkingDirService', 
+                    'CommitService', 'TreeService', 'LumpService'];
     
-    function factory($q, $http, DyConnectionService, DySearchService, DyMemberService, 
-            DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
-            DyLumpService){
+    function factory($q, $http, ConnectionService, searchFactory, 
+                    MemberService, RepoService, WorkingDirService,
+                    CommitService, TreeService, LumpService){
         return {
             connection: function(){
-                return (new DyConnectionService());
+                return (new ConnectionService());
             },
             search: function(category, path, pattern, limit, offset){
-                return DySearchService(category, path, pattern, limit, offset);
+                return searchFactory(category, path, pattern, limit, offset);
             },
             member: function(id){
-                return (new DyMemberService(id));
+                return (new MemberService(id));
             },
             repo:function(id){
-                return (new DyRepoService(id));
+                return (new RepoService(id));
             },
             workingDir: function(id){
-                return (new DyWorkingDirService(id));
+                return (new WorkingDirService(id));
             },
             commit: function(id, namespace){
-                return (new DyCommitService(id, namespace));
+                return (new CommitService(id, namespace));
             },
             tree: function(id){
-                return (new DyTreeService(id));
+                return (new TreeService(id));
             },
             lump: function(id){
-                return (new DyLumpService(id));
+                return (new LumpService(id));
             }
         };
     }
@@ -153,7 +153,7 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('searchService', factory );
+        .factory('searchFactory', factory );
     
     factory.$inject = ['$q', '$http', 'baseApiUrl'];
     
@@ -218,7 +218,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('connectionService', service);
+        .service('ConnectionService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
@@ -368,7 +368,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('memberService', service);
+        .service('MemberService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
@@ -793,11 +793,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('repoService', service );
+        .service('RepoService', service );
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'workingDirService', 'commitService'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];
     
-    function service($q, $http, baseApiUrl, workingDirService, commitService){
+    function service($q, $http, baseApiUrl, WorkingDirService, CommitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -884,9 +884,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            //console.log("eoeoeo a", r);
-                            //obtengo info del working_dir
-                            return ( new workingDirService(r.workingDir).describe() );
+                            return ( new WorkingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -911,7 +909,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new commitService(r.apex, repo).retrieveFiletree() );
+                            return ( new CommitService(r.apex, repo).retrieveFiletree() );
                         }
                     )
                     .then(
@@ -1169,11 +1167,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('workingDirService', service);
+        .service('WorkingDirService', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'connectionService', 'Upload'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
     
-    function service($q, $http, baseApiUrl, connectionService, Upload){
+    function service($q, $http, baseApiUrl, ConnectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -1457,7 +1455,7 @@
             };
             
             //----- Firma y Subidas
-            var CONNECTION = new connectionService();
+            var CONNECTION = new ConnectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
@@ -1542,7 +1540,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('commitService', service);
+        .service('CommitService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
@@ -1629,7 +1627,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('treeService', service);
+        .service('TreeService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
@@ -1676,7 +1674,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('lumpService', service);
+        .service('LumpService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     

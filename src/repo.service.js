@@ -97,9 +97,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            //console.log("eoeoeo a", r);
-                            //obtengo info del working_dir
-                            return ( new workingDirService(r.workingDir).describe() );
+                            return ( new WorkingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -124,7 +122,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new commitService(r.apex, repo).retrieveFiletree() );
+                            return ( new CommitService(r.apex, repo).retrieveFiletree() );
                         }
                     )
                     .then(

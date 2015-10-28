@@ -10,7 +10,7 @@
     
     service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
     
-    function service($q, $http, baseApiUrl, connectionService, Upload){
+    function service($q, $http, baseApiUrl, ConnectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -294,7 +294,7 @@
             };
             
             //----- Firma y Subidas
-            var CONNECTION = new connectionService();
+            var CONNECTION = new ConnectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
