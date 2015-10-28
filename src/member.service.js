@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('memberService', service);
+        .service('MemberService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     

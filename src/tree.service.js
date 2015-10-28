@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('treeService', service);
+        .service('TreeService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     

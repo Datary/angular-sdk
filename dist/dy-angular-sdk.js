@@ -10,7 +10,7 @@
             [
                 'ngFileUpload'
             ]
-        ).constant('dyBaseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
+        ).constant('baseApiUrl', "https://datary-apiserver-rtm-us1-a.azurewebsites.net/");
 })();
 /*******************************************************************************
  * @description
@@ -153,9 +153,9 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DySearchService', factory );
+        .factory('searchService', factory );
     
-    factory.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    factory.$inject = ['$q', '$http', 'baseApiUrl'];
     
     /**************************************************************
      * @description 
@@ -164,7 +164,7 @@
      * 
      * @return 
      */
-    function factory($q, $http, dyBaseApiUrl){
+    function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
             //----- Defaults
             var $CATEGORY = (category)?
@@ -186,7 +186,7 @@
             //----- Validacion
             
             //----- Request build
-            $URI =  dyBaseApiUrl +
+            $URI =  baseApiUrl +
                     "search" +
                     "/" + $CATEGORY +
                     "?" + "path=" + $PATH +
@@ -218,11 +218,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyConnectionService', service);
+        .service('connectionService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(){
             this.signIn = function(credentials){
                 return signIn(credentials);
@@ -253,7 +253,7 @@
         function signIn(credentials){
             return (
                 $http
-                    .post(dyBaseApiUrl + "connection/signIn?provider=datary", credentials)
+                    .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
                             var $TOKEN = null;
@@ -289,7 +289,7 @@
         function signOut(){
             return (
                 $http
-                    .get(dyBaseApiUrl + "connection/signOut")
+                    .get(baseApiUrl + "connection/signOut")
                     .then(
                         function(r){
                             return r.status;
@@ -315,7 +315,7 @@
         function signUp(user){
             return (
                 $http
-                    .post(dyBaseApiUrl + "connection/signUp", user)
+                    .post(baseApiUrl + "connection/signUp", user)
                     .then(
                         function(r){
                             return (r.data);
@@ -341,7 +341,7 @@
         function signRequest(request){
             return (
                 $http
-                    .get(dyBaseApiUrl + "connection/signRequest"
+                    .get(baseApiUrl + "connection/signRequest"
                             + "&operation=" 
                             + request.operation 
                             + "&basename=" 
@@ -368,11 +368,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('DyMemberService', service);
+        .service('memberService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -429,7 +429,7 @@
         function describeMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member)
+                    .get(baseApiUrl + member)
                     .then(
                         function(r){
                             return (r.data);
@@ -455,7 +455,7 @@
         function retrieveReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/repos")
+                    .get(baseApiUrl + member + "/repos")
                     .then(
                         function(r){
                             return (r.data);
@@ -481,7 +481,7 @@
         function retrieveDisclosedReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/disclosedRepos")
+                    .get(baseApiUrl + member + "/disclosedRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -507,7 +507,7 @@
         function retrievePrivateReposFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/privateRepos")
+                    .get(baseApiUrl + member + "/privateRepos")
                     .then(
                         function(r){
                             return (r.data);
@@ -533,7 +533,7 @@
         function retrieveActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/activity")
+                    .get(baseApiUrl + member + "/activity")
                     .then(
                         function(r){
                             return (r.data);
@@ -559,7 +559,7 @@
         function retrievePublicActivityFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/publicActivity")
+                    .get(baseApiUrl + member + "/publicActivity")
                     .then(
                         function(r){
                             return (r.data);
@@ -585,7 +585,7 @@
         function retrieveSessionsFromMember(member){
             return (
                 $http
-                    .get(dyBaseApiUrl + member + "/sessions")
+                    .get(baseApiUrl + member + "/sessions")
                     .then(
                         function(r){
                             return (r.data);
@@ -609,7 +609,7 @@
         function createRepoForMember(repo, member){
             return  (
                 $http
-                    .post(dyBaseApiUrl + member + '/repos', repo )
+                    .post(baseApiUrl + member + '/repos', repo )
                     .then(
                         function(r){
                             //devuelvo el _id de repo agregado
@@ -634,7 +634,7 @@
         function updateProfileOfMember(profile, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + member, profile)
+                    .put(baseApiUrl + member, profile)
                     .then(
                         function(r){
                             return (r);
@@ -659,7 +659,7 @@
         function changeUsernameOfMember(username, member){
             return (
                 $http
-                    .put(dyBaseApiUrl + member + "/username", member)
+                    .put(baseApiUrl + member + "/username", member)
                     .then(
                         function(r){
                             return (r);
@@ -691,7 +691,7 @@
             
             return (
                 $http
-                    .put(dyBaseApiUrl + member + "/password", $BODY)
+                    .put(baseApiUrl + member + "/password", $BODY)
                     .then(
                         function(r){
                             return (r);
@@ -715,7 +715,7 @@
         function removeMember(member){
             return (
                 $http
-                    .delete(dyBaseApiUrl + member)
+                    .delete(baseApiUrl + member)
                     .then(
                         function(r){
                             return (member);
@@ -769,7 +769,7 @@
                         function(result){
                             var SESSIONS = result;
                             return ($http
-                                        .put(dyBaseApiUrl + member + "/sessions", SESSIONS)
+                                        .put(baseApiUrl + member + "/sessions", SESSIONS)
                                         .then(
                                             function(result){
                                                 return (result);
@@ -793,11 +793,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyRepoService', service );
+        .service('repoService', service );
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyWorkingDirService', 'DyCommitService'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'workingDirService', 'commitService'];
     
-    function service($q, $http, dyBaseApiUrl, DyWorkingDirService, DyCommitService){
+    function service($q, $http, baseApiUrl, workingDirService, commitService){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -853,7 +853,7 @@
         function describeRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo)
+                    .get(baseApiUrl + repo)
                     .then(
                         function(r) {
                             return (r.data);
@@ -886,7 +886,7 @@
                         function(r){
                             //console.log("eoeoeo a", r);
                             //obtengo info del working_dir
-                            return ( new DyWorkingDirService(r.workingDir).describe() );
+                            return ( new workingDirService(r.workingDir).describe() );
                         }
                     )
                     .then(
@@ -911,7 +911,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new DyCommitService(r.apex, repo).retrieveFiletree() );
+                            return ( new commitService(r.apex, repo).retrieveFiletree() );
                         }
                     )
                     .then(
@@ -935,7 +935,7 @@
         function retrieveReadmeFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/readme')
+                    .get(baseApiUrl + repo + '/readme')
                     .then(
                         function(r){
                             return (r.data);
@@ -957,7 +957,7 @@
         function retrieveLicenseFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/license')
+                    .get(baseApiUrl + repo + '/license')
                     .then(
                         function(r){
                             return (r.data);
@@ -979,7 +979,7 @@
         function retrieveHeadsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/heads')
+                    .get(baseApiUrl + repo + '/heads')
                     .then(
                         function(r){
                             return (r.data);
@@ -1001,7 +1001,7 @@
         function retrieveTagsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/tags')
+                    .get(baseApiUrl + repo + '/tags')
                     .then(
                         function(r){
                             return (r.data);
@@ -1023,7 +1023,7 @@
         function retrieveRefsFromRepo(repo){
             return (
                 $http
-                    .get(dyBaseApiUrl + repo + '/refs')
+                    .get(baseApiUrl + repo + '/refs')
                     .then(
                         function(r){
                             return (r.data);
@@ -1045,7 +1045,7 @@
          * @return 
          */
         function retrieveObjectFromRepo(object, modifier, repo){
-            var $URI =  dyBaseApiUrl + repo + "/" + object;
+            var $URI =  baseApiUrl + repo + "/" + object;
             $URI = (modifier)?
                         $URI.concat("?" + modifier + "=true")
                         : $URI;
@@ -1076,7 +1076,7 @@
         function commitIndexOnRepo(details, repo){
             return (
                 $http
-                    .post(dyBaseApiUrl + repo + "/index", details)
+                    .post(baseApiUrl + repo + "/index", details)
                     .then(
                         function(r){
                             return (repo);
@@ -1100,7 +1100,7 @@
         function updateReadmeOfRepo(readme, repo){
             return (
                 $http
-                    .put(dyBaseApiUrl + repo + "/readme", readme)
+                    .put(baseApiUrl + repo + "/readme", readme)
                     .then(
                         function(r){
                             return (r);
@@ -1124,7 +1124,7 @@
         function updateDetailsOfRepo(details, repo){
             return (
                 $http
-                    .put(dyBaseApiUrl + repo, details)
+                    .put(baseApiUrl + repo, details)
                     .then(
                         function(r){
                             return (repo);
@@ -1148,7 +1148,7 @@
         function removeRepo(repo){
             return (
                 $http
-                    .delete(dyBaseApiUrl + repo)
+                    .delete(baseApiUrl + repo)
                     .then(
                         function(r){
                             return (repo);
@@ -1169,11 +1169,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyWorkingDirService', service);
+        .service('workingDirService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl', 'DyConnectionService', 'Upload'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'connectionService', 'Upload'];
     
-    function service($q, $http, dyBaseApiUrl, yConnectionService, Upload){
+    function service($q, $http, baseApiUrl, connectionService, Upload){
         return function(id){
             this._id = id;
             this.describe = function (){
@@ -1206,7 +1206,7 @@
         function describeWorkingDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir)
+                    .get(baseApiUrl + workingDir)
                     .then(
                         function(r){
                             return (r.data);
@@ -1231,7 +1231,7 @@
         function listChangesOnWorkinDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir + "/changes")
+                    .get(baseApiUrl + workingDir + "/changes")
                     .then(
                         function(r){
                             return (r.data);
@@ -1256,7 +1256,7 @@
         function retrieveFiletreeOfWorkingDir(workingDir){
             return (
                 $http
-                    .get(dyBaseApiUrl + workingDir + "/filetree")
+                    .get(baseApiUrl + workingDir + "/filetree")
                     .then(
                         function(r){
                             return (r.data);
@@ -1303,7 +1303,7 @@
                 if (change.filemode === 40000) {
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(r){
                                     return (r);
@@ -1320,7 +1320,7 @@
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(result){
                                     return (result);
@@ -1340,7 +1340,7 @@
                     change.content = DATA_AS_OBJ;
                     return (
                         $http
-                            .post(dyBaseApiUrl + workingDir + '/changes', change)
+                            .post(baseApiUrl + workingDir + '/changes', change)
                             .then(
                                 function(result){
                                     return (result);
@@ -1367,7 +1367,7 @@
                             }
                             change.content = DATA_AS_OBJ;
                             ($http
-                                .post(dyBaseApiUrl + workingDir + '/changes', change)
+                                .post(baseApiUrl + workingDir + '/changes', change)
                                 .then(
                                     function(result){
                                         console.log(20666666, result);
@@ -1394,7 +1394,7 @@
                                 .upload(
                                     {
                                         method: 'POST',
-                                        url: dyBaseApiUrl + workingDir + '/changes',
+                                        url: baseApiUrl + workingDir + '/changes',
                                         //headers: "",
                                         fields: {
                                             action: change.action,
@@ -1419,7 +1419,7 @@
             } else {
                 return (
                     $http
-                        .post(dyBaseApiUrl + workingDir + '/changes', change)
+                        .post(baseApiUrl + workingDir + '/changes', change)
                         .then(
                             function(r){
                                 return (r);
@@ -1457,7 +1457,7 @@
             };
             
             //----- Firma y Subidas
-            var CONNECTION = new dyConnectionService();
+            var CONNECTION = new connectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
@@ -1517,7 +1517,7 @@
                         function(result){
                             var CHANGES = result;
                             return ($http
-                                        .put(dyBaseApiUrl + workingDir + "/changes", CHANGES)
+                                        .put(baseApiUrl + workingDir + "/changes", CHANGES)
                                         .then(
                                             function(result){
                                                 return (result);
@@ -1542,11 +1542,11 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyCommitService', service);
+        .service('commitService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id, namespace){
             this._id = id;
             this.namespace = namespace;
@@ -1565,7 +1565,7 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var $URI = dyBaseApiUrl;
+            var $URI = baseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -1598,7 +1598,7 @@
          */
         function retrieveFiletreeFromCommit(commit, namespace){
             //construyo progresivamente la URI
-            var $URI = dyBaseApiUrl;
+            var $URI = baseApiUrl;
             $URI = (namespace)?
                         $URI.concat(namespace + "/")
                         :$URI;
@@ -1629,11 +1629,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('DyTreeService', service);
+        .service('treeService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
             this.describe = function(){
@@ -1655,7 +1655,7 @@
         function describeTree(tree){
             return (
                 $http
-                    .get(dyBaseApiUrl + tree)
+                    .get(baseApiUrl + tree)
                     .then(
                         function(r){
                             return (r.data);
@@ -1676,21 +1676,21 @@
 (function(){
     angular
         .module('dySdk')
-        .factory('DyLumpService', service);
+        .service('lumpService', service);
     
-    service.$inject = ['$q', '$http', 'dyBaseApiUrl'];
+    service.$inject = ['$q', '$http', 'baseApiUrl'];
     
-    function service($q, $http, dyBaseApiUrl){
+    function service($q, $http, baseApiUrl){
         return function(id){
             this._id = id;
-            this.retrieveContentPreview = function(){
-                return retrieveContentPreviewFromLump(id);
+            this.retrievePreview = function(){
+                return retrievePreviewFromLump(id);
             };
-            this.retrieveContentExtract = function(){
-                return retrieveContentExtractFromLump(id);
+            this.retrieveExtract = function(){
+                return retrieveExtractFromLump(id);
             };
-            this.retrieveContentWhole = function(){
-                return retrieveContentWholeFromLump(id);
+            this.retrieveOriginal = function(){
+                return retrieveOriginalFromLump(id);
             };
         };
         
@@ -1706,7 +1706,7 @@
         function retrieveContentPreviewFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + 'preview')
+                    .get(baseApiUrl + lump + '/preview')
                     .then(
                         function(r){
                             return (r.data);
@@ -1730,7 +1730,7 @@
         function retrieveContentExtractFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/extract')
+                    .get(baseApiUrl + lump + '/extract')
                     .then(
                         function(r){
                             return (r.data);
@@ -1751,10 +1751,10 @@
          * 
          * @return {}:
          */
-        function retrieveContentWholeFromLump(lump){
+        function retrieveOriginalFromLump(lump){
             return (
                 $http
-                    .get(dyBaseApiUrl + lump + '/core')
+                    .get(baseApiUrl + lump + '/original')
                     .then(
                         function(r){
                             return (r.data);

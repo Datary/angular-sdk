@@ -6,11 +6,11 @@
 (function(){
     angular
         .module('dySdk')
-        .service('repoService', service );
+        .service('RepoService', service );
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'workingDirService', 'commitService'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];
     
-    function service($q, $http, baseApiUrl, workingDirService, commitService){
+    function service($q, $http, baseApiUrl, WorkingDirService, CommitService){
         return function(id){
             this._id = id;
             this.describe = function(){

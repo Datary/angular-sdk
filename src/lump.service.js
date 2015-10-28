@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('lumpService', service);
+        .service('LumpService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     

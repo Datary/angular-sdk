@@ -6,9 +6,9 @@
 (function(){
     angular
         .module('dySdk')
-        .service('workingDirService', service);
+        .service('WorkingDirService', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'connectionService', 'Upload'];
+    service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
     
     function service($q, $http, baseApiUrl, connectionService, Upload){
         return function(id){

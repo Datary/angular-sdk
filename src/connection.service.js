@@ -6,7 +6,7 @@
 (function(){
     angular
         .module('dySdk')
-        .service('connectionService', service);
+        .service('ConnectionService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     

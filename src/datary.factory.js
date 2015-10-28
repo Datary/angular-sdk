@@ -19,37 +19,37 @@
         .module('dySdk')
         .factory('Datary', factory);
     
-    factory.$inject = ['$q', '$http', 'DyConnectionService', 'DySearchService', 
-                    'DyMemberService', 'DyRepoService', 'DyWorkingDirService', 
-                    'DyCommitService', 'DyTreeService', 'DyLumpService'];
+    factory.$inject = ['$q', '$http', 'ConnectionService', 'searchFactory', 
+                    'MemberService', 'RepoService', 'WorkingDirService', 
+                    'CommitService', 'TreeService', 'LumpService'];
     
-    function factory($q, $http, DyConnectionService, DySearchService, DyMemberService, 
-            DyRepoService, DyWorkingDirService, DyCommitService, DyTreeService, 
-            DyLumpService){
+    function factory($q, $http, ConnectionService, searchFactory, 
+                    MemberService, RepoService, WorkingDirService,
+                    CommitService, TreeService, LumpService){
         return {
             connection: function(){
-                return (new DyConnectionService());
+                return (new ConnectionService());
             },
             search: function(category, path, pattern, limit, offset){
-                return DySearchService(category, path, pattern, limit, offset);
+                return searchFactory(category, path, pattern, limit, offset);
             },
             member: function(id){
-                return (new DyMemberService(id));
+                return (new MemberService(id));
             },
             repo:function(id){
-                return (new DyRepoService(id));
+                return (new RepoService(id));
             },
             workingDir: function(id){
-                return (new DyWorkingDirService(id));
+                return (new WorkingDirService(id));
             },
             commit: function(id, namespace){
-                return (new DyCommitService(id, namespace));
+                return (new CommitService(id, namespace));
             },
             tree: function(id){
-                return (new DyTreeService(id));
+                return (new TreeService(id));
             },
             lump: function(id){
-                return (new DyLumpService(id));
+                return (new LumpService(id));
             }
         };
     }
