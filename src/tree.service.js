@@ -32,8 +32,7 @@
          * @return {}:
          */
         function describeTree(tree, namespace){
-            var URI = baseApiUrl;
-            URI += tree;
+            var URI = baseApiUrl + tree;
             if (namespace) { URI += "?namespace=" + namespace }
             
             return (
