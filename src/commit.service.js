@@ -15,6 +15,9 @@
             this.guid = guid;
             this.namespace = namespace;
             
+            this.describeCommit = function(){
+                return describeCommit(guid, namespace);
+            };
             this.retrieveBranch = function(){
                 return retrieveBranchFromCommit(guid, namespace);
             };
@@ -27,15 +30,41 @@
         
         /**************************************************************
          * @description 
+         * La llamada devuelve un objeto con la info de un commit, es
+         * decir, con campos 
+         * 
+         * @param {String} tree: sha1 del commit que se consulta
+         * 
+         * @return {}:
+         */
+        function describeCommit(commit, namespace){
+            var URI = baseApiUrl;
+            URI += commit;
+            if (namespace) { URI += "?namespace=" + namespace }
+            
+            return (
+                $http
+                    .get(URI)
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
             var URI = baseApiUrl;
-            URI = (namespace)?
-                        URI.concat(namespace + "/")
-                        :URI;
-            URI = (namespace)?
-                        URI.concat(commit + "?branch=true")
-                        :URI.concat(commit + "/branch");
+            URI += commit + "/branch";
+            if (namespace) { URI += "?namespace=" + namespace }
             
             return (
                 $http
@@ -61,14 +90,9 @@
          * @return {} devuelvo la `info` del tree 
          */
         function retrieveFiletreeFromCommit(commit, namespace){
-            //construyo progresivamente la URI
             var URI = baseApiUrl;
-            URI = (namespace)?
-                        URI.concat(namespace + "/")
-                        :URI;
-            URI = (namespace)?
-                        URI.concat(commit + "?filetree=true")
-                        :URI.concat(commit + "/filetree");
+            URI += commit + "/filetree";
+            if (namespace) { URI += "?namespace=" + namespace }
             
             return (
                 $http

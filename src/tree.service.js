@@ -11,10 +11,12 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(guid){
+        return function(guid, namespace){
             this.guid = guid;
+            this.namespace = namespace;
+            
             this.describe = function(){
-                return describeTree(guid);
+                return describeTree(guid, namespace);
             };
         };
         
@@ -29,10 +31,14 @@
          * 
          * @return {}:
          */
-        function describeTree(tree){
+        function describeTree(tree, namespace){
+            var URI = baseApiUrl;
+            URI += tree;
+            if (namespace) { URI += "?namespace=" + namespace }
+            
             return (
                 $http
-                    .get(baseApiUrl + tree)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);

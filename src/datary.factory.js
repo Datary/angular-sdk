@@ -46,10 +46,10 @@
                 return (new CommitService(guid, namespace));
             },
             tree: function(guid){
-                return (new TreeService(guid));
+                return (new TreeService(guid, namespace));
             },
             dataset: function(guid){
-                return (new DatasetService(guid));
+                return (new DatasetService(guid, namespace));
             }
         };
     }
