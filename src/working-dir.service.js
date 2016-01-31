@@ -11,22 +11,22 @@
     service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
     
     function service($q, $http, baseApiUrl, ConnectionService, Upload){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function (){
-                return describeWorkingDir(id);
+                return describeWorkingDir(guid);
             };
             this.listChanges = function (){
-                return listChangesOnWorkinDir(id);
+                return listChangesOnWorkinDir(guid);
             };
             this.retrieveFiletree = function (){
-                return retrieveFiletreeOfWorkingDir(id);
+                return retrieveFiletreeOfWorkingDir(guid);
             };
             this.stageChange = function(change){
-                return stageChangeOnWorkingDir(change, id);
+                return stageChangeOnWorkingDir(change, guid);
             };
             this.unstageChange = function(change){
-                return unstageChangeFromWorkingDir(change, id);
+                return unstageChangeFromWorkingDir(change, guid);
             };
         };
         
@@ -35,7 +35,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -60,7 +60,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -85,7 +85,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -342,15 +342,12 @@
             return (
                 listChangesOnWorkinDir
                     .then(
-                        ///////////
                         function(result){
                         },
-                        ////////
                         function(reason){
                             
                         }
                     ).then(
-                        //////////
                         function(result){
                             var CHANGES = result;
                             return ($http

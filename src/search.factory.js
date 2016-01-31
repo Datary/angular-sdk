@@ -20,37 +20,27 @@
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
             //----- Defaults
-            var $CATEGORY = (category)?
-                category.toString()
-                : "members";
-            var $PATH = (path)?
-                path.toString()
-                : "username";
-            var $HINT = (hint)?
-                hint.toString()
-                : ".*";
-            var $LIMIT = (limit)?
-                limit.toString()
-                : "25";
-            var $OFFSET = (offset)?
-                offset.toString()
-                : "0";
+            var CATEGORY = (category)? category.toString() : "members";
+            var PATH = (path)? path.toString() : "username";
+            var HINT = (hint)? hint.toString() : ".*";
+            var LIMIT = (limit)? limit.toString() : "25";
+            var OFFSET = (offset)? offset.toString() : "0";
             
-            //----- Validacion
+            /////// Validacion
             
-            //----- Request build
-            $URI =  baseApiUrl +
+            /////// Request build
+            URI =  baseApiUrl +
                     "search" +
-                    "/" + $CATEGORY +
-                    "?" + "path=" + $PATH +
-                    "&" + "hint=" + $HINT +
-                    "&" + "limit=" + $LIMIT +
-                    "&" + "offset=" + $OFFSET;
+                    "/" + CATEGORY +
+                    "?" + "path=" + PATH +
+                    "&" + "hint=" + HINT +
+                    "&" + "limit=" + LIMIT +
+                    "&" + "offset=" + OFFSET;
             
-            //----- Request
+            /////// Request
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -59,7 +49,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         };
     }
 })();

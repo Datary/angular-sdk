@@ -33,23 +33,23 @@
             search: function(category, path, pattern, limit, offset){
                 return searchFactory(category, path, pattern, limit, offset);
             },
-            member: function(id){
-                return (new MemberService(id));
+            member: function(guid){
+                return (new MemberService(guid));
             },
-            repo:function(id){
-                return (new RepoService(id));
+            repo:function(guid){
+                return (new RepoService(guid));
             },
-            workingDir: function(id){
-                return (new WorkingDirService(id));
+            workingDir: function(guid){
+                return (new WorkingDirService(guid));
             },
-            commit: function(id, namespace){
-                return (new CommitService(id, namespace));
+            commit: function(guid, namespace){
+                return (new CommitService(guid, namespace));
             },
-            tree: function(id){
-                return (new TreeService(id));
+            tree: function(guid){
+                return (new TreeService(guid));
             },
-            dataset: function(id){
-                return (new DatasetService(id));
+            dataset: function(guid){
+                return (new DatasetService(guid));
             }
         };
     }

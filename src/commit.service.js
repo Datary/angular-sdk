@@ -11,15 +11,15 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id, namespace){
-            this._id = id;
+        return function(guid, namespace){
+            this.guid = guid;
             this.namespace = namespace;
             
             this.retrieveBranch = function(){
-                return retrieveBranchFromCommit(id, namespace);
+                return retrieveBranchFromCommit(guid, namespace);
             };
             this.retrieveFiletree = function(){
-                return retrieveFiletreeFromCommit(id, namespace);
+                return retrieveFiletreeFromCommit(guid, namespace);
             };
         };
         
@@ -29,17 +29,17 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var $URI = baseApiUrl;
-            $URI = (namespace)?
-                        $URI.concat(namespace + "/")
-                        :$URI;
-            $URI = (namespace)?
-                        $URI.concat(commit + "?branch=true")
-                        :$URI.concat(commit + "/branch");
+            var URI = baseApiUrl;
+            URI = (namespace)?
+                        URI.concat(namespace + "/")
+                        :URI;
+            URI = (namespace)?
+                        URI.concat(commit + "?branch=true")
+                        :URI.concat(commit + "/branch");
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -47,8 +47,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -62,17 +62,17 @@
          */
         function retrieveFiletreeFromCommit(commit, namespace){
             //construyo progresivamente la URI
-            var $URI = baseApiUrl;
-            $URI = (namespace)?
-                        $URI.concat(namespace + "/")
-                        :$URI;
-            $URI = (namespace)?
-                        $URI.concat(commit + "?filetree=true")
-                        :$URI.concat(commit + "/filetree");
+            var URI = baseApiUrl;
+            URI = (namespace)?
+                        URI.concat(namespace + "/")
+                        :URI;
+            URI = (namespace)?
+                        URI.concat(commit + "?filetree=true")
+                        :URI.concat(commit + "/filetree");
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -80,8 +80,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
     }
 })();

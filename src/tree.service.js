@@ -11,10 +11,10 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function(){
-                return describeTree(id);
+                return describeTree(guid);
             };
         };
         
@@ -23,9 +23,9 @@
         /**************************************************************
          * @description 
          * La llamada devuelve un objeto con la info de un tree, es
-         * decir, con campos _id y entries, que es un array de entradas.
+         * decir, con campos 
          * 
-         * @param {ObjectId} tree: _id del tree que se consulta
+         * @param {String} tree: sha1 del tree que se consulta
          * 
          * @return {}:
          */
@@ -41,7 +41,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
     }
 })();

@@ -44,17 +44,15 @@
                     .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
-                            var $TOKEN = null;
+                            var TOKEN = null;
                             //busco token en headers
                             if (r.headers('X-Set-Token')) {
-                                $TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
-                                return $TOKEN;
-                            
+                                TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
+                                return TOKEN;
                             //busco token en el body
                             } else if (r.data && r.data.authToken) {
-                                $TOKEN = r.data.authToken;
-                                return $TOKEN;
-                            
+                                TOKEN = r.data.authToken;
+                                return TOKEN;
                             } else {
                                 console.log("Could not parse token from HTTP reponse.");
                                 return $q.reject(e);
@@ -63,8 +61,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -85,8 +83,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -111,8 +109,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -143,8 +141,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
     }
 })();

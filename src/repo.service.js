@@ -11,46 +11,46 @@
     service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];
     
     function service($q, $http, baseApiUrl, WorkingDirService, CommitService){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function(){
-                return describeRepo(id);
+                return describeRepo(guid);
             };
             this.retrieveWorkingDir = function(){
-                return retrieveWorkingDirFromRepo(id);
+                return retrieveWorkingDirFromRepo(guid);
             };
             this.retrieveApexFiletree = function(){
-                return retrieveApexFiletreeFromRepo(id);
+                return retrieveApexFiletreeFromRepo(guid);
             };
             this.retrieveReadme = function(){
-                return retrieveReadmeFromRepo(id);
+                return retrieveReadmeFromRepo(guid);
             };
             this.retrieveLicense = function(){
-                return retrieveLicenseFromRepo(id);
+                return retrieveLicenseFromRepo(guid);
             };
             this.retrieveHeads = function(){
-                return retrieveHeadsFromRepo(id);
+                return retrieveHeadsFromRepo(guid);
             };
             this.retrieveTags = function(){
-                return retrieveTagsFromRepo(id);
+                return retrieveTagsFromRepo(guid);
             };
             this.retrieveRefs = function(){
-                return retrieveRefsFromRepo(id);
+                return retrieveRefsFromRepo(guid);
             };
             this.retrieveObject = function(object, modifier){
-                return retrieveObjectFromRepo(object, modifier, id);
+                return retrieveObjectFromRepo(object, modifier, guid);
             };
             this.commitIndex = function(details){
-                return commitIndexOnRepo(details, id);
+                return commitIndexOnRepo(details, guid);
             };
             this.updateReadme = function(readme){
-                return updateReadmeOfRepo(readme, id);
+                return updateReadmeOfRepo(readme, guid);
             };
             this.updateDetails = function(details){
-                return updateDetailsOfRepo(details, id);
+                return updateDetailsOfRepo(details, guid);
             };
             this.remove = function(){
-                return removeRepo(id);
+                return removeRepo(guid);
             };
         };
         
@@ -75,7 +75,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -107,8 +107,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return promise
+                    )
+            );
         }
         
         
@@ -133,7 +133,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -256,14 +256,12 @@
          * @return 
          */
         function retrieveObjectFromRepo(object, modifier, repo){
-            var $URI =  baseApiUrl + repo + "/" + object;
-            $URI = (modifier)?
-                        $URI.concat("?" + modifier + "=true")
-                        : $URI;
+            var URI =  baseApiUrl + repo + "/" + object;
+            URI = (modifier)? URI.concat("?" + modifier + "=true") : URI;
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);

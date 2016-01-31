@@ -11,46 +11,46 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function(){
-                return describeMember(id);
+                return describeMember(guid);
             };
             this.retrieveRepos = function(){
-                return retrieveReposFromMember(id);
+                return retrieveReposFromMember(guid);
             };
             this.retrieveDisclosedRepos = function(){
-                return retrieveDisclosedReposFromMember(id);
+                return retrieveDisclosedReposFromMember(guid);
             };
             this.retrievePrivateRepos = function(){
-                return retrievePrivateReposFromMember(id);
+                return retrievePrivateReposFromMember(guid);
             };
             this.retrieveActivity = function(){
-                return retrieveActivityFromMember(id);
+                return retrieveActivityFromMember(guid);
             };
             this.retrievePublicActivity = function(){
-                return retrievePublicActivityFromMember(id);
+                return retrievePublicActivityFromMember(guid);
             };
             this.retrieveSessions = function(){
-                return retrieveSessionsFromMember(id);
+                return retrieveSessionsFromMember(guid);
             };
             this.createRepo = function(repo){
-                return createRepoForMember(repo, id);
+                return createRepoForMember(repo, guid);
             };
             this.updateProfile = function(profile){
-                return updateProfileOfMember(profile, id);
+                return updateProfileOfMember(profile, guid);
             };
             this.changeUsername = function(username){
-                return changeUsernameOfMember(username, id);
+                return changeUsernameOfMember(username, guid);
             };
             this.changePassword = function(oldPassword, newPassword){
-                return changePasswordOfMember(oldPassword, newPassword, id);
+                return changePasswordOfMember(oldPassword, newPassword, guid);
             };
             this.remove = function(){
-                return removeMember(id);
+                return removeMember(guid);
             };
             this.removeSession = function(session){
-                return removeSessionFromMember(session, id);
+                return removeSessionFromMember(session, guid);
             };
         };
         
@@ -76,7 +76,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -102,7 +102,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -128,7 +128,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -180,7 +180,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -206,7 +206,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -232,7 +232,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -257,7 +257,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -281,7 +281,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -306,7 +306,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -322,14 +322,14 @@
          */
         function changePasswordOfMember(oldPassword, newPassword, member){
             //body de la request 
-            var $BODY = {
+            var BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
             };
             
             return (
                 $http
-                    .put(baseApiUrl + member + "/password", $BODY)
+                    .put(baseApiUrl + member + "/password", BODY)
                     .then(
                         function(r){
                             return (r);
@@ -338,7 +338,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -362,7 +362,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -384,26 +384,19 @@
             return (
                 retrieveSessionsFromMember
                     .then(
-                        ///////////
                         function(result){
                             //indice de la session que desea eliminarse
-                            var INDEX = result
-                                            .map(function(e, i, a){return e.jti;})
-                                            .indexOf(session);
-                            
+                            var INDEX = result.map( function(e){return e.jti} ).indexOf(session);
                             //elimino la session correspondiente al jti
                             result.splice(INDEX, 1);
-                            
                             //genero el array de sessiones tal cual debe almacenarse
                             var ARR = result.map(function(e, i, a){return e.encoding;});
                             return ARR;
                         },
-                        //////////
                         function(reason){
                             return ($q.reject(e));
                         }
                     ).then(
-                        //////////
                         function(result){
                             var SESSIONS = result;
                             return ($http
