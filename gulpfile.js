@@ -42,7 +42,7 @@ var ORD_SRC_FILES = [
     "src/working-dir.service.js",
     "src/commit.service.js",
     "src/tree.service.js",
-    "src/lump.service.js",
+    "src/dataset.service.js",
     "src/tag.service.js",
     "src/head.service.js",
 ];

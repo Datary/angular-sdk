@@ -21,11 +21,11 @@
     
     factory.$inject = ['$q', '$http', 'ConnectionService', 'searchFactory', 
                     'MemberService', 'RepoService', 'WorkingDirService', 
-                    'CommitService', 'TreeService', 'LumpService'];
+                    'CommitService', 'TreeService', 'DatasetService'];
     
     function factory($q, $http, ConnectionService, searchFactory, 
                     MemberService, RepoService, WorkingDirService,
-                    CommitService, TreeService, LumpService){
+                    CommitService, TreeService, DatasetService){
         return {
             connection: function(){
                 return (new ConnectionService());
@@ -48,8 +48,8 @@
             tree: function(id){
                 return (new TreeService(id));
             },
-            lump: function(id){
-                return (new LumpService(id));
+            dataset: function(id){
+                return (new DatasetService(id));
             }
         };
     }

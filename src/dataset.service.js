@@ -6,21 +6,21 @@
 (function(){
     angular
         .module('dySdk')
-        .service('LumpService', service);
+        .service('DatasetService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
-            this.retrievePreview = function(){
-                return retrievePreviewFromLump(id);
-            };
-            this.retrieveExtract = function(){
-                return retrieveExtractFromLump(id);
-            };
+        return function(guid){
+            this.guid = guid;
             this.retrieveOriginal = function(){
-                return retrieveOriginalFromLump(id);
+                return retrieveOriginalFromDataset(guid);
+            };
+            this.retrievePreview = function(){
+                return retrievePreviewFromDataset(guid);
+            };
+            this.retrieveSample = function(){
+                return retrieveSampleFromDataset(guid);
             };
         };
         
@@ -29,14 +29,14 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} guid: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveContentPreviewFromLump(lump){
+        function retrieveOriginalFromDataset(guid){
             return (
                 $http
-                    .get(baseApiUrl + lump + '/preview')
+                    .get(baseApiUrl + guid + '/original')
                     .then(
                         function(r){
                             return (r.data);
@@ -45,7 +45,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -53,14 +53,14 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} guid: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveContentExtractFromLump(lump){
+        function retrievePreviewFromDataset(guid){
             return (
                 $http
-                    .get(baseApiUrl + lump + '/extract')
+                    .get(baseApiUrl + guid + '/preview')
                     .then(
                         function(r){
                             return (r.data);
@@ -69,7 +69,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -77,14 +77,14 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} guid: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveOriginalFromLump(lump){
+        function retrieveSampleFromDataset(guid){
             return (
                 $http
-                    .get(baseApiUrl + lump + '/original')
+                    .get(baseApiUrl + guid + '/sample')
                     .then(
                         function(r){
                             return (r.data);
@@ -93,7 +93,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
     }
 })();
