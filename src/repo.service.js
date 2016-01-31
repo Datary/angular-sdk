@@ -37,8 +37,8 @@
             this.retrieveRefs = function(){
                 return retrieveRefsFromRepo(guid);
             };
-            this.retrieveObject = function(object, modifier){
-                return retrieveObjectFromRepo(object, modifier, guid);
+            this.retrieveObject = function(object, modifiers){
+                return retrieveObjectFromRepo(object, guid, modifiers);
             };
             this.commitIndex = function(details){
                 return commitIndexOnRepo(details, guid);
@@ -122,7 +122,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new CommitService(r.apex, repo).retrieveFiletree() );
+                            return ( new CommitService(r.apex.commit, repo).retrieveFiletree() );
                         }
                     )
                     .then(
@@ -251,13 +251,15 @@
         /**************************************************************
          * @description 
          * 
-         * @param 
+         * @param {Object} modifiers:
          * 
          * @return 
          */
-        function retrieveObjectFromRepo(object, modifier, repo){
-            var URI =  baseApiUrl + repo + "/" + object;
-            URI = (modifier)? URI.concat("?" + modifier + "=true") : URI;
+        function retrieveObjectFromRepo(object, repo, modifiers){
+            var URI =  baseApiUrl + object;
+            if (repo || modifiers) { URI += "/?" }
+            if (repo) { URI += "namespace=" + repo + "&"}
+            if (modifiers) { for(var key in modifiers){URI += key + "=" + modifiers[key] +"&"} }
             
             return (
                 $http
