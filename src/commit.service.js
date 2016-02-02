@@ -43,13 +43,11 @@
             if (namespace) { URI += "?namespace=" + namespace }
             
             return (
-                $http
-                    .get(URI)
-                    .then(
-                        function(r){
+                $http.get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -69,11 +67,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -97,11 +94,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )

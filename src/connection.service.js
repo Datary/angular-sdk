@@ -42,8 +42,7 @@
             return (
                 $http
                     .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             var TOKEN = null;
                             //busco token en headers
                             if (r.headers('X-Set-Token')) {
@@ -57,8 +56,8 @@
                                 console.log("Could not parse token from HTTP reponse.");
                                 return $q.reject(e);
                             }
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -76,11 +75,10 @@
             return (
                 $http
                     .get(baseApiUrl + "connection/signOut")
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return r.status;
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -102,11 +100,10 @@
             return (
                 $http
                     .post(baseApiUrl + "connection/signUp", user)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -125,20 +122,17 @@
          * @return 
          */
         function signRequest(request){
+            var URI = baseApiUrl + "connection/signRequest";
+            URI += "&operation=" + request.operation;
+            URI += "&basename=" + request.basename;
+            URI += "&contentType=" + request.contentType;
             return (
                 $http
-                    .get(baseApiUrl + "connection/signRequest"
-                            + "&operation=" 
-                            + request.operation 
-                            + "&basename=" 
-                            + request.basename 
-                            + "&contentType="
-                            + request.contentType)
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )

@@ -67,11 +67,10 @@
             return (
                 $http
                     .get(baseApiUrl + repo)
-                    .then(
-                        function(r) {
+                    .then(function(r) {
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -93,18 +92,14 @@
          */
         function retrieveWorkingDirFromRepo(repo){
             return (
-                //obtengo info del `repo` (eo, _id del working_dir)
                 describeRepo(repo)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return ( new WorkingDirService(r.workingDir).describe() );
                         }
-                    )
-                    .then(
-                        function(r){
+                    ).then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -120,16 +115,13 @@
         function retrieveApexFiletreeFromRepo(repo){
             return ( 
                 describeRepo(repo)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return ( new CommitService(r.apex.commit, repo).retrieveFiletree() );
                         }
-                    )
-                    .then(
-                        function(r){
+                    ).then(function(r){
                             return (r); 
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -144,14 +136,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveReadmeFromRepo(repo){
+            var URI = baseApiUrl + repo + '/readme';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/readme')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -166,13 +158,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveLicenseFromRepo(repo){
+            var URI = baseApiUrl + repo + '/license';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/license')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
+                        }
+                    ).catch(
                         function(e){
                             return $q.reject(e);
                         }
@@ -188,14 +181,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveHeadsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/heads';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/heads')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -210,14 +203,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveTagsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/tags';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/tags')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -232,9 +225,10 @@
          * a la API, y se almacena en una variable
          */
         function retrieveRefsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/refs';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/refs')
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -264,11 +258,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -285,14 +278,14 @@
          * @return 
          */
         function commitIndexOnRepo(details, repo){
+            var URI = baseApiUrl + repo + "/index";
             return (
                 $http
-                    .post(baseApiUrl + repo + "/index", details)
-                    .then(
-                        function(r){
+                    .post(URI, details)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -309,14 +302,14 @@
          * @return 
          */
         function updateReadmeOfRepo(readme, repo){
+            var URI = baseApiUrl + repo + "/readme";
             return (
                 $http
-                    .put(baseApiUrl + repo + "/readme", readme)
-                    .then(
-                        function(r){
+                    .put(URI, readme)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -333,14 +326,14 @@
          * @return 
          */
         function updateDetailsOfRepo(details, repo){
+            var URI = baseApiUrl + repo;
             return (
                 $http
-                    .put(baseApiUrl + repo, details)
-                    .then(
-                        function(r){
+                    .put(URI, details)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -357,14 +350,14 @@
          * @return {} devuelvo el _id del repo 
          */
         function removeRepo(repo){
+            var URI = baseApiUrl + repo;
             return (
                 $http
-                    .delete(baseApiUrl + repo)
-                    .then(
-                        function(r){
+                    .delete(URI)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )

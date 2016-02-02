@@ -44,11 +44,10 @@
             return (
                 $http
                     .get(baseApiUrl + workingDir)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -66,14 +65,14 @@
          * @return {} devuelvo un objeto con la info 
          */
         function listChangesOnWorkinDir(workingDir){
+            var URI = baseApiUrl + workingDir + "/changes";
             return (
                 $http
-                    .get(baseApiUrl + workingDir + "/changes")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -91,14 +90,14 @@
          * @return {} devuelvo un objeto con la info 
          */
         function retrieveFiletreeOfWorkingDir(workingDir){
+            var URI = baseApiUrl + workingDir + "/filetree";
             return (
                 $http
-                    .get(baseApiUrl + workingDir + "/filetree")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -132,42 +131,39 @@
          * @return {} devuelvo el _id de workingDir
          */
         function stageChangeOnWorkingDir(change, workingDir){
+            var URI = baseApiUrl + workingDir + '/changes';
+            
             //############ ADD
             var DATA_AS_OBJ = {};
             var DATA_AS_BUFFER;
-            
             if (change.action === "add"){
                 if (change.filemode === 40000) {
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(r){
+                            .post(URI, change)
+                            .then(function(r){
                                     return (r);
-                                },
-                                function(e){
+                                }
+                            ).catch(function(e){
                                     return $q.reject(e);
                                 }
                             )
                     );
-                    
                 } else if (typeof change.content === "object" && !(change.content instanceof File)) {
                     //no se require transformacion alguna
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(result){
+                            .post(URI, change)
+                            .then(function(result){
                                     return (result);
-                                },
-                                function(reason){
+                                }
+                            ).catch(function(reason){
                                     return $reject(reason);
                                 }
                             )
                     );
-                
                 } else if (typeof change.content === "string") {
                     try {
                         DATA_AS_OBJ = JSON.parse(change.content);
@@ -177,24 +173,21 @@
                     change.content = DATA_AS_OBJ;
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(result){
+                            .post(URI, change)
+                            .then(function(result){
                                     return (result);
-                                },
-                                function(reason){
+                                }
+                            ).catch(function(reason){
                                     return $reject(reason);
                                 }
                             )
                     );
-                
                 } else if (typeof change.content === "object" && change.content instanceof File) {
-                    //----- Parse and Upload to Datary
+                    /////// Parse and Upload to Datary
                     if (change.content.size < 10*1024*1024 ) {
                         var READER = new FileReader();
                         var DEFERRED = $q.defer();
-                        
-                        //----- Configuracion del Reader
+                        //configuracion del Reader
                         READER.onload = function(){
                             DATA_AS_BUFFER = READER.result;
                             try {
@@ -204,27 +197,21 @@
                             }
                             change.content = DATA_AS_OBJ;
                             ($http
-                                .post(baseApiUrl + workingDir + '/changes', change)
-                                .then(
-                                    function(result){
-                                        console.log(20666666, result);
+                                .post(URI, change)
+                                .then(function(result){
                                         DEFERRED.resolve(result.status);
-                                    },
-                                    function(reason){
-                                        console.log(20777777, reason);
+                                    }
+                                ).catch(function(reason){
                                         DEFERRED.reject(reason);
                                     }
                                 )
                             );
                         };
-                        
-                        //----- Read in the dataset file as a text string.
+                        //read in the dataset file as a text string.
                         READER.readAsText(change.content, "UTF-8");
-                        
-                        //---- 
+                        //
                         return DEFERRED.promise;
-                    
-                    //----- Direct Upload to Datary
+                    /////// Direct Upload to Datary
                     } else {
                         return (
                             Upload
@@ -256,12 +243,11 @@
             } else {
                 return (
                     $http
-                        .post(baseApiUrl + workingDir + '/changes', change)
-                        .then(
-                            function(r){
+                        .post(URI, change)
+                        .then(function(r){
                                 return (r);
-                            },
-                            function(e){
+                            }
+                        ).catch(function(e){
                                 return $q.reject(e);
                             }
                         )
@@ -278,54 +264,52 @@
          * requiere haber obtenido previamente una firma valida de 
          * dicha peticion, pues de otro modo AWS rechazaria la solicitud.
          * 
+         * Upload.upload() carga a traves de `fields` datos complementarios 
+         * que en un 'form' tradicional se corresponde con los inputs. Son 
+         * datos exigidospor AWS
+         * 
          * @vid http://aws.amazon.com/articles/1434/
          * @vid https://github.com/danialfarid/angular-file-upload [for more options (headers, withCredentials...)]
          * 
          * @param {File} file:
          */
         function uploadFileToS3(file){
-            //----- Construccion de la `solicitud de firma`
+            // Construccion de la `solicitud de firma`
             var REQUEST = {
                 operation: "importFile",
                 basename: file.name,
-                contentType: (file.type === null || file.type === '') ? 
-                        'application/octet-stream' : 
-                        file.type,
+                contentType: (file.type === null || file.type === '')? 'application/octet-stream' : file.type,
             };
             
-            //----- Firma y Subidas
+            // Firma y Subidas
             var CONNECTION = new ConnectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
-                    .then(
-                        //
-                        function(result){
+                    .then(function(result){
                             return (
-                                Upload
-                                    .upload(
-                                        {
-                                            method: 'POST',
-                                            url: 'https://'+ result.bucket +'.s3.amazonaws.com/',
-                                            //headers: "",
-                                            /**datos complementarios que en un 'form' tradicional
-                                             * se corresponde con los inputs. Son datos exigidos
-                                             * por AWS*/
-                                            fields: {
-                                                key: result.key,                            //the key to store the file on S3
-                                                AWSAccessKeyId: result.AwsAccessKeyId,
-                                                acl: result.acl,
-                                                policy: result.b64Policy,                   //base64-encoded json policy
-                                                signature: result.signature,                //base64-encoded signature based on policy string
-                                                'Content-Type': result.contentType,
-                                            },
-                                            file: file,
-                                        }
-                                    )
+                                //@vid 
+                                Upload.upload(
+                                    {
+                                        method: 'POST',
+                                        url: 'https://'+ result.bucket +'.s3.amazonaws.com/',
+                                        //headers: "",
+                                        fields: {
+                                            key: result.key,                            //the key to store the file on S3
+                                            AWSAccessKeyId: result.AwsAccessKeyId,
+                                            acl: result.acl,
+                                            policy: result.b64Policy,                   //base64-encoded json policy
+                                            signature: result.signature,                //base64-encoded signature based on policy string
+                                            'Content-Type': result.contentType,
+                                        },
+                                        file: file,
+                                    }
+                                )
                             );
-                        },
-                        //
-                        function(reason){return reason;}
+                        }
+                    ).catch(function(reason){
+                            return reason;
+                        }
                     )
             );
         }//END uploadFileToS3
@@ -341,22 +325,19 @@
         function unstageChangeFromWorkingDir(change, workingDir){
             return (
                 listChangesOnWorkinDir
-                    .then(
-                        function(result){
-                        },
-                        function(reason){
-                            
+                    .then(function(result){
+                        }
+                    ).catch(function(reason){
                         }
                     ).then(
                         function(result){
                             var CHANGES = result;
                             return ($http
                                         .put(baseApiUrl + workingDir + "/changes", CHANGES)
-                                        .then(
-                                            function(result){
+                                        .then(function(result){
                                                 return (result);
-                                            },
-                                            function(reason){
+                                            }
+                                        ).catch(function(reason){
                                                 return (reason);
                                             }
                                         )

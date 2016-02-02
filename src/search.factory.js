@@ -19,7 +19,7 @@
      */
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
-            //----- Defaults
+            /////// Defaults
             var CATEGORY = (category)? category.toString() : "members";
             var PATH = (path)? path.toString() : "username";
             var HINT = (hint)? hint.toString() : ".*";
@@ -29,23 +29,21 @@
             /////// Validacion
             
             /////// Request build
-            URI =  baseApiUrl +
-                    "search" +
-                    "/" + CATEGORY +
-                    "?" + "path=" + PATH +
-                    "&" + "hint=" + HINT +
-                    "&" + "limit=" + LIMIT +
-                    "&" + "offset=" + OFFSET;
+            var URI =  baseApiUrl + "search";
+            URI += "/" + CATEGORY;
+            URI += "?" + "path=" + PATH;
+            URI += "&" + "hint=" + HINT;
+            URI += "&" + "limit=" + LIMIT;
+            URI += "&" + "offset=" + OFFSET;
             
             /////// Request
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )

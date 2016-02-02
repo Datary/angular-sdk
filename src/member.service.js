@@ -65,14 +65,14 @@
          * @return 
          */
         function describeMember(member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .get(baseApiUrl + member)
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -91,14 +91,14 @@
          * @return 
          */
         function retrieveReposFromMember(member){
+            var URI = baseApiUrl + member + "/repos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/repos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -117,14 +117,14 @@
          * @return 
          */
         function retrieveDisclosedReposFromMember(member){
+            var URI = baseApiUrl + member + "/disclosedRepos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/disclosedRepos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -143,14 +143,14 @@
          * @return 
          */
         function retrievePrivateReposFromMember(member){
+            var URI = baseApiUrl + member + "/privateRepos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/privateRepos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -169,14 +169,14 @@
          * @return 
          */
         function retrieveActivityFromMember(member){
+            var URI = baseApiUrl + member + "/activity";
             return (
                 $http
-                    .get(baseApiUrl + member + "/activity")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -195,14 +195,14 @@
          * @return 
          */
         function retrievePublicActivityFromMember(member){
+            var URI = baseApiUrl + member + "/publicActivity";
             return (
                 $http
-                    .get(baseApiUrl + member + "/publicActivity")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -221,14 +221,14 @@
          * @return 
          */
         function retrieveSessionsFromMember(member){
+            var URI = baseApiUrl + member + "/sessions";
             return (
                 $http
-                    .get(baseApiUrl + member + "/sessions")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -245,15 +245,14 @@
          * @return 
          */
         function createRepoForMember(repo, member){
+            var URI = baseApiUrl + member + '/repos';
             return  (
                 $http
-                    .post(baseApiUrl + member + '/repos', repo )
-                    .then(
-                        function(r){
-                            //devuelvo el _id de repo agregado
+                    .post(URI, repo)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -270,14 +269,14 @@
          * @return 
          */
         function updateProfileOfMember(profile, member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .put(baseApiUrl + member, profile)
-                    .then(
-                        function(r){
+                    .put(URI, profile)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -295,14 +294,14 @@
          * @return 
          */
         function changeUsernameOfMember(username, member){
+            var URI = baseApiUrl + member + "/username";
             return (
                 $http
-                    .put(baseApiUrl + member + "/username", member)
-                    .then(
-                        function(r){
+                    .put(URI, member)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -321,7 +320,7 @@
          * @return 
          */
         function changePasswordOfMember(oldPassword, newPassword, member){
-            //body de la request 
+            var URI = baseApiUrl + member + "/password";
             var BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
@@ -329,12 +328,11 @@
             
             return (
                 $http
-                    .put(baseApiUrl + member + "/password", BODY)
-                    .then(
-                        function(r){
+                    .put(URI, BODY)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -351,14 +349,14 @@
          * @return {} devuelvo el _id del user eliminado 
          */
         function removeMember(member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .delete(baseApiUrl + member)
-                    .then(
-                        function(r){
+                    .delete(URI)
+                    .then(function(r){
                             return (member);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
