@@ -33,3 +33,11 @@
 
 * Adopcion de convencion __pascal case__ en los nombres de los __services__. 
 * Remocion del prefijo `dy-` en los nombres de __services__, __factories__ ...
+
+
+
+## v0.1.0 (2015-10-24)
+
+#### New features
+
+* Primera version estable del __SDK__.

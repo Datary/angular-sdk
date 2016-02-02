@@ -16,6 +16,7 @@
  * @description
  * https://docs.angularjs.org/api/ng/service/$http
  * Se inyecta en las `apps`, no en los `controllers` particulares
+ * 
  ******************************************************************************/
 (function(){
     angular
@@ -112,11 +113,11 @@
     
     factory.$inject = ['$q', '$http', 'ConnectionService', 'searchFactory', 
                     'MemberService', 'RepoService', 'WorkingDirService', 
-                    'CommitService', 'TreeService', 'LumpService'];
+                    'CommitService', 'TreeService', 'DatasetService'];
     
     function factory($q, $http, ConnectionService, searchFactory, 
                     MemberService, RepoService, WorkingDirService,
-                    CommitService, TreeService, LumpService){
+                    CommitService, TreeService, DatasetService){
         return {
             connection: function(){
                 return (new ConnectionService());
@@ -124,23 +125,23 @@
             search: function(category, path, pattern, limit, offset){
                 return searchFactory(category, path, pattern, limit, offset);
             },
-            member: function(id){
-                return (new MemberService(id));
+            member: function(guid){
+                return (new MemberService(guid));
             },
-            repo:function(id){
-                return (new RepoService(id));
+            repo:function(guid){
+                return (new RepoService(guid));
             },
-            workingDir: function(id){
-                return (new WorkingDirService(id));
+            workingDir: function(guid){
+                return (new WorkingDirService(guid));
             },
-            commit: function(id, namespace){
-                return (new CommitService(id, namespace));
+            commit: function(guid, namespace){
+                return (new CommitService(guid, namespace));
             },
-            tree: function(id){
-                return (new TreeService(id));
+            tree: function(guid, namespace){
+                return (new TreeService(guid, namespace));
             },
-            lump: function(id){
-                return (new LumpService(id));
+            dataset: function(guid, namespace){
+                return (new DatasetService(guid, namespace));
             }
         };
     }
@@ -167,37 +168,27 @@
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
             //----- Defaults
-            var $CATEGORY = (category)?
-                category.toString()
-                : "members";
-            var $PATH = (path)?
-                path.toString()
-                : "username";
-            var $HINT = (hint)?
-                hint.toString()
-                : ".*";
-            var $LIMIT = (limit)?
-                limit.toString()
-                : "25";
-            var $OFFSET = (offset)?
-                offset.toString()
-                : "0";
+            var CATEGORY = (category)? category.toString() : "members";
+            var PATH = (path)? path.toString() : "username";
+            var HINT = (hint)? hint.toString() : ".*";
+            var LIMIT = (limit)? limit.toString() : "25";
+            var OFFSET = (offset)? offset.toString() : "0";
             
-            //----- Validacion
+            /////// Validacion
             
-            //----- Request build
-            $URI =  baseApiUrl +
+            /////// Request build
+            URI =  baseApiUrl +
                     "search" +
-                    "/" + $CATEGORY +
-                    "?" + "path=" + $PATH +
-                    "&" + "hint=" + $HINT +
-                    "&" + "limit=" + $LIMIT +
-                    "&" + "offset=" + $OFFSET;
+                    "/" + CATEGORY +
+                    "?" + "path=" + PATH +
+                    "&" + "hint=" + HINT +
+                    "&" + "limit=" + LIMIT +
+                    "&" + "offset=" + OFFSET;
             
-            //----- Request
+            /////// Request
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -206,7 +197,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         };
     }
 })();
@@ -256,17 +247,15 @@
                     .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
                     .then(
                         function(r){
-                            var $TOKEN = null;
+                            var TOKEN = null;
                             //busco token en headers
                             if (r.headers('X-Set-Token')) {
-                                $TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
-                                return $TOKEN;
-                            
+                                TOKEN = r.headers('X-Set-Token');   //!!headers(..), no headers[..]
+                                return TOKEN;
                             //busco token en el body
                             } else if (r.data && r.data.authToken) {
-                                $TOKEN = r.data.authToken;
-                                return $TOKEN;
-                            
+                                TOKEN = r.data.authToken;
+                                return TOKEN;
                             } else {
                                 console.log("Could not parse token from HTTP reponse.");
                                 return $q.reject(e);
@@ -275,8 +264,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -297,8 +286,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -323,8 +312,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
         
         
@@ -355,8 +344,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
     }
 })();
@@ -373,46 +362,46 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function(){
-                return describeMember(id);
+                return describeMember(guid);
             };
             this.retrieveRepos = function(){
-                return retrieveReposFromMember(id);
+                return retrieveReposFromMember(guid);
             };
             this.retrieveDisclosedRepos = function(){
-                return retrieveDisclosedReposFromMember(id);
+                return retrieveDisclosedReposFromMember(guid);
             };
             this.retrievePrivateRepos = function(){
-                return retrievePrivateReposFromMember(id);
+                return retrievePrivateReposFromMember(guid);
             };
             this.retrieveActivity = function(){
-                return retrieveActivityFromMember(id);
+                return retrieveActivityFromMember(guid);
             };
             this.retrievePublicActivity = function(){
-                return retrievePublicActivityFromMember(id);
+                return retrievePublicActivityFromMember(guid);
             };
             this.retrieveSessions = function(){
-                return retrieveSessionsFromMember(id);
+                return retrieveSessionsFromMember(guid);
             };
             this.createRepo = function(repo){
-                return createRepoForMember(repo, id);
+                return createRepoForMember(repo, guid);
             };
             this.updateProfile = function(profile){
-                return updateProfileOfMember(profile, id);
+                return updateProfileOfMember(profile, guid);
             };
             this.changeUsername = function(username){
-                return changeUsernameOfMember(username, id);
+                return changeUsernameOfMember(username, guid);
             };
             this.changePassword = function(oldPassword, newPassword){
-                return changePasswordOfMember(oldPassword, newPassword, id);
+                return changePasswordOfMember(oldPassword, newPassword, guid);
             };
             this.remove = function(){
-                return removeMember(id);
+                return removeMember(guid);
             };
             this.removeSession = function(session){
-                return removeSessionFromMember(session, id);
+                return removeSessionFromMember(session, guid);
             };
         };
         
@@ -438,7 +427,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -464,7 +453,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -490,7 +479,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -542,7 +531,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -568,7 +557,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -594,7 +583,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -619,7 +608,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -643,7 +632,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -668,7 +657,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -684,14 +673,14 @@
          */
         function changePasswordOfMember(oldPassword, newPassword, member){
             //body de la request 
-            var $BODY = {
+            var BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
             };
             
             return (
                 $http
-                    .put(baseApiUrl + member + "/password", $BODY)
+                    .put(baseApiUrl + member + "/password", BODY)
                     .then(
                         function(r){
                             return (r);
@@ -700,7 +689,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -724,7 +713,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -746,26 +735,19 @@
             return (
                 retrieveSessionsFromMember
                     .then(
-                        ///////////
                         function(result){
                             //indice de la session que desea eliminarse
-                            var INDEX = result
-                                            .map(function(e, i, a){return e.jti;})
-                                            .indexOf(session);
-                            
+                            var INDEX = result.map( function(e){return e.jti} ).indexOf(session);
                             //elimino la session correspondiente al jti
                             result.splice(INDEX, 1);
-                            
                             //genero el array de sessiones tal cual debe almacenarse
                             var ARR = result.map(function(e, i, a){return e.encoding;});
                             return ARR;
                         },
-                        //////////
                         function(reason){
                             return ($q.reject(e));
                         }
                     ).then(
-                        //////////
                         function(result){
                             var SESSIONS = result;
                             return ($http
@@ -798,46 +780,46 @@
     service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];
     
     function service($q, $http, baseApiUrl, WorkingDirService, CommitService){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function(){
-                return describeRepo(id);
+                return describeRepo(guid);
             };
             this.retrieveWorkingDir = function(){
-                return retrieveWorkingDirFromRepo(id);
+                return retrieveWorkingDirFromRepo(guid);
             };
             this.retrieveApexFiletree = function(){
-                return retrieveApexFiletreeFromRepo(id);
+                return retrieveApexFiletreeFromRepo(guid);
             };
             this.retrieveReadme = function(){
-                return retrieveReadmeFromRepo(id);
+                return retrieveReadmeFromRepo(guid);
             };
             this.retrieveLicense = function(){
-                return retrieveLicenseFromRepo(id);
+                return retrieveLicenseFromRepo(guid);
             };
             this.retrieveHeads = function(){
-                return retrieveHeadsFromRepo(id);
+                return retrieveHeadsFromRepo(guid);
             };
             this.retrieveTags = function(){
-                return retrieveTagsFromRepo(id);
+                return retrieveTagsFromRepo(guid);
             };
             this.retrieveRefs = function(){
-                return retrieveRefsFromRepo(id);
+                return retrieveRefsFromRepo(guid);
             };
-            this.retrieveObject = function(object, modifier){
-                return retrieveObjectFromRepo(object, modifier, id);
+            this.retrieveObject = function(object, modifiers){
+                return retrieveObjectFromRepo(object, guid, modifiers);
             };
             this.commitIndex = function(details){
-                return commitIndexOnRepo(details, id);
+                return commitIndexOnRepo(details, guid);
             };
             this.updateReadme = function(readme){
-                return updateReadmeOfRepo(readme, id);
+                return updateReadmeOfRepo(readme, guid);
             };
             this.updateDetails = function(details){
-                return updateDetailsOfRepo(details, id);
+                return updateDetailsOfRepo(details, guid);
             };
             this.remove = function(){
-                return removeRepo(id);
+                return removeRepo(guid);
             };
         };
         
@@ -862,7 +844,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -894,8 +876,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return promise
+                    )
+            );
         }
         
         
@@ -909,7 +891,7 @@
                 describeRepo(repo)
                     .then(
                         function(r){
-                            return ( new CommitService(r.apex, repo).retrieveFiletree() );
+                            return ( new CommitService(r.apex.commit, repo).retrieveFiletree() );
                         }
                     )
                     .then(
@@ -920,7 +902,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -1038,19 +1020,19 @@
         /**************************************************************
          * @description 
          * 
-         * @param 
+         * @param {Object} modifiers:
          * 
          * @return 
          */
-        function retrieveObjectFromRepo(object, modifier, repo){
-            var $URI =  baseApiUrl + repo + "/" + object;
-            $URI = (modifier)?
-                        $URI.concat("?" + modifier + "=true")
-                        : $URI;
+        function retrieveObjectFromRepo(object, repo, modifiers){
+            var URI =  baseApiUrl + object;
+            if (repo || modifiers) { URI += "/?" }
+            if (repo) { URI += "namespace=" + repo + "&"}
+            if (modifiers) { for(var key in modifiers){URI += key + "=" + modifiers[key] +"&"} }
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1172,22 +1154,22 @@
     service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
     
     function service($q, $http, baseApiUrl, ConnectionService, Upload){
-        return function(id){
-            this._id = id;
+        return function(guid){
+            this.guid = guid;
             this.describe = function (){
-                return describeWorkingDir(id);
+                return describeWorkingDir(guid);
             };
             this.listChanges = function (){
-                return listChangesOnWorkinDir(id);
+                return listChangesOnWorkinDir(guid);
             };
             this.retrieveFiletree = function (){
-                return retrieveFiletreeOfWorkingDir(id);
+                return retrieveFiletreeOfWorkingDir(guid);
             };
             this.stageChange = function(change){
-                return stageChangeOnWorkingDir(change, id);
+                return stageChangeOnWorkingDir(change, guid);
             };
             this.unstageChange = function(change){
-                return unstageChangeFromWorkingDir(change, id);
+                return unstageChangeFromWorkingDir(change, guid);
             };
         };
         
@@ -1196,7 +1178,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -1221,7 +1203,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -1246,7 +1228,7 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} workingDir: _id del WorkingDir del que se 
+         * @param {String} workingDir: uuid del WorkingDir del que se 
          * solicita informacion
          * 
          * @return {} devuelvo un objeto con la info 
@@ -1503,15 +1485,12 @@
             return (
                 listChangesOnWorkinDir
                     .then(
-                        ///////////
                         function(result){
                         },
-                        ////////
                         function(reason){
                             
                         }
                     ).then(
-                        //////////
                         function(result){
                             var CHANGES = result;
                             return ($http
@@ -1545,15 +1524,18 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id, namespace){
-            this._id = id;
+        return function(guid, namespace){
+            this.guid = guid;
             this.namespace = namespace;
             
+            this.describeCommit = function(){
+                return describeCommit(guid, namespace);
+            };
             this.retrieveBranch = function(){
-                return retrieveBranchFromCommit(id, namespace);
+                return retrieveBranchFromCommit(guid, namespace);
             };
             this.retrieveFiletree = function(){
-                return retrieveFiletreeFromCommit(id, namespace);
+                return retrieveFiletreeFromCommit(guid, namespace);
             };
         };
         
@@ -1561,19 +1543,21 @@
         
         /**************************************************************
          * @description 
+         * La llamada devuelve un objeto con la info de un commit, es
+         * decir, con campos 
+         * 
+         * @param {String} tree: sha1 del commit que se consulta
+         * 
+         * @return {}:
          */
-        function retrieveBranchFromCommit(commit, namespace){
-            var $URI = baseApiUrl;
-            $URI = (namespace)?
-                        $URI.concat(namespace + "/")
-                        :$URI;
-            $URI = (namespace)?
-                        $URI.concat(commit + "?branch=true")
-                        :$URI.concat(commit + "/branch");
+        function describeCommit(commit, namespace){
+            var URI = baseApiUrl;
+            URI += commit;
+            if (namespace) { URI += "?namespace=" + namespace }
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1581,8 +1565,32 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         */
+        function retrieveBranchFromCommit(commit, namespace){
+            var URI = baseApiUrl;
+            URI += commit + "/branch";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
+            return (
+                $http
+                    .get(URI)
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
         }
         
         
@@ -1595,18 +1603,13 @@
          * @return {} devuelvo la `info` del tree 
          */
         function retrieveFiletreeFromCommit(commit, namespace){
-            //construyo progresivamente la URI
-            var $URI = baseApiUrl;
-            $URI = (namespace)?
-                        $URI.concat(namespace + "/")
-                        :$URI;
-            $URI = (namespace)?
-                        $URI.concat(commit + "?filetree=true")
-                        :$URI.concat(commit + "/filetree");
+            var URI = baseApiUrl;
+            URI += commit + "/filetree";
+            if (namespace) { URI += "?namespace=" + namespace }
             
             return (
                 $http
-                    .get($URI)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1614,8 +1617,8 @@
                         function(e){
                             return $q.reject(e);
                         }
-                    )//END then
-            );//END return
+                    )
+            );
         }
     }
 })();
@@ -1632,10 +1635,12 @@
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
+        return function(guid, namespace){
+            this.guid = guid;
+            this.namespace = namespace;
+            
             this.describe = function(){
-                return describeTree(id);
+                return describeTree(guid, namespace);
             };
         };
         
@@ -1644,16 +1649,19 @@
         /**************************************************************
          * @description 
          * La llamada devuelve un objeto con la info de un tree, es
-         * decir, con campos _id y entries, que es un array de entradas.
+         * decir, con campos 
          * 
-         * @param {ObjectId} tree: _id del tree que se consulta
+         * @param {String} tree: sha1 del tree que se consulta
          * 
          * @return {}:
          */
-        function describeTree(tree){
+        function describeTree(tree, namespace){
+            var URI = baseApiUrl + tree;
+            if (namespace) { URI += "?namespace=" + namespace }
+            
             return (
                 $http
-                    .get(baseApiUrl + tree)
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1662,7 +1670,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
     }
 })();
@@ -1674,21 +1682,32 @@
 (function(){
     angular
         .module('dySdk')
-        .service('LumpService', service);
+        .service('DatasetService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
     
     function service($q, $http, baseApiUrl){
-        return function(id){
-            this._id = id;
-            this.retrievePreview = function(){
-                return retrievePreviewFromLump(id);
-            };
-            this.retrieveExtract = function(){
-                return retrieveExtractFromLump(id);
+        return function(guid, namespace){
+            this.guid = guid;
+            this.namespace = namespace;
+            
+            this.describe = function(){
+                return describe(guid, namespace);
             };
             this.retrieveOriginal = function(){
-                return retrieveOriginalFromLump(id);
+                return retrieveOriginalFromDataset(guid, namespace);
+            };
+            this.retrievePreview = function(){
+                return retrievePreviewFromDataset(guid, namespace);
+            };
+            this.retrieveSample = function(){
+                return retrieveSampleFromDataset(guid, namespace);
+            };
+            this.retrieveMetadata = function(){
+                return retrieveMetadataFromDataset(guid, namespace);
+            };
+            this.retrieveBlob = function(){
+                return retrieveBlobFromDataset(guid, namespace);
             };
         };
         
@@ -1697,14 +1716,17 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} dataset: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveContentPreviewFromLump(lump){
+        function describe(dataset, namespace){
+            var URI = baseApiUrl + dataset;
+            if (namespace) { URI += "?namespace=" + namespace }
+            
             return (
                 $http
-                    .get(baseApiUrl + lump + '/preview')
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1713,7 +1735,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -1721,14 +1743,17 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} dataset: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveContentExtractFromLump(lump){
+        function retrieveOriginalFromDataset(dataset, namespace){
+            var URI = baseApiUrl + dataset + "/original";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
             return (
                 $http
-                    .get(baseApiUrl + lump + '/extract')
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1737,7 +1762,7 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
         }
         
         
@@ -1745,14 +1770,17 @@
         /**************************************************************
          * @description 
          * 
-         * @param {ObjectId} lump: _id del lump que se consulta
+         * @param {String} dataset: sha1 del dataset que se consulta
          * 
          * @return {}:
          */
-        function retrieveOriginalFromLump(lump){
+        function retrievePreviewFromDataset(dataset, namespace){
+            var URI = baseApiUrl + dataset + "/preview";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
             return (
                 $http
-                    .get(baseApiUrl + lump + '/original')
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1761,7 +1789,88 @@
                             return $q.reject(e);
                         }
                     )
-            );//END return
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param {String} dataset: sha1 del dataset que se consulta
+         * 
+         * @return {}:
+         */
+        function retrieveSampleFromDataset(dataset, namespace){
+            var URI = baseApiUrl + dataset + "/sample";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
+            return (
+                $http
+                    .get(URI)
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param {String} dataset: sha1 del dataset que se consulta
+         * 
+         * @return {}:
+         */
+        function retrieveMetadataFromDataset(dataset, namespace){
+            var URI = baseApiUrl + dataset + "/metadata";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
+            return (
+                $http
+                    .get(URI)
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @description 
+         * 
+         * @param {String} dataset: sha1 del dataset que se consulta
+         * 
+         * @return {}:
+         */
+        function retrieveBlobFromDataset(dataset, namespace){
+            var URI = baseApiUrl + dataset + "/blob";
+            if (namespace) { URI += "?namespace=" + namespace }
+            
+            return (
+                $http
+                    .get(URI)
+                    .then(
+                        function(r){
+                            return (r.data);
+                        },
+                        function(e){
+                            return $q.reject(e);
+                        }
+                    )
+            );
         }
     }
 })();
