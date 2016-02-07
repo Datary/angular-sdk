@@ -167,7 +167,7 @@
      */
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
-            //----- Defaults
+            /////// Defaults
             var CATEGORY = (category)? category.toString() : "members";
             var PATH = (path)? path.toString() : "username";
             var HINT = (hint)? hint.toString() : ".*";
@@ -177,23 +177,21 @@
             /////// Validacion
             
             /////// Request build
-            URI =  baseApiUrl +
-                    "search" +
-                    "/" + CATEGORY +
-                    "?" + "path=" + PATH +
-                    "&" + "hint=" + HINT +
-                    "&" + "limit=" + LIMIT +
-                    "&" + "offset=" + OFFSET;
+            var URI =  baseApiUrl + "search";
+            URI += "/" + CATEGORY;
+            URI += "?" + "path=" + PATH;
+            URI += "&" + "hint=" + HINT;
+            URI += "&" + "limit=" + LIMIT;
+            URI += "&" + "offset=" + OFFSET;
             
             /////// Request
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -245,8 +243,7 @@
             return (
                 $http
                     .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             var TOKEN = null;
                             //busco token en headers
                             if (r.headers('X-Set-Token')) {
@@ -260,8 +257,8 @@
                                 console.log("Could not parse token from HTTP reponse.");
                                 return $q.reject(e);
                             }
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -279,11 +276,10 @@
             return (
                 $http
                     .get(baseApiUrl + "connection/signOut")
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return r.status;
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -305,11 +301,10 @@
             return (
                 $http
                     .post(baseApiUrl + "connection/signUp", user)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -328,20 +323,17 @@
          * @return 
          */
         function signRequest(request){
+            var URI = baseApiUrl + "connection/signRequest";
+            URI += "&operation=" + request.operation;
+            URI += "&basename=" + request.basename;
+            URI += "&contentType=" + request.contentType;
             return (
                 $http
-                    .get(baseApiUrl + "connection/signRequest"
-                            + "&operation=" 
-                            + request.operation 
-                            + "&basename=" 
-                            + request.basename 
-                            + "&contentType="
-                            + request.contentType)
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -416,14 +408,14 @@
          * @return 
          */
         function describeMember(member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .get(baseApiUrl + member)
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -442,14 +434,14 @@
          * @return 
          */
         function retrieveReposFromMember(member){
+            var URI = baseApiUrl + member + "/repos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/repos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -468,14 +460,14 @@
          * @return 
          */
         function retrieveDisclosedReposFromMember(member){
+            var URI = baseApiUrl + member + "/disclosedRepos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/disclosedRepos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -494,14 +486,14 @@
          * @return 
          */
         function retrievePrivateReposFromMember(member){
+            var URI = baseApiUrl + member + "/privateRepos";
             return (
                 $http
-                    .get(baseApiUrl + member + "/privateRepos")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -520,14 +512,14 @@
          * @return 
          */
         function retrieveActivityFromMember(member){
+            var URI = baseApiUrl + member + "/activity";
             return (
                 $http
-                    .get(baseApiUrl + member + "/activity")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -546,14 +538,14 @@
          * @return 
          */
         function retrievePublicActivityFromMember(member){
+            var URI = baseApiUrl + member + "/publicActivity";
             return (
                 $http
-                    .get(baseApiUrl + member + "/publicActivity")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -572,14 +564,14 @@
          * @return 
          */
         function retrieveSessionsFromMember(member){
+            var URI = baseApiUrl + member + "/sessions";
             return (
                 $http
-                    .get(baseApiUrl + member + "/sessions")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -596,15 +588,14 @@
          * @return 
          */
         function createRepoForMember(repo, member){
+            var URI = baseApiUrl + member + '/repos';
             return  (
                 $http
-                    .post(baseApiUrl + member + '/repos', repo )
-                    .then(
-                        function(r){
-                            //devuelvo el _id de repo agregado
+                    .post(URI, repo)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -621,14 +612,14 @@
          * @return 
          */
         function updateProfileOfMember(profile, member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .put(baseApiUrl + member, profile)
-                    .then(
-                        function(r){
+                    .put(URI, profile)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -646,14 +637,14 @@
          * @return 
          */
         function changeUsernameOfMember(username, member){
+            var URI = baseApiUrl + member + "/username";
             return (
                 $http
-                    .put(baseApiUrl + member + "/username", member)
-                    .then(
-                        function(r){
+                    .put(URI, member)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -672,7 +663,7 @@
          * @return 
          */
         function changePasswordOfMember(oldPassword, newPassword, member){
-            //body de la request 
+            var URI = baseApiUrl + member + "/password";
             var BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
@@ -680,12 +671,11 @@
             
             return (
                 $http
-                    .put(baseApiUrl + member + "/password", BODY)
-                    .then(
-                        function(r){
+                    .put(URI, BODY)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -702,14 +692,14 @@
          * @return {} devuelvo el _id del user eliminado 
          */
         function removeMember(member){
+            var URI = baseApiUrl + member;
             return (
                 $http
-                    .delete(baseApiUrl + member)
-                    .then(
-                        function(r){
+                    .delete(URI)
+                    .then(function(r){
                             return (member);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -836,11 +826,10 @@
             return (
                 $http
                     .get(baseApiUrl + repo)
-                    .then(
-                        function(r) {
+                    .then(function(r) {
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -862,18 +851,14 @@
          */
         function retrieveWorkingDirFromRepo(repo){
             return (
-                //obtengo info del `repo` (eo, _id del working_dir)
                 describeRepo(repo)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return ( new WorkingDirService(r.workingDir).describe() );
                         }
-                    )
-                    .then(
-                        function(r){
+                    ).then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -889,16 +874,13 @@
         function retrieveApexFiletreeFromRepo(repo){
             return ( 
                 describeRepo(repo)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return ( new CommitService(r.apex.commit, repo).retrieveFiletree() );
                         }
-                    )
-                    .then(
-                        function(r){
+                    ).then(function(r){
                             return (r); 
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -913,14 +895,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveReadmeFromRepo(repo){
+            var URI = baseApiUrl + repo + '/readme';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/readme')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -935,13 +917,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveLicenseFromRepo(repo){
+            var URI = baseApiUrl + repo + '/license';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/license')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
+                        }
+                    ).catch(
                         function(e){
                             return $q.reject(e);
                         }
@@ -957,14 +940,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveHeadsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/heads';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/heads')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -979,14 +962,14 @@
          * a la API, y se almacena en una variable
          */
         function retrieveTagsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/tags';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/tags')
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1001,9 +984,10 @@
          * a la API, y se almacena en una variable
          */
         function retrieveRefsFromRepo(repo){
+            var URI = baseApiUrl + repo + '/refs';
             return (
                 $http
-                    .get(baseApiUrl + repo + '/refs')
+                    .get(URI)
                     .then(
                         function(r){
                             return (r.data);
@@ -1033,11 +1017,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1054,14 +1037,14 @@
          * @return 
          */
         function commitIndexOnRepo(details, repo){
+            var URI = baseApiUrl + repo + "/index";
             return (
                 $http
-                    .post(baseApiUrl + repo + "/index", details)
-                    .then(
-                        function(r){
+                    .post(URI, details)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1078,14 +1061,14 @@
          * @return 
          */
         function updateReadmeOfRepo(readme, repo){
+            var URI = baseApiUrl + repo + "/readme";
             return (
                 $http
-                    .put(baseApiUrl + repo + "/readme", readme)
-                    .then(
-                        function(r){
+                    .put(URI, readme)
+                    .then(function(r){
                             return (r);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1102,14 +1085,14 @@
          * @return 
          */
         function updateDetailsOfRepo(details, repo){
+            var URI = baseApiUrl + repo;
             return (
                 $http
-                    .put(baseApiUrl + repo, details)
-                    .then(
-                        function(r){
+                    .put(URI, details)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1126,14 +1109,14 @@
          * @return {} devuelvo el _id del repo 
          */
         function removeRepo(repo){
+            var URI = baseApiUrl + repo;
             return (
                 $http
-                    .delete(baseApiUrl + repo)
-                    .then(
-                        function(r){
+                    .delete(URI)
+                    .then(function(r){
                             return (repo);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1187,11 +1170,10 @@
             return (
                 $http
                     .get(baseApiUrl + workingDir)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -1209,14 +1191,14 @@
          * @return {} devuelvo un objeto con la info 
          */
         function listChangesOnWorkinDir(workingDir){
+            var URI = baseApiUrl + workingDir + "/changes";
             return (
                 $http
-                    .get(baseApiUrl + workingDir + "/changes")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -1234,14 +1216,14 @@
          * @return {} devuelvo un objeto con la info 
          */
         function retrieveFiletreeOfWorkingDir(workingDir){
+            var URI = baseApiUrl + workingDir + "/filetree";
             return (
                 $http
-                    .get(baseApiUrl + workingDir + "/filetree")
-                    .then(
-                        function(r){
+                    .get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return ($q.reject(e));
                         }
                     )
@@ -1275,42 +1257,39 @@
          * @return {} devuelvo el _id de workingDir
          */
         function stageChangeOnWorkingDir(change, workingDir){
+            var URI = baseApiUrl + workingDir + '/changes';
+            
             //############ ADD
             var DATA_AS_OBJ = {};
             var DATA_AS_BUFFER;
-            
             if (change.action === "add"){
                 if (change.filemode === 40000) {
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(r){
+                            .post(URI, change)
+                            .then(function(r){
                                     return (r);
-                                },
-                                function(e){
+                                }
+                            ).catch(function(e){
                                     return $q.reject(e);
                                 }
                             )
                     );
-                    
                 } else if (typeof change.content === "object" && !(change.content instanceof File)) {
                     //no se require transformacion alguna
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(result){
+                            .post(URI, change)
+                            .then(function(result){
                                     return (result);
-                                },
-                                function(reason){
+                                }
+                            ).catch(function(reason){
                                     return $reject(reason);
                                 }
                             )
                     );
-                
                 } else if (typeof change.content === "string") {
                     try {
                         DATA_AS_OBJ = JSON.parse(change.content);
@@ -1320,24 +1299,21 @@
                     change.content = DATA_AS_OBJ;
                     return (
                         $http
-                            .post(baseApiUrl + workingDir + '/changes', change)
-                            .then(
-                                function(result){
+                            .post(URI, change)
+                            .then(function(result){
                                     return (result);
-                                },
-                                function(reason){
+                                }
+                            ).catch(function(reason){
                                     return $reject(reason);
                                 }
                             )
                     );
-                
                 } else if (typeof change.content === "object" && change.content instanceof File) {
-                    //----- Parse and Upload to Datary
+                    /////// Parse and Upload to Datary
                     if (change.content.size < 10*1024*1024 ) {
                         var READER = new FileReader();
                         var DEFERRED = $q.defer();
-                        
-                        //----- Configuracion del Reader
+                        //configuracion del Reader
                         READER.onload = function(){
                             DATA_AS_BUFFER = READER.result;
                             try {
@@ -1347,27 +1323,21 @@
                             }
                             change.content = DATA_AS_OBJ;
                             ($http
-                                .post(baseApiUrl + workingDir + '/changes', change)
-                                .then(
-                                    function(result){
-                                        console.log(20666666, result);
+                                .post(URI, change)
+                                .then(function(result){
                                         DEFERRED.resolve(result.status);
-                                    },
-                                    function(reason){
-                                        console.log(20777777, reason);
+                                    }
+                                ).catch(function(reason){
                                         DEFERRED.reject(reason);
                                     }
                                 )
                             );
                         };
-                        
-                        //----- Read in the dataset file as a text string.
+                        //read in the dataset file as a text string.
                         READER.readAsText(change.content, "UTF-8");
-                        
-                        //---- 
+                        //
                         return DEFERRED.promise;
-                    
-                    //----- Direct Upload to Datary
+                    /////// Direct Upload to Datary
                     } else {
                         return (
                             Upload
@@ -1399,12 +1369,11 @@
             } else {
                 return (
                     $http
-                        .post(baseApiUrl + workingDir + '/changes', change)
-                        .then(
-                            function(r){
+                        .post(URI, change)
+                        .then(function(r){
                                 return (r);
-                            },
-                            function(e){
+                            }
+                        ).catch(function(e){
                                 return $q.reject(e);
                             }
                         )
@@ -1421,54 +1390,52 @@
          * requiere haber obtenido previamente una firma valida de 
          * dicha peticion, pues de otro modo AWS rechazaria la solicitud.
          * 
+         * Upload.upload() carga a traves de `fields` datos complementarios 
+         * que en un 'form' tradicional se corresponde con los inputs. Son 
+         * datos exigidospor AWS
+         * 
          * @vid http://aws.amazon.com/articles/1434/
          * @vid https://github.com/danialfarid/angular-file-upload [for more options (headers, withCredentials...)]
          * 
          * @param {File} file:
          */
         function uploadFileToS3(file){
-            //----- Construccion de la `solicitud de firma`
+            // Construccion de la `solicitud de firma`
             var REQUEST = {
                 operation: "importFile",
                 basename: file.name,
-                contentType: (file.type === null || file.type === '') ? 
-                        'application/octet-stream' : 
-                        file.type,
+                contentType: (file.type === null || file.type === '')? 'application/octet-stream' : file.type,
             };
             
-            //----- Firma y Subidas
+            // Firma y Subidas
             var CONNECTION = new ConnectionService();
             return (
                 CONNECTION
                     .signRequest(REQUEST)
-                    .then(
-                        //
-                        function(result){
+                    .then(function(result){
                             return (
-                                Upload
-                                    .upload(
-                                        {
-                                            method: 'POST',
-                                            url: 'https://'+ result.bucket +'.s3.amazonaws.com/',
-                                            //headers: "",
-                                            /**datos complementarios que en un 'form' tradicional
-                                             * se corresponde con los inputs. Son datos exigidos
-                                             * por AWS*/
-                                            fields: {
-                                                key: result.key,                            //the key to store the file on S3
-                                                AWSAccessKeyId: result.AwsAccessKeyId,
-                                                acl: result.acl,
-                                                policy: result.b64Policy,                   //base64-encoded json policy
-                                                signature: result.signature,                //base64-encoded signature based on policy string
-                                                'Content-Type': result.contentType,
-                                            },
-                                            file: file,
-                                        }
-                                    )
+                                //@vid 
+                                Upload.upload(
+                                    {
+                                        method: 'POST',
+                                        url: 'https://'+ result.bucket +'.s3.amazonaws.com/',
+                                        //headers: "",
+                                        fields: {
+                                            key: result.key,                            //the key to store the file on S3
+                                            AWSAccessKeyId: result.AwsAccessKeyId,
+                                            acl: result.acl,
+                                            policy: result.b64Policy,                   //base64-encoded json policy
+                                            signature: result.signature,                //base64-encoded signature based on policy string
+                                            'Content-Type': result.contentType,
+                                        },
+                                        file: file,
+                                    }
+                                )
                             );
-                        },
-                        //
-                        function(reason){return reason;}
+                        }
+                    ).catch(function(reason){
+                            return reason;
+                        }
                     )
             );
         }//END uploadFileToS3
@@ -1484,22 +1451,19 @@
         function unstageChangeFromWorkingDir(change, workingDir){
             return (
                 listChangesOnWorkinDir
-                    .then(
-                        function(result){
-                        },
-                        function(reason){
-                            
+                    .then(function(result){
+                        }
+                    ).catch(function(reason){
                         }
                     ).then(
                         function(result){
                             var CHANGES = result;
                             return ($http
                                         .put(baseApiUrl + workingDir + "/changes", CHANGES)
-                                        .then(
-                                            function(result){
+                                        .then(function(result){
                                                 return (result);
-                                            },
-                                            function(reason){
+                                            }
+                                        ).catch(function(reason){
                                                 return (reason);
                                             }
                                         )
@@ -1556,13 +1520,11 @@
             if (namespace) { URI += "?namespace=" + namespace }
             
             return (
-                $http
-                    .get(URI)
-                    .then(
-                        function(r){
+                $http.get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1582,11 +1544,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1610,11 +1571,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1662,11 +1622,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1727,11 +1686,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1754,11 +1712,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1781,11 +1738,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1808,11 +1764,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1835,11 +1790,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )
@@ -1862,11 +1816,10 @@
             return (
                 $http
                     .get(URI)
-                    .then(
-                        function(r){
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
                     )

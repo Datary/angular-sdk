@@ -1,6 +1,7 @@
 {
   "name": "dy-angular-sdk",
   "version": "0.1.2",
+  "private": true,
   "description": "AngularJS module encapsulating Datary's API requests",
   "keywords": [
     "datary",
@@ -8,6 +9,7 @@
     "sdk",
     "angular"
   ],
+  "license": "Commercial",
   "main": "dist/module.js",
   "authors": [
     "Fernando Diaz Laclaustra"
@@ -21,6 +23,10 @@
     "gulp-uglify": "^1.4.0",
     "yargs": "^3.23.0"
   },
-  "private": true,
-  "license": "Commercial"
+  "scripts": {
+    "test": "node node_modules/.bin/mocha test --reporter spec",
+    "distify": "node node_modules/.bin/gulp distify",
+    "publish": "node node_modules/.bin/gulp publish --version latest",
+    "lint": "node node_modules/.bin/gulp lint"
+  }
 }
