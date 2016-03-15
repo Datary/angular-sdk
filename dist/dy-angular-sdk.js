@@ -213,19 +213,61 @@
     
     function service($q, $http, baseApiUrl){
         return function(){
+            this.signUp = function(user){
+                return signUp(user);
+            };
+            this.activate = function(credentials){
+                return activate(credentials);
+            }
             this.signIn = function(credentials){
                 return signIn(credentials);
             };
             this.signOut = function(){
                 return signOut();
             };
-            this.signUp = function(user){
-                return signUp(user);
-            };
             this.signRequest = function(request){
                 return signRequest(request);
             };
         };
+        
+        
+        
+        /**************************************************************
+         * @name signUp
+         * @type method
+         * @description 
+         * 
+         * @param {Object} credentials:
+         * 
+         * @return 
+         */
+        function signUp(user){
+            return (
+                $http
+                    .post(baseApiUrl + "connection/signUp", user)
+                    .then( function(r){return (r.data) })
+                    .catch( function(e){return $q.reject(e)} )
+            );
+        }
+        
+        
+        /**************************************************************
+         * @name activate
+         * @type method
+         * @description 
+         * 
+         * @param {Object} credentials:
+         * 
+         * @return 
+         */
+        function activate(credentials){
+            return (
+                $http
+                    .post(baseApiUrl + "connection/activate", credentials)
+                    .then( function(r){return (r.data)} )
+                    .catch(function(e){return $q.reject(e)} )
+            );
+        }
         
         
         
@@ -278,31 +320,6 @@
                     .get(baseApiUrl + "connection/signOut")
                     .then(function(r){
                             return r.status;
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-        
-        
-        
-        /**************************************************************
-         * @name signUp
-         * @type method
-         * @description 
-         * 
-         * @param {Object} credentials:
-         * 
-         * @return 
-         */
-        function signUp(user){
-            return (
-                $http
-                    .post(baseApiUrl + "connection/signUp", user)
-                    .then(function(r){
-                            return (r.data);
                         }
                     ).catch(function(e){
                             return $q.reject(e);
