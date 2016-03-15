@@ -24,6 +24,9 @@
             this.recover = function(email){
                 return recover(email);
             };
+            this.reset = function(credentials){
+                return reset(credentials);
+            };
             this.signOut = function(){
                 return signOut();
             };
@@ -124,6 +127,26 @@
             return (
                 $http
                     .post(baseApiUrl + "connection/recover", {email: email})
+                    .then( function(r){return (r.data)} )
+                    .catch(function(e){return $q.reject(e)} )
+            );
+        }
+        
+        
+        
+        /**************************************************************
+         * @name reset
+         * @type method
+         * @description 
+         * 
+         * @param {Object} credentials:
+         * 
+         * @return 
+         */
+        function reset(credentials){
+            return (
+                $http
+                    .post(baseApiUrl + "connection/reset", credentials)
                     .then( function(r){return (r.data)} )
                     .catch(function(e){return $q.reject(e)} )
             );
