@@ -218,9 +218,12 @@
             };
             this.activate = function(credentials){
                 return activate(credentials);
-            }
+            };
             this.signIn = function(credentials){
                 return signIn(credentials);
+            };
+            this.recover = function(email){
+                return recover(email);
             };
             this.signOut = function(){
                 return signOut();
@@ -310,6 +313,26 @@
         
         
         /**************************************************************
+         * @name recover
+         * @type method
+         * @description 
+         * 
+         * @param {String} email:
+         * 
+         * @return 
+         */
+        function recover(email){
+            return (
+                $http
+                    .post(baseApiUrl + "connection/recover", {email: email})
+                    .then( function(r){return (r.data)} )
+                    .catch(function(e){return $q.reject(e)} )
+            );
+        }
+        
+        
+        
+        /**************************************************************
          * @name signOut
          * @type method
          * @description 
@@ -318,13 +341,8 @@
             return (
                 $http
                     .get(baseApiUrl + "connection/signOut")
-                    .then(function(r){
-                            return r.status;
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
+                    .then( function(r){return r.status} )
+                    .catch( function(e){return $q.reject(e)} )
             );
         }
         
