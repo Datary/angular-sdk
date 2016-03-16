@@ -128,7 +128,7 @@ gulp
         function(){
             console.log("@@@ Running Publish task @@@");
             
-            //version de la release
+            //obtencion de la version de la release
             var VERSION;
             if (!argv.version) {
                 VERSION = "latest";
@@ -157,22 +157,20 @@ gulp
             );
             
             
-            //############# Version no minificada
+            /////// VERSION ORIGINAL
             function uploadFullVersion(signal){
                 //AWS configuration
                 var s3 = new AWS.S3();
                 var PARAMS = {
                     Bucket: "prometeo",
                     ACL: "public-read",
-                    Key: "libs/dy-angular-sdk/" + VERSION + "/dy-angular-sdk.js",
+                    Key: "lib/dy-angular-sdk/" + VERSION + "/dy-angular-sdk.js",
                     Body: null,
                 };
                 
                 //Read in the file, convert it to base64, store to S3
                 fs.readFile('./dist/dy-angular-sdk.js', function (err, data) {
-                        if (err) { 
-                            throw err;
-                        }
+                        if (err) { signal(err, null) }
                         //creo un buffer
                         var B64_DATA = new Buffer(data, 'binary');
                         //configuro los params con el buffer
@@ -195,22 +193,20 @@ gulp
             
             
             
-            //############# Version minificada
+            /////// VERSION MINIFICADA
             function uploadMinifiedVersion(signal){
                 //AWS configuration
                 var s3 = new AWS.S3();
                 var PARAMS = {
                     Bucket: "prometeo",
                     ACL: "public-read",
-                    Key: "libs/dy-angular-sdk/" + VERSION + "/dy-angular-sdk.min.js",
+                    Key: "lib/dy-angular-sdk/" + VERSION + "/dy-angular-sdk.min.js",
                     Body: null,
                 };
                 
                 // Read in the file, convert it to base64, store to S3
                 fs.readFile('./dist/dy-angular-sdk.min.js', function (err, data) {
-                        if (err) { 
-                            throw err; 
-                        }
+                        if (err) { signal(err, null) }
                         //creo un buffer
                         var B64_DATA = new Buffer(data, 'binary');
                         //configuro los params con el buffer
