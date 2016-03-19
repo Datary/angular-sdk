@@ -89,7 +89,7 @@
         function signIn(credentials){
             return (
                 $http
-                    .post(baseApiUrl + "connection/signIn?provider=datary", credentials)
+                    .post(baseApiUrl + "connection/signIn", credentials)
                     .then(function(r){
                             var TOKEN = null;
                             //busco token en headers
@@ -187,13 +187,8 @@
             return (
                 $http
                     .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
+                    .then(function(r){return (r.data)})
+                    .catch(function(e){return $q.reject(e)})
             );
         }
     }
