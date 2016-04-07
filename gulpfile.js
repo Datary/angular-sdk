@@ -89,7 +89,7 @@ gulp
         function(){
             console.log("@@@ Running Distify task @@@");
             
-            /////// genero una version no minificada
+            /////// genero una version concatenada no minificada
             try {
                 gulp
                     .src(ORD_ALL)

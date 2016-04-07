@@ -50,10 +50,10 @@
                     case 200:   //OK
                     case 201:   //Created
                     case 204:   //No content
-                        console.log("Successful API call.");
+                        //console.log("Successful API call.");
                         break;
                     default:
-                        console.log("Successful API call.");
+                        //console.log("Successful API call.");
                         break;
                 }
                 return response;
