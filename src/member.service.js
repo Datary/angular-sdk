@@ -22,9 +22,6 @@
             this.retrieveActivity = function(){
                 return retrieveActivityFromMember(guid);
             };
-            this.retrievePublicActivity = function(){
-                return retrievePublicActivityFromMember(guid);
-            };
             this.retrieveSessions = function(){
                 return retrieveSessionsFromMember(guid);
             };
@@ -112,32 +109,6 @@
          */
         function retrieveActivityFromMember(member){
             var URI = baseApiUrl + member + "/activity";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Realiza la peticion de los repos visibles del usuario a la
-         * API, y se almacena en una variable.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrievePublicActivityFromMember(member){
-            var URI = baseApiUrl + member + "/publicActivity";
             return (
                 $http
                     .get(URI)
