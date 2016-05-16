@@ -19,9 +19,6 @@
             this.retrieveRepos = function(){
                 return retrieveReposFromMember(guid);
             };
-            this.retrievePrivateRepos = function(){
-                return retrievePrivateReposFromMember(guid);
-            };
             this.retrieveActivity = function(){
                 return retrieveActivityFromMember(guid);
             };
@@ -100,32 +97,6 @@
                         }
                     )
             );
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Realiza la peticion de los repos privados del usuario a la
-         * API, y se almacena en una variable.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrievePrivateReposFromMember(member){
-            var URI = baseApiUrl + member + "/privateRepos";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );//END return
         }
         
         
