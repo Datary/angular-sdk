@@ -19,14 +19,14 @@
      */
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
-            /////// Defaults
+            /////// DEFAULTS
             var CATEGORY = (category)? category.toString() : "members";
             var PATH = (path)? path.toString() : "username";
             var HINT = (hint)? hint.toString() : ".*";
             var LIMIT = (limit)? limit.toString() : "25";
             var OFFSET = (offset)? offset.toString() : "0";
             
-            /////// Validacion
+            /////// VALIDACION
             
             /////// Request build
             var URI =  baseApiUrl + "search";
@@ -36,7 +36,7 @@
             URI += "&" + "limit=" + LIMIT;
             URI += "&" + "offset=" + OFFSET;
             
-            /////// Request
+            /////// REQUEST
             return (
                 $http
                     .get(URI)

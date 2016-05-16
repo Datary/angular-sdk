@@ -19,9 +19,6 @@
             this.retrieveRepos = function(){
                 return retrieveReposFromMember(guid);
             };
-            this.retrieveDisclosedRepos = function(){
-                return retrieveDisclosedReposFromMember(guid);
-            };
             this.retrievePrivateRepos = function(){
                 return retrievePrivateReposFromMember(guid);
             };
@@ -92,32 +89,6 @@
          */
         function retrieveReposFromMember(member){
             var URI = baseApiUrl + member + "/repos";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Realiza la peticion de los repos publicos y comerciales del
-         * usuario a la API.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrieveDisclosedReposFromMember(member){
-            var URI = baseApiUrl + member + "/disclosedRepos";
             return (
                 $http
                     .get(URI)
