@@ -92,19 +92,8 @@
 })();
 /*******************************************************************************
  * @description
- * Algunas convenciones: 
- * El valor devuelto por peticiones de informacion (que por lo mismo se apoyan
- * en `http request` de tipo GET) es logicamente un `object` con tal informacion
- * El valor devuelto por peticiones de eliminacion o actualizacion de un nodo 
- * (apoyadas en metodos PUT y DELETE) devuelven el _id del nodo eliminado 
- * o actualizado. 
- * El valor de peticiones que realizan agregacion de elementos a otros nodos
- * (usando POST por tanto) devuelven el valor del nodo creado.
- * El valor de peticones list* es un array de `ObjectIds`, es decir, los 
- * objetos a que representan no han sido `populados`. 
  * 
- * https://github.com/johnpapa/angular-styleguide#style-y091
- * https://github.com/johnpapa/angular-styleguide#naming
+ * 
  ******************************************************************************/
 (function(){
     angular
@@ -167,14 +156,14 @@
      */
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
-            /////// Defaults
+            /////// DEFAULTS
             var CATEGORY = (category)? category.toString() : "members";
             var PATH = (path)? path.toString() : "username";
             var HINT = (hint)? hint.toString() : ".*";
             var LIMIT = (limit)? limit.toString() : "25";
             var OFFSET = (offset)? offset.toString() : "0";
             
-            /////// Validacion
+            /////// VALIDACION
             
             /////// Request build
             var URI =  baseApiUrl + "search";
@@ -184,7 +173,7 @@
             URI += "&" + "limit=" + LIMIT;
             URI += "&" + "offset=" + OFFSET;
             
-            /////// Request
+            /////// REQUEST
             return (
                 $http
                     .get(URI)
@@ -415,17 +404,8 @@
             this.retrieveRepos = function(){
                 return retrieveReposFromMember(guid);
             };
-            this.retrieveDisclosedRepos = function(){
-                return retrieveDisclosedReposFromMember(guid);
-            };
-            this.retrievePrivateRepos = function(){
-                return retrievePrivateReposFromMember(guid);
-            };
             this.retrieveActivity = function(){
                 return retrieveActivityFromMember(guid);
-            };
-            this.retrievePublicActivity = function(){
-                return retrievePublicActivityFromMember(guid);
             };
             this.retrieveSessions = function(){
                 return retrieveSessionsFromMember(guid);
@@ -505,58 +485,6 @@
         
         /**************************************************************
          * @description 
-         * Realiza la peticion de los repos publicos y comerciales del
-         * usuario a la API.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrieveDisclosedReposFromMember(member){
-            var URI = baseApiUrl + member + "/disclosedRepos";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Realiza la peticion de los repos privados del usuario a la
-         * API, y se almacena en una variable.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrievePrivateReposFromMember(member){
-            var URI = baseApiUrl + member + "/privateRepos";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );//END return
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
          * Realiza la peticion de los repos visibles del usuario a la
          * API, y se almacena en una variable.
          * 
@@ -566,32 +494,6 @@
          */
         function retrieveActivityFromMember(member){
             var URI = baseApiUrl + member + "/activity";
-            return (
-                $http
-                    .get(URI)
-                    .then(function(r){
-                            return (r.data);
-                        }
-                    ).catch(function(e){
-                            return $q.reject(e);
-                        }
-                    )
-            );
-        }
-        
-        
-        
-        /**************************************************************
-         * @description 
-         * Realiza la peticion de los repos visibles del usuario a la
-         * API, y se almacena en una variable.
-         * 
-         * @param 
-         * 
-         * @return 
-         */
-        function retrievePublicActivityFromMember(member){
-            var URI = baseApiUrl + member + "/publicActivity";
             return (
                 $http
                     .get(URI)

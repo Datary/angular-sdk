@@ -59,16 +59,14 @@ var DIST_FOLDER = "./dist/";
 * @type task
 * @description
 */
-gulp
-    .task(
-        'lint', 
-        [],
-        function(){
+gulp.task('lint', [], function(){
             console.log("@@@ Running Lint Task @@@");
-            gulp
-                .src(SRC_FILES)
+            
+            gulp.src(SRC_FILES)
                 .pipe(jshint("./.jshintrc"))
                 .pipe(jshint.reporter('default'));
+            
+            console.log("@@@ Completed Lint task @@@");
         }
 );
 
@@ -82,17 +80,12 @@ gulp
 * de produccion; es decir, a crear las versiones `dist` de los archivos usados 
 * en la aplicacion. 
 */
-gulp
-    .task(
-        'distify', 
-        [],
-        function(){
+gulp.task('distify', [], function(){
             console.log("@@@ Running Distify task @@@");
             
             /////// genero una version concatenada no minificada
             try {
-                gulp
-                    .src(ORD_ALL)
+                gulp.src(ORD_ALL)
                     .pipe(concat("dy-angular-sdk.js"))
                     .pipe(gulp.dest(DIST_FOLDER));
             } catch(err) {
@@ -101,8 +94,7 @@ gulp
             
             ////// concateno y minifico
             try {
-                gulp
-                    .src(ORD_ALL)
+                gulp.src(ORD_ALL)
                     .pipe(uglify())
                     .pipe(concat("dy-angular-sdk.min.js"))
                     .pipe(gulp.dest(DIST_FOLDER));
@@ -121,11 +113,7 @@ gulp
 * @type task
 * @description
 */
-gulp
-    .task(
-        'publish', 
-        [],
-        function(){
+gulp.task('publish', [], function(){
             console.log("@@@ Running Publish task @@@");
             
             //obtencion de la version de la release
@@ -142,17 +130,10 @@ gulp
             }
             
             
-            async.series(
-                [
-                    uploadMinifiedVersion,
-                    uploadFullVersion
-                ],
-                function(e, r){
-                    if (e) {
-                        console.log("@@@ Error on Publish task @@@");
-                    } else {
-                        console.log("@@@ Completed Publish task @@@");
-                    }
+            var OPERATIONS = [uploadMinifiedVersion, uploadFullVersion];
+            async.series(OPERATIONS, function(e, r){
+                    if (e) console.log("@@@ Error on Publish task @@@");
+                    else console.log("@@@ Completed Publish task @@@");
                 }
             );
             
