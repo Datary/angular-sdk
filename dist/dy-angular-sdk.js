@@ -5,12 +5,8 @@
  * 
  *****************************************************************************/
 (function(){
-    angular
-        .module('dySdk', 
-            [
-                'ngFileUpload'
-            ]
-        ).constant('baseApiUrl', "https://belerofonte.azurewebsites.net/");
+    angular.module('dySdk', ['ngFileUpload'])
+        .constant('baseApiUrl', "https://api.datary.io/");
 })();
 /*******************************************************************************
  * @description
