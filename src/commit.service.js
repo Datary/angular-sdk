@@ -4,7 +4,7 @@
  * 
  ******************************************************************************/
 (function(){
-    angula.module('dy.sdk')
+    angular.module('dy.sdk')
         .service('dy.sdk.commit', service);
     
     service.$inject = [
