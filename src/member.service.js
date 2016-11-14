@@ -1,4 +1,5 @@
 /*******************************************************************************
+ * @module member
  * @description
  * 
  * https://github.com/johnpapa/angular-styleguide#style-y024
@@ -52,11 +53,10 @@
         
         
         /**************************************************************
-         * @description 
+         * Foobar
+         * @module member
          * 
-         * @param 
          * 
-         * @return 
          */
         function describeMember(member){
             var URI = baseApiUrl + "members/" + member;
@@ -75,13 +75,11 @@
         
         
         /**************************************************************
-         * @description 
          * Realiza la peticion de los repos del usuario a la
          * API, y se almacena en una variable.
+         * @module member
          * 
-         * @param 
          * 
-         * @return 
          */
         function retrieveReposFromMember(member){
             var URI = baseApiUrl + "members/" + member + "/repos";
@@ -100,9 +98,9 @@
         
         
         /**************************************************************
-         * @description 
          * Realiza la peticion de los repos visibles del usuario a la
          * API, y se almacena en una variable.
+         * @module member
          * 
          * @param 
          * 

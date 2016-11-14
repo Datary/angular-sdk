@@ -35,7 +35,7 @@ var SRC_FILES = ["src/*.js"];
 var ORDERED_SRC_FILES = [
     "src/sdk.module.js",
     "src/token-interceptor.factory.js",
-    "src/datary.factory.js",
+    "src/class.factory.js",
     "src/search.factory.js",
     "src/connection.service.js",
     "src/member.service.js",

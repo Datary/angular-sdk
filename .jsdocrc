@@ -1,0 +1,23 @@
+{
+    "source": {
+        "include": ["src/"],
+        "exclude": ["dist/"]
+    },
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "template": "templates/default",
+        "encoding": "utf8",
+        "destination": "doc/",
+        "recurse": true,
+        "tutorials": "tutorial/",
+        "readme": "./README.md"
+    }
+}

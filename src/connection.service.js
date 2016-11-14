@@ -41,6 +41,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name signUp
          * @type method
          * @description 
@@ -59,6 +60,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name activate
          * @type method
          * @description 
@@ -78,6 +80,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name signIn
          * @type method
          * @description 
@@ -115,6 +118,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name recover
          * @type method
          * @description 
@@ -134,6 +138,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name reset
          * @type method
          * @description 
@@ -153,6 +158,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @name signOut
          * @type method
          * @description 
@@ -168,6 +174,7 @@
         
         
         /**************************************************************
+         * @module connection
          * @description 
          * 
          * @param {Object} request:

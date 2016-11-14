@@ -1,11 +1,11 @@
 /*******************************************************************************
  * @description
- * 
+ * @module. respo
  * 
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('dy.sdk.repos', service );
+        .service('dy.sdk.repo', service );
     
     service.$inject = [
         '$q', 
@@ -84,13 +84,13 @@
         
         
         /**************************************************************
-         * @description 
          * A tal fin se realizan las operaciones:
          * # Consulta la informacion del repositorio, entre la que 
          * se encuentra el campo `workingDir`, cuyo valor es el _id de 
          * dicho `workingDir`.
          * # Se lanza una consulta sobre el `workingDir` cuyo _id
          * se obtuvo en el paso anterior.
+         * @module repo
          * 
          * @return {Promise}: 
          */
