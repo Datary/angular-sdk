@@ -234,7 +234,7 @@
                     ).catch(function(e){
                             return $q.reject(e);
                         }
-                    );
+                    )
             );
         }
         
