@@ -4,8 +4,7 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
+    angular.module('dy.sdk')
         .service('DatasetService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];
@@ -45,12 +44,11 @@
          * @return {}:
          */
         function describe(dataset, namespace){
-            var URI = baseApiUrl + dataset;
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset;
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -71,8 +69,8 @@
          * @return {}:
          */
         function retrieveOriginalFromDataset(dataset, namespace){
-            var URI = baseApiUrl + dataset + "/original";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset + "/original";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
                 $http
@@ -97,12 +95,11 @@
          * @return {}:
          */
         function retrievePreviewFromDataset(dataset, namespace){
-            var URI = baseApiUrl + dataset + "/preview";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset + "/preview";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -123,12 +120,11 @@
          * @return {}:
          */
         function retrieveSampleFromDataset(dataset, namespace){
-            var URI = baseApiUrl + dataset + "/sample";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset + "/sample";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -149,12 +145,11 @@
          * @return {}:
          */
         function retrieveMetadataFromDataset(dataset, namespace){
-            var URI = baseApiUrl + dataset + "/metadata";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset + "/metadata";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -175,12 +170,11 @@
          * @return {}:
          */
         function retrieveBlobFromDataset(dataset, namespace){
-            var URI = baseApiUrl + dataset + "/blob";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "datasets/" + dataset + "/blob";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }

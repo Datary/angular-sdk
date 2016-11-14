@@ -4,8 +4,7 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
+    angula.module('dy.sdk')
         .service('CommitService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];

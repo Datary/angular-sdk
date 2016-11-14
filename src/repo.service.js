@@ -4,8 +4,7 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
+    angular.module('dy.sdk')
         .service('RepoService', service );
     
     service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];

@@ -4,8 +4,7 @@
  * https://github.com/johnpapa/angular-styleguide#style-y024
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
+    angular.module('dy.sdk')
         .service('ConnectionService', service);
     
     service.$inject = ['$q', '$http', 'baseApiUrl'];

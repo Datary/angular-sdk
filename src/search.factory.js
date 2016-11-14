@@ -4,8 +4,7 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
+    angular.module('dy.sdk')
         .factory('searchFactory', factory );
     
     factory.$inject = ['$q', '$http', 'baseApiUrl'];
