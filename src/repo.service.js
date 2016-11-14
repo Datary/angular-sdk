@@ -65,8 +65,7 @@
          */
         function describeRepo(repo){
             return (
-                $http
-                    .get(baseApiUrl + repo)
+                $http.get(baseApiUrl + "repos/" + repo)
                     .then(function(r) {
                             return (r.data);
                         }
@@ -136,10 +135,9 @@
          * a la API, y se almacena en una variable
          */
         function retrieveReadmeFromRepo(repo){
-            var URI = baseApiUrl + repo + '/readme';
+            var URI = baseApiUrl + "repos/" + repo + '/readme';
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -158,10 +156,9 @@
          * a la API, y se almacena en una variable
          */
         function retrieveLicenseFromRepo(repo){
-            var URI = baseApiUrl + repo + '/license';
+            var URI = baseApiUrl + "repos/" + repo + '/license';
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -181,10 +178,9 @@
          * a la API, y se almacena en una variable
          */
         function retrieveHeadsFromRepo(repo){
-            var URI = baseApiUrl + repo + '/heads';
+            var URI = baseApiUrl + "repos/" + repo + '/heads';
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -203,10 +199,9 @@
          * a la API, y se almacena en una variable
          */
         function retrieveTagsFromRepo(repo){
-            var URI = baseApiUrl + repo + '/tags';
+            var URI = baseApiUrl + "repos/" + repo + '/tags';
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -225,18 +220,16 @@
          * a la API, y se almacena en una variable
          */
         function retrieveRefsFromRepo(repo){
-            var URI = baseApiUrl + repo + '/refs';
+            var URI = baseApiUrl + "repos/" + repo + '/refs';
             return (
-                $http
-                    .get(URI)
-                    .then(
-                        function(r){
+                $http.get(URI)
+                    .then(function(r){
                             return (r.data);
-                        },
-                        function(e){
+                        }
+                    ).catch(function(e){
                             return $q.reject(e);
                         }
-                    )
+                    );
             );
         }
         
@@ -251,13 +244,16 @@
          */
         function retrieveObjectFromRepo(object, repo, modifiers){
             var URI =  baseApiUrl + object;
-            if (repo || modifiers) { URI += "/?" }
-            if (repo) { URI += "namespace=" + repo + "&"}
-            if (modifiers) { for(var key in modifiers){URI += key + "=" + modifiers[key] +"&"} }
+            if (repo || modifiers) URI += "/?";
+            if (repo) URI += "namespace=" + repo + "&";
+            if (modifiers) { 
+                for(var key in modifiers){
+                    URI += key + "=" + modifiers[key] +"&"
+                } 
+            }
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -278,10 +274,9 @@
          * @return 
          */
         function commitIndexOnRepo(details, repo){
-            var URI = baseApiUrl + repo + "/index";
+            var URI = baseApiUrl + "repos/" + repo + "/index";
             return (
-                $http
-                    .post(URI, details)
+                $http.post(URI, details)
                     .then(function(r){
                             return (repo);
                         }
@@ -302,10 +297,9 @@
          * @return 
          */
         function updateReadmeOfRepo(readme, repo){
-            var URI = baseApiUrl + repo + "/readme";
+            var URI = baseApiUrl + "repos/" + repo + "/readme";
             return (
-                $http
-                    .put(URI, readme)
+                $http.put(URI, readme)
                     .then(function(r){
                             return (r);
                         }
@@ -326,10 +320,9 @@
          * @return 
          */
         function updateDetailsOfRepo(details, repo){
-            var URI = baseApiUrl + repo;
+            var URI = baseApiUrl + "repos/" + repo;
             return (
-                $http
-                    .put(URI, details)
+                $http.put(URI, details)
                     .then(function(r){
                             return (repo);
                         }
@@ -350,10 +343,9 @@
          * @return {} devuelvo el _id del repo 
          */
         function removeRepo(repo){
-            var URI = baseApiUrl + repo;
+            var URI = baseApiUrl + "repos/" + repo;
             return (
-                $http
-                    .delete(URI)
+                $http.delete(URI)
                     .then(function(r){
                             return (repo);
                         }

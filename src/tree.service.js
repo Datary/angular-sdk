@@ -32,12 +32,11 @@
          * @return {}:
          */
         function describeTree(tree, namespace){
-            var URI = baseApiUrl + tree;
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "trees/" + tree;
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }

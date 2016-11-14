@@ -56,10 +56,9 @@
          * @return 
          */
         function describeMember(member){
-            var URI = baseApiUrl + member;
+            var URI = baseApiUrl + "members/" + member;
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -82,10 +81,9 @@
          * @return 
          */
         function retrieveReposFromMember(member){
-            var URI = baseApiUrl + member + "/repos";
+            var URI = baseApiUrl + "members/" + member + "/repos";
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -108,10 +106,9 @@
          * @return 
          */
         function retrieveActivityFromMember(member){
-            var URI = baseApiUrl + member + "/activity";
+            var URI = baseApiUrl + "members/" + member + "/activity";
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -134,10 +131,9 @@
          * @return 
          */
         function retrieveSessionsFromMember(member){
-            var URI = baseApiUrl + member + "/sessions";
+            var URI = baseApiUrl + "members/" + member + "/sessions";
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -158,10 +154,9 @@
          * @return 
          */
         function createRepoForMember(repo, member){
-            var URI = baseApiUrl + member + '/repos';
+            var URI = baseApiUrl + "members/" + member + '/repos';
             return  (
-                $http
-                    .post(URI, repo)
+                $http.post(URI, repo)
                     .then(function(r){
                             return (r.data);
                         }
@@ -182,10 +177,9 @@
          * @return 
          */
         function updateProfileOfMember(profile, member){
-            var URI = baseApiUrl + member;
+            var URI = baseApiUrl + "members/" + member;
             return (
-                $http
-                    .put(URI, profile)
+                $http.put(URI, profile)
                     .then(function(r){
                             return (r);
                         }
@@ -207,10 +201,9 @@
          * @return 
          */
         function changeUsernameOfMember(username, member){
-            var URI = baseApiUrl + member + "/username";
+            var URI = baseApiUrl + "members/" + member + "/username";
             return (
-                $http
-                    .put(URI, member)
+                $http.put(URI, member)
                     .then(function(r){
                             return (r);
                         }
@@ -233,15 +226,14 @@
          * @return 
          */
         function changePasswordOfMember(oldPassword, newPassword, member){
-            var URI = baseApiUrl + member + "/password";
+            var URI = baseApiUrl + "members/" + member + "/password";
             var BODY = {
                 oldPassword: oldPassword,
                 newPassword: newPassword,
             };
             
             return (
-                $http
-                    .put(URI, BODY)
+                $http.put(URI, BODY)
                     .then(function(r){
                             return (r);
                         }
@@ -262,10 +254,9 @@
          * @return {} devuelvo el _id del user eliminado 
          */
         function removeMember(member){
-            var URI = baseApiUrl + member;
+            var URI = baseApiUrl + "members/" + member;
             return (
-                $http
-                    .delete(URI)
+                $http.delete(URI)
                     .then(function(r){
                             return (member);
                         }
@@ -310,13 +301,11 @@
                     ).then(
                         function(result){
                             var SESSIONS = result;
-                            return ($http
-                                        .put(baseApiUrl + member + "/sessions", SESSIONS)
-                                        .then(
-                                            function(result){
+                            return ($http.put(baseApiUrl + "members/" + member + "/sessions", SESSIONS)
+                                        .then(function(result){
                                                 return (result);
-                                            },
-                                            function(reason){
+                                            }
+                                        ).catch(function(reason){
                                                 return (reason);
                                             }
                                         )

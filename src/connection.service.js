@@ -48,8 +48,7 @@
          */
         function signUp(user){
             return (
-                $http
-                    .post(baseApiUrl + "connection/signUp", user)
+                $http.post(baseApiUrl + "connection/signUp", user)
                     .then( function(r){return (r.data) })
                     .catch( function(e){return $q.reject(e)} )
             );
@@ -67,8 +66,7 @@
          */
         function activate(credentials){
             return (
-                $http
-                    .post(baseApiUrl + "connection/activate", credentials)
+                $http.post(baseApiUrl + "connection/activate", credentials)
                     .then( function(r){return (r.data)} )
                     .catch(function(e){return $q.reject(e)} )
             );
@@ -88,8 +86,7 @@
          */
         function signIn(credentials){
             return (
-                $http
-                    .post(baseApiUrl + "connection/signIn", credentials)
+                $http.post(baseApiUrl + "connection/signIn", credentials)
                     .then(function(r){
                             var TOKEN = null;
                             //busco token en headers
@@ -125,8 +122,7 @@
          */
         function recover(email){
             return (
-                $http
-                    .post(baseApiUrl + "connection/recover", {email: email})
+                $http.post(baseApiUrl + "connection/recover", {email: email})
                     .then( function(r){return (r.data)} )
                     .catch(function(e){return $q.reject(e)} )
             );
@@ -145,8 +141,7 @@
          */
         function reset(credentials){
             return (
-                $http
-                    .post(baseApiUrl + "connection/reset", credentials)
+                $http.post(baseApiUrl + "connection/reset", credentials)
                     .then( function(r){return (r.data)} )
                     .catch(function(e){return $q.reject(e)} )
             );
@@ -161,8 +156,7 @@
          */
         function signOut(){
             return (
-                $http
-                    .get(baseApiUrl + "connection/signOut")
+                $http.get(baseApiUrl + "connection/signOut")
                     .then( function(r){return r.status} )
                     .catch( function(e){return $q.reject(e)} )
             );
@@ -185,8 +179,7 @@
             URI += "&basename=" + request.basename;
             URI += "&contentType=" + request.contentType;
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){return (r.data)})
                     .catch(function(e){return $q.reject(e)})
             );

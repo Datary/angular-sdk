@@ -38,9 +38,8 @@
          * @return {}:
          */
         function describeCommit(commit, namespace){
-            var URI = baseApiUrl;
-            URI += commit;
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "commits/" + commit;
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
                 $http.get(URI)
@@ -60,13 +59,11 @@
          * @description 
          */
         function retrieveBranchFromCommit(commit, namespace){
-            var URI = baseApiUrl;
-            URI += commit + "/branch";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "commits/" + commit + "/branch";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -87,13 +84,11 @@
          * @return {} devuelvo la `info` del tree 
          */
         function retrieveFiletreeFromCommit(commit, namespace){
-            var URI = baseApiUrl;
-            URI += commit + "/filetree";
-            if (namespace) { URI += "?namespace=" + namespace }
+            var URI = baseApiUrl + "commits/" + commit + "/filetree";
+            if (namespace) URI += "?namespace=" + namespace;
             
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }

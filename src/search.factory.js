@@ -31,15 +31,14 @@
             /////// Request build
             var URI =  baseApiUrl + "search";
             URI += "/" + CATEGORY;
-            URI += "?" + "path=" + PATH;
-            URI += "&" + "hint=" + HINT;
-            URI += "&" + "limit=" + LIMIT;
-            URI += "&" + "offset=" + OFFSET;
+            URI += "?path=" + PATH;
+            URI += "&hint=" + HINT;
+            URI += "&limit=" + LIMIT;
+            URI += "&offset=" + OFFSET;
             
             /////// REQUEST
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }

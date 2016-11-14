@@ -41,9 +41,9 @@
          * @return {} devuelvo un objeto con la info 
          */
         function describeWorkingDir(workingDir){
+            var URI = baseApiUrl + "workingDirs/" + workingDir;
             return (
-                $http
-                    .get(baseApiUrl + workingDir)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -65,10 +65,9 @@
          * @return {} devuelvo un objeto con la info 
          */
         function listChangesOnWorkinDir(workingDir){
-            var URI = baseApiUrl + workingDir + "/changes";
+            var URI = baseApiUrl + "workingDirs/" + workingDir + "/changes";
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -90,10 +89,9 @@
          * @return {} devuelvo un objeto con la info 
          */
         function retrieveFiletreeOfWorkingDir(workingDir){
-            var URI = baseApiUrl + workingDir + "/filetree";
+            var URI = baseApiUrl + "workingDirs/" + workingDir + "/filetree";
             return (
-                $http
-                    .get(URI)
+                $http.get(URI)
                     .then(function(r){
                             return (r.data);
                         }
@@ -131,7 +129,7 @@
          * @return {} devuelvo el _id de workingDir
          */
         function stageChangeOnWorkingDir(change, workingDir){
-            var URI = baseApiUrl + workingDir + '/changes';
+            var URI = baseApiUrl + "workingDirs/" + workingDir + '/changes';
             
             //############ ADD
             var DATA_AS_OBJ = {};
@@ -139,8 +137,7 @@
             if (change.action === "add"){
                 if (change.filemode === 40000) {
                     return (
-                        $http
-                            .post(URI, change)
+                        $http.post(URI, change)
                             .then(function(r){
                                     return (r);
                                 }
@@ -154,8 +151,7 @@
                     //sera el backend el que parsee lo stringified por angular http trasform
                     //http://www.bennadel.com/blog/2615-posting-form-data-with-http-in-angularjs.htm
                     return (
-                        $http
-                            .post(URI, change)
+                        $http.post(URI, change)
                             .then(function(result){
                                     return (result);
                                 }
@@ -172,8 +168,7 @@
                     }
                     change.content = DATA_AS_OBJ;
                     return (
-                        $http
-                            .post(URI, change)
+                        $http.post(URI, change)
                             .then(function(result){
                                     return (result);
                                 }
@@ -196,8 +191,7 @@
                                 return DEFERRED.reject(new Error("Imported file does not conforms to JSON format"));
                             }
                             change.content = DATA_AS_OBJ;
-                            ($http
-                                .post(URI, change)
+                            ($http.post(URI, change)
                                 .then(function(result){
                                         DEFERRED.resolve(result.status);
                                     }
@@ -214,24 +208,23 @@
                     /////// Direct Upload to Datary
                     } else {
                         return (
-                            Upload
-                                .upload(
-                                    {
-                                        method: 'POST',
-                                        url: baseApiUrl + workingDir + '/changes',
-                                        //headers: "",
-                                        fields: {
-                                            action: change.action,
-                                            filetype: change.filetype,
-                                            dirname: change.dirname,
-                                            basename: change.basename,
-                                            content: null,              //el content esta en file
-                                            pattern: change.pattern
-                                        },
-                                        //!!!!IMPORTANTE
-                                        file: change.content,           //es de tipo File
-                                    }
-                                )
+                            Upload.upload(
+                                {
+                                    method: 'POST',
+                                    url: baseApiUrl + workingDir + '/changes',
+                                    //headers: "",
+                                    fields: {
+                                        action: change.action,
+                                        filetype: change.filetype,
+                                        dirname: change.dirname,
+                                        basename: change.basename,
+                                        content: null,              //el content esta en file
+                                        pattern: change.pattern
+                                    },
+                                    //!!!!IMPORTANTE
+                                    file: change.content,           //es de tipo File
+                                }
+                            )
                         );
                     
                     }//END (change.content.size)
@@ -242,8 +235,7 @@
             //############ MODIFY, RENAME, DELETE
             } else {
                 return (
-                    $http
-                        .post(URI, change)
+                    $http.post(URI, change)
                         .then(function(r){
                                 return (r);
                             }
@@ -284,8 +276,7 @@
             // Firma y Subidas
             var CONNECTION = new ConnectionService();
             return (
-                CONNECTION
-                    .signRequest(REQUEST)
+                CONNECTION.signRequest(REQUEST)
                     .then(function(result){
                             return (
                                 //@vid 
@@ -332,15 +323,16 @@
                     ).then(
                         function(result){
                             var CHANGES = result;
-                            return ($http
-                                        .put(baseApiUrl + workingDir + "/changes", CHANGES)
-                                        .then(function(result){
-                                                return (result);
-                                            }
-                                        ).catch(function(reason){
-                                                return (reason);
-                                            }
-                                        )
+                            var URI = baseApiUrl + "workingDirs/" + workingDir + "/changes"
+                            return (
+                                $http.put(URI, CHANGES)
+                                    .then(function(result){
+                                            return (result);
+                                        }
+                                    ).catch(function(reason){
+                                            return (reason);
+                                        }
+                                    )
                             );
                         }
                     )
