@@ -5,9 +5,15 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('RepoService', service );
+        .service('dy.sdk.repos', service );
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'WorkingDirService', 'CommitService'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl', 
+        'dy.sdk.workingDir', 
+        'dy.sdk.commit'
+    ];
     
     function service($q, $http, baseApiUrl, WorkingDirService, CommitService){
         return function(guid){

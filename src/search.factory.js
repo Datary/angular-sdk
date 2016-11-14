@@ -5,17 +5,14 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .factory('searchFactory', factory );
+        .factory('dy.sdk.search', factory );
     
-    factory.$inject = ['$q', '$http', 'baseApiUrl'];
+    factory.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl'
+    ];
     
-    /**************************************************************
-     * @description 
-     * 
-     * @param 
-     * 
-     * @return 
-     */
     function factory($q, $http, baseApiUrl){
         return function(category, path, hint, limit, offset){
             /////// DEFAULTS

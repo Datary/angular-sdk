@@ -5,9 +5,15 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('WorkingDirService', service);
+        .service('dy.sdk.workingDir', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl', 'ConnectionService', 'Upload'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl', 
+        'dy.sdk.connection', 
+        'Upload'
+    ];
     
     function service($q, $http, baseApiUrl, ConnectionService, Upload){
         return function(guid){

@@ -5,9 +5,8 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
-        .factory('dyTokenInterceptor', factory);
+    angular.module('dy.sdk')
+        .factory('dy.sdk.tokenInterceptor', factory);
     
     factory.$inject = ['$q', '$location', '$window'];
     
@@ -31,7 +30,7 @@
                 switch (response.status) {
                     case 300:   //Multiple Choices
                     case 301:   //Moved Permanently
-                        console.log("Successful API call. Redirecting.");
+                        console.debug("Successful API call. Redirecting.");
                         break;
                     case 200:   //OK
                     case 201:   //Created
@@ -49,16 +48,16 @@
                 switch (response.status) {
                     case 401:   //Unauthorized 
                     case 403:   //Forbidden
-                        console.log("Unsuccessful API call. Authentication/Authorization failed.");
+                        console.warn("Unsuccessful API call. Authentication/Authorization failed.");
                         break;
                     case 404:   //Not found
-                        console.log("Unsuccessful API call. Document not found.");
+                        console.warn("Unsuccessful API call. Document not found.");
                         break;
                     case 500:   //Not found
-                        console.log("Unsuccessful API call. Internal server error.");
+                        console.error("Unsuccessful API call. Internal server error.");
                         break;
                     default:
-                        console.log("Unsuccessful API call.");
+                        console.error("Unsuccessful API call.");
                         break;
                 }
                 

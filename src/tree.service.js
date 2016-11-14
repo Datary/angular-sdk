@@ -5,9 +5,13 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('TreeService', service);
+        .service('dy.sdk.tree', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl'
+    ];
     
     function service($q, $http, baseApiUrl){
         return function(guid, namespace){

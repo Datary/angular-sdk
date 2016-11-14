@@ -5,9 +5,13 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('MemberService', service);
+        .service('dy.sdk.member', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl'
+    ];
     
     function service($q, $http, baseApiUrl){
         return function(guid){

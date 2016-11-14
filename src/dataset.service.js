@@ -5,9 +5,13 @@
  ******************************************************************************/
 (function(){
     angular.module('dy.sdk')
-        .service('DatasetService', service);
+        .service('dy.sdk.dataset', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl'
+    ];
     
     function service($q, $http, baseApiUrl){
         return function(guid, namespace){

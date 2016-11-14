@@ -4,41 +4,58 @@
  * 
  ******************************************************************************/
 (function(){
-    angular
-        .module('dySdk')
-        .factory('Datary', factory);
+    angular.module('dy.sdk')
+        .factory('dy.sdk.class', factory);
     
-    factory.$inject = ['$q', '$http', 'ConnectionService', 'searchFactory', 
-                    'MemberService', 'RepoService', 'WorkingDirService', 
-                    'CommitService', 'TreeService', 'DatasetService'];
+    factory.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.connection', 
+        'dy.sdk.search', 
+        'dy.sdk.member', 
+        'dy.sdk.repo', 
+        'dy.sdk.workingDir', 
+        'dy.sdk.commit', 
+        'dy.sdk.tree', 
+        'dy.sdk.dataset'
+    ];
     
-    function factory($q, $http, ConnectionService, searchFactory, 
-                    MemberService, RepoService, WorkingDirService,
-                    CommitService, TreeService, DatasetService){
+    function factory(
+        $q, 
+        $http, 
+        Connection, 
+        Search, 
+        Member, 
+        Repo, 
+        WorkingDir,
+        Commit, 
+        Tree, 
+        Dataset
+    ){
         return {
             connection: function(){
-                return (new ConnectionService());
+                return (new Connection());
             },
             search: function(category, path, pattern, limit, offset){
-                return searchFactory(category, path, pattern, limit, offset);
+                return Search(category, path, pattern, limit, offset);
             },
             member: function(guid){
-                return (new MemberService(guid));
+                return (new Member(guid));
             },
             repo:function(guid){
-                return (new RepoService(guid));
+                return (new Repo(guid));
             },
             workingDir: function(guid){
-                return (new WorkingDirService(guid));
+                return (new WorkingDir(guid));
             },
             commit: function(guid, namespace){
-                return (new CommitService(guid, namespace));
+                return (new Commit(guid, namespace));
             },
             tree: function(guid, namespace){
-                return (new TreeService(guid, namespace));
+                return (new Tree(guid, namespace));
             },
             dataset: function(guid, namespace){
-                return (new DatasetService(guid, namespace));
+                return (new Dataset(guid, namespace));
             }
         };
     }

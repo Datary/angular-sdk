@@ -5,9 +5,13 @@
  ******************************************************************************/
 (function(){
     angula.module('dy.sdk')
-        .service('CommitService', service);
+        .service('dy.sdk.commit', service);
     
-    service.$inject = ['$q', '$http', 'baseApiUrl'];
+    service.$inject = [
+        '$q', 
+        '$http', 
+        'dy.sdk.baseApiUrl'
+    ];
     
     function service($q, $http, baseApiUrl){
         return function(guid, namespace){
