@@ -1,6 +1,6 @@
 {
   "name": "datary-angular-sdk",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "private": true,
   "description": "AngularJS module encapsulating Datary's API requests",
   "keywords": [
