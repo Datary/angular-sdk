@@ -13,13 +13,13 @@ factory.$inject = [
     'dy.sdk.search', 
     'dy.sdk.member', 
     'dy.sdk.repo', 
-    'dy.sdk.workingDir', 
+    'dy.sdk.workdir', 
     'dy.sdk.commit', 
     'dy.sdk.tree', 
     'dy.sdk.dataset'
 ];
 
-function factory($q, $http, Connection, Search, Member, Repo, WorkingDir,Commit, Tree, Dataset){
+function factory($q, $http, Connection, Search, Member, Repo, Workdir, Commit, Tree, Dataset){
     return {
         connection: function(){
             return (new Connection());
@@ -33,8 +33,8 @@ function factory($q, $http, Connection, Search, Member, Repo, WorkingDir,Commit,
         repo:function(guid){
             return (new Repo(guid));
         },
-        workingDir: function(guid){
-            return (new WorkingDir(guid));
+        workdir: function(guid){
+            return (new Workdir(guid));
         },
         commit: function(guid, namespace){
             return (new Commit(guid, namespace));

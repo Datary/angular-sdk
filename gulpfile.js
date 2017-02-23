@@ -30,7 +30,7 @@ var ORDERED_SRC_FILES = [
     "src/connection.service.js",
     "src/member.service.js",
     "src/repo.service.js",
-    "src/working-dir.service.js",
+    "src/workdir.service.js",
     "src/commit.service.js",
     "src/tree.service.js",
     "src/dataset.service.js",

@@ -4,7 +4,8 @@
  * 
  ******************************************************************************/
 angular.module('dy.sdk')
-    .service('dy.sdk.workingDir', service);
+    .service('dy.sdk.workdir', service);
+
 
 service.$inject = [
     '$q', 
@@ -14,23 +15,24 @@ service.$inject = [
     'Upload'
 ];
 
+
 function service($q, $http, baseApiUrl, ConnectionService, Upload){
     return function(guid){
         this.guid = guid;
         this.describe = function (){
-            return describeWorkingDir(guid);
+            return describeWorkdir(guid);
         };
         this.listChanges = function (){
-            return listChangesOnWorkinDir(guid);
+            return listChangesOnWorkdir(guid);
         };
         this.retrieveFiletree = function (){
-            return retrieveFiletreeOfWorkingDir(guid);
+            return retrieveFiletreeOfWorkdir(guid);
         };
         this.stageChange = function(change){
-            return stageChangeOnWorkingDir(change, guid);
+            return stageChangeOnWorkdir(change, guid);
         };
         this.unstageChange = function(change){
-            return unstageChangeFromWorkingDir(change, guid);
+            return unstageChangeFromWorkdir(change, guid);
         };
     };
     
@@ -39,13 +41,13 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
     /**************************************************************
      * @description 
      * 
-     * @param {String} workingDir: uuid del WorkingDir del que se 
+     * @param {String} workdir: uuid del WorkingDir del que se 
      * solicita informacion
      * 
      * @return {} devuelvo un objeto con la info 
      */
-    function describeWorkingDir(workingDir){
-        var URI = baseApiUrl + "workingDirs/" + workingDir;
+    function describeWorkdir(workdir){
+        var URI = baseApiUrl + "workdirs/" + workdir;
         return (
             $http.get(URI)
                 .then(function(r){
@@ -59,17 +61,18 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
     }
     
     
+
     
     /**************************************************************
      * @description 
      * 
-     * @param {String} workingDir: uuid del WorkingDir del que se 
+     * @param {String} workdir: uuid del WorkingDir del que se 
      * solicita informacion
      * 
      * @return {} devuelvo un objeto con la info 
      */
-    function listChangesOnWorkinDir(workingDir){
-        var URI = baseApiUrl + "workingDirs/" + workingDir + "/changes";
+    function listChangesOnWorkdir(workdir){
+        var URI = baseApiUrl + "workdirs/" + workdir + "/changes";
         return (
             $http.get(URI)
                 .then(function(r){
@@ -84,16 +87,17 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
     
     
     
+
     /**************************************************************
      * @description 
      * 
-     * @param {String} workingDir: uuid del WorkingDir del que se 
+     * @param {String} workdir: uuid del WorkingDir del que se 
      * solicita informacion
      * 
      * @return {} devuelvo un objeto con la info 
      */
-    function retrieveFiletreeOfWorkingDir(workingDir){
-        var URI = baseApiUrl + "workingDirs/" + workingDir + "/filetree";
+    function retrieveFiletreeOfWorkdir(workdir){
+        var URI = baseApiUrl + "workdirs/" + workdir + "/filetree";
         return (
             $http.get(URI)
                 .then(function(r){
@@ -106,6 +110,7 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
         );
     }
     
+
     
     
     /**************************************************************
@@ -127,15 +132,15 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
      * sera un String que contiene el dataset a almacenar. Es un 
      * String ya que es un objeto JSON serializado, !!!!! 
      * #pattern: ["dataset", "datainfo", "dataschema"]
-     * @param {ObjectId} workingDir: _id del WorkingDir al que se 
+     * @param {ObjectId} workdir: _id del WorkingDir al que se 
      * agrega el change. 
      * 
-     * @return {} devuelvo el _id de workingDir
+     * @return {} devuelvo el _id de workdir
      */
-    function stageChangeOnWorkingDir(change, workingDir){
-        var URI = baseApiUrl + "workingDirs/" + workingDir + '/changes';
+    function stageChangeOnWorkdir(change, workdir){
+        var URI = baseApiUrl + "workdirs/" + workdir + '/changes';
         
-        //############ ADD
+        ////// ADD
         var DATA_AS_OBJ = {};
         var DATA_AS_BUFFER;
         if (change.action === "add"){
@@ -215,7 +220,7 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
                         Upload.upload(
                             {
                                 method: 'POST',
-                                url: baseApiUrl + workingDir + '/changes',
+                                url: baseApiUrl + workdir + '/changes',
                                 //headers: "",
                                 fields: {
                                     action: change.action,
@@ -236,7 +241,7 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
         
         
         
-        //############ MODIFY, RENAME, DELETE
+        ////// MODIFY, RENAME, DELETE
         } else {
             return (
                 $http.post(URI, change)
@@ -249,7 +254,7 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
                     )
             );
         }//END (change.action)
-    }//END stageChangeOnWorkingDir
+    }
     
     
     
@@ -307,27 +312,30 @@ function service($q, $http, baseApiUrl, ConnectionService, Upload){
                     }
                 )
         );
-    }//END uploadFileToS3
+    }
     
+
     
     
     /***********************************************************************
      * @description
      * 
      * @param {ObjectId} change:
-     * @param {ObjectId} workingDir:
+     * @param {ObjectId} workdir:
      */
-    function unstageChangeFromWorkingDir(change, workingDir){
+    function unstageChangeFromWorkdir(change, workdir){
         return (
-            listChangesOnWorkinDir
+            listChangesOnWorkdir
                 .then(function(result){
+                        //
                     }
                 ).catch(function(reason){
+                        //
                     }
                 ).then(
                     function(result){
                         var CHANGES = result;
-                        var URI = baseApiUrl + "workingDirs/" + workingDir + "/changes";
+                        var URI = baseApiUrl + "workdirs/" + workdir + "/changes";
                         return (
                             $http.put(URI, CHANGES)
                                 .then(function(result){
