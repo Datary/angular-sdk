@@ -9,6 +9,7 @@ var gulp            = require('gulp')
 ,   gutil           = require('gulp-util')
 ,   jshint          = require('gulp-jshint')
 ,   concat          = require('gulp-concat')
+,   insert          = require('gulp-insert')
 ,   uglify          = require('gulp-uglify')
 ,   fs              = require('fs')
 ,   AWS             = require('aws-sdk')
@@ -90,6 +91,8 @@ gulp.task('distify', [], function(){
         
         ////// genero otra version concatenada y minificada
         gulp.src(ORDERED_ALL)
+            .on('error', gutil.log)
+            .pipe(insert.wrap(IIFE_OPENING, IIFE_CLOSING))
             .on('error', gutil.log)
             .pipe(uglify())
             .on('error', gutil.log)
