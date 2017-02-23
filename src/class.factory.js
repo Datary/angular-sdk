@@ -20,18 +20,7 @@
         'dy.sdk.dataset'
     ];
     
-    function factory(
-        $q, 
-        $http, 
-        Connection, 
-        Search, 
-        Member, 
-        Repo, 
-        WorkingDir,
-        Commit, 
-        Tree, 
-        Dataset
-    ){
+    function factory($q, $http, Connection, Search, Member, Repo, WorkingDir,Commit, Tree, Dataset){
         return {
             connection: function(){
                 return (new Connection());
