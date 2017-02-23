@@ -1,9 +1,17 @@
-############ 
+#### external packages
 node_modules/
 bower_components/
 bower_packages/
+
+
+#### runtime data
 data/
 
+
+#### envars y ficheros de configuracion
 .env
 .awsrc
+
+
+#### logging
 *.log

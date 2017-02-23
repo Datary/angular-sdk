@@ -1,18 +1,7 @@
 /******************************************************************************
- * This file is used to build dySDK from `src/*`
+ * 
  *
- * Installation:
- * 1. Install Gulp (`npm install -g gulp`)
- *
- * Build:
- * Execute `grunt` from root directory of this directory (where gulpfile.js is)
- *
- * Result:
- * building dySDK will create files:
- *  - dist/dySDK.js
- *  - dist/dySDK.min.js
- *
- * See http://
+ * 
  ******************************************************************************/
 var gulp            = require('gulp')
 ,   argv            = require('yargs').argv
@@ -53,6 +42,7 @@ var DIST_FOLDER = "./dist/";
 
 
 
+
 /******************************************************************************
 * @name lint
 * @type task
@@ -73,6 +63,7 @@ gulp.task('lint', [], function(){
 
 
 
+
 /******************************************************************************
 * @name distify
 * @type task
@@ -83,9 +74,13 @@ gulp.task('lint', [], function(){
 */
 gulp.task('distify', [], function(){
         console.log("@@@ Running Distify task @@@");
+        var IIFE_OPENING = "(function(){\n";
+        var IIFE_CLOSING = "\n})();";
         
         /////// genero una version concatenada no minificada
         gulp.src(ORDERED_ALL)
+            .on('error', gutil.log)
+            .pipe(insert.wrap(IIFE_OPENING, IIFE_CLOSING))
             .on('error', gutil.log)
             .pipe(concat("datary-angular-sdk.js"))
             .on('error', gutil.log)
@@ -93,7 +88,7 @@ gulp.task('distify', [], function(){
             .on('error', gutil.log);
 
         
-        ////// concateno y minifico
+        ////// genero otra version concatenada y minificada
         gulp.src(ORDERED_ALL)
             .on('error', gutil.log)
             .pipe(uglify())
@@ -104,6 +99,7 @@ gulp.task('distify', [], function(){
             .on('error', gutil.log);
     }
 );
+
 
 
 
